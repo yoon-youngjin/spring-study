@@ -4,13 +4,11 @@ import dev.yoon.board.domain.File;
 import dev.yoon.board.domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 @Repository
 @RequiredArgsConstructor
-@Transactional
 public class PostRepositoryImpl implements PostRepository {
 
     @PersistenceContext
@@ -38,10 +36,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<File> findAllByPost(Long id) {
-        List<File> list = em.createQuery("select f from File f").getResultList();
-        for (File file:list) {
-            System.out.println(file);
-        }
 
         return em.createQuery("select f from File f where f.post.id=:id", File.class)
                 .setParameter("id", id)

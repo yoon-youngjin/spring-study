@@ -82,14 +82,14 @@ public class PostServiceImpl implements PostService {
     public void updatePost(Long id, PostDto postDto, List<MultipartFile> multipartFileList) {
 
         List<File> fileList = fileHandler.parseFileInfo(multipartFileList);
+        Post post = postRepository.findById(id);
 
         if(!fileList.isEmpty()) {
             for (File file : fileList) {
+                file.setPost(post);
                 fileRepository.save(file);
             }
         }
-
-        Post post = this.postRepository.findById(id);
         post.update(postDto);
 
     }

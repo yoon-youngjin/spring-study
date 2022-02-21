@@ -3,7 +3,6 @@ package dev.yoon.board.repository;
 import dev.yoon.board.domain.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional
 public class BoardRepositoryImpl implements BoardRepository {
 
     @PersistenceContext
