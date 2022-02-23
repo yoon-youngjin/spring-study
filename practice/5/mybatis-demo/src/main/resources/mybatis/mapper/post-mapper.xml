@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--       문자열 : #{}(=>getTitle()), 문자열x : ${}-->
+<!--       #{title} == 'title', ${title} == title-->
+<mapper namespace="dev.yoon.mybatisdemo.mapper.PostMapper">
+    <insert id="createPost" parameterType="dev.yoon.mybatisdemo.dto.PostDto">
+        insert into POST(title, content, writer, board)
+        values (#{title}, #{content}, #{writer}, ${board})
+    </insert>
+
+    <!--    resultType = select의 결과(table)를 정리하여 사용하고 싶은 object-->
+<!--    <select-->
+<!--            id="readPost"-->
+<!--            parameterType="int"-->
+<!--            resultType="dev.yoon.mybatisdemo.dto.PostDto">-->
+<!--        select * from post where id = ${id}-->
+<!--    </select>-->
+
+<!--    <select-->
+<!--            id="readPostAll"-->
+<!--            resultType="dev.yoon.mybatisdemo.dto.PostDto">-->
+<!--        select * from post-->
+<!--    </select>-->
+
+<!--    <update-->
+<!--            id="updatePost"-->
+<!--            parameterType="dev.yoon.mybatisdemo.dto.PostDto">-->
+<!--        update post-->
+<!--        set-->
+<!--            title=#{title},-->
+<!--            content = #{content},-->
+<!--            writer = #{writer},-->
+<!--            board = ${board}-->
+<!--        where id = ${id}-->
+<!--    </update>-->
+
+<!--    <delete-->
+<!--            id="deletePost"-->
+<!--            parameterType="int">-->
+<!--        delete from post where id = ${id}-->
+<!--    </delete>-->
+
+
+
+</mapper>

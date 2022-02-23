@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+// COMMIT,ROLLBACK =>
 public class FileServiceImpl implements FileService{
 
     private final PostRepository postRepository;
@@ -34,7 +35,5 @@ public class FileServiceImpl implements FileService{
     @Override
     public void deleteFile(File file) {
         fileRepository.deleteFile(file);
-
-
     }
 }

@@ -1,10 +1,8 @@
 package dev.yoon.board.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.yoon.board.dto.BoardDto;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +20,7 @@ public class Board {
     private String name;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
-
 
     public void addPost(Post post) {
         this.posts.add(post);

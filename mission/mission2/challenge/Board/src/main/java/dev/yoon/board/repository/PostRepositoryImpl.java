@@ -36,7 +36,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<File> findAllByPost(Long id) {
-
         return em.createQuery("select f from File f where f.post.id=:id", File.class)
                 .setParameter("id", id)
                 .getResultList();

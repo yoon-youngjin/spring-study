@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/demo-schema
+    username: demo_user
+    password: dudwlsdl12
+
+mybatis:
+#  classpath : resource파일이 root 기준
+  mapper-locations: "classpath:mybatis/mapper/*.xml"
+  configuration:
+#   자바의 camel-case(camelCase)를 snake-case(snake_case)로 자동 변환
+#   pascal-case(PascalCase)
+    map-underscore-to-camel-case: true

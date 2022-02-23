@@ -120,7 +120,6 @@ public class PostRestController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("{id}")
     public void deletePost(@PathVariable("id") Long id, @RequestBody PostDto postDto) {
-
         this.postService.deletePost(id, postDto.getPw());
     }
 

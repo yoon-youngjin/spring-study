@@ -60,11 +60,11 @@ public class Post {
         return post;
     }
 
-
     public void update(PostDto postDto) {
         this.setWriter(postDto.getWriter());
         this.setPw(postDto.getPw());
         this.setContent(postDto.getContent());
         this.setTitle(postDto.getTitle());
     }
+
 }
