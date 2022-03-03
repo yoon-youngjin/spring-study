@@ -5,9 +5,9 @@ spring:
       on-profile: test
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:tcp://localhost/~/jpashop
     username: sa
-    password: password
+    password:
   jpa:
 #    hibernate : 테이블을 만들고 활용하는 framework
     hibernate:
@@ -22,3 +22,7 @@ spring:
     properties:
       hibernata:
         dialect: org.hibernate.dialect.H2Dialect
+
+#logging-config : 특정 파일을 줌으로써 로그 설정 분리 가능
+#logging:
+#  config: classpath:logback-spring-test.xml
