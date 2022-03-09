@@ -1,0 +1,31 @@
+# 현재 profile이 test일 경우 실행하는 문서
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/jpashop
+    username: sa
+    password:
+  jpa:
+#    hibernate : 테이블을 만들고 활용하는 framework
+    hibernate:
+#      ddl-auto : 테이블을 생성하고 제거하는 과정을 자동으로하는 옵션
+#      => 프로그램 실행시 테이블을 자동으로 생성했다가 프로그램 종료시 자동으로 제거
+      ddl-auto: create
+#      테이블에 데이터를 남기기 위해서
+#      ddl-auto: update
+#      ddl-auto: none
+#      실제로 불리는 sql문을 보여줄지 선택하는 옵션
+    show-sql: true
+    properties:
+      hibernata:
+        dialect: org.hibernate.dialect.H2Dialect
+logging:
+  level:
+    root: warn
+
+#logging-config : 특정 파일을 줌으로써 로그 설정 분리 가능
+#logging:
+#  config: classpath:logback-spring-test.xml

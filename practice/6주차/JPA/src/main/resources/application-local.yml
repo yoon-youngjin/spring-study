@@ -1,0 +1,17 @@
+# 현재 profile이 test일 경우 실행하는 문서
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/demo_jpa_schema
+    username: demo_jpa
+    password: dudwlsdl12
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    properties:
+      hibernata:
+        dialect: org.hibernate.dialect.MySQL8Dialect
