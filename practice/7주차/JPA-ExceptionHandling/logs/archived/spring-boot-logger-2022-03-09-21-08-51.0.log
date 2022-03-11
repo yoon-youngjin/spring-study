@@ -1,0 +1,1 @@
+2022-03-09 21:08:51,129 WARN AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [dev.yoon.jpa.exception.PostNotInBoardException: Post not in board]

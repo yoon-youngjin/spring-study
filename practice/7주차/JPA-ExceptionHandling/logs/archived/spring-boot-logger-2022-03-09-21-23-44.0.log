@@ -1,0 +1,1 @@
+2022-03-09 21:23:44,164 WARN AbstractHandlerExceptionResolver [http-nio-8080-exec-4] Resolved [dev.yoon.jpa.exception.PostNotExistException: target Post does not exist]
