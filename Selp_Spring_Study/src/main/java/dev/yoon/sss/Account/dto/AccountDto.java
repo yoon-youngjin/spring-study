@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 public class AccountDto {
+
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SignUpReq {
