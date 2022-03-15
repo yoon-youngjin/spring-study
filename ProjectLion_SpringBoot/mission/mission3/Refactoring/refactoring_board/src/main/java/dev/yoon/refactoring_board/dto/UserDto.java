@@ -89,6 +89,7 @@ public class UserDto {
         public Res(User user) {
             this.name = user.getUsername();
             this.password = user.getPassword();
+
             this.address = user.getArea().getAddress();
             this.location = user.getArea().getLocation();
             this.dateTime = new DateTime(user.getCreatedDate(), user.getModifiedDate());

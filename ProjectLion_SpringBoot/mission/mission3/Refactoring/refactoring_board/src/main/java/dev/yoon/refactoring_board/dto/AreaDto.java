@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString
 public class AreaDto {
 
     @Embedded

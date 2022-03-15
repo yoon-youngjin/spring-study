@@ -1,18 +1,32 @@
 package dev.yoon.refactoring_board.domain.shop;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import dev.yoon.refactoring_board.domain.user.User;
+
+import javax.persistence.*;
 
 @Entity
 public class ShopReview {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String title;
 
-    @Id
-    public Long getId() {
-        return id;
-    }
+    private String content;
+
+    private Long grade;
+
+    @ManyToOne(
+            targetEntity = Shop.class,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
+    @ManyToOne(
+            targetEntity = User.class,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "writer")
+    private User writer;
 }

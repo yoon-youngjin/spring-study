@@ -1,15 +1,13 @@
 package dev.yoon.refactoring_board.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name = "AREA")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Area {

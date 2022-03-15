@@ -3,10 +3,7 @@ package dev.yoon.refactoring_board.domain.user;
 import dev.yoon.refactoring_board.common.BaseTimeEntity;
 import dev.yoon.refactoring_board.domain.Area;
 import dev.yoon.refactoring_board.dto.UserDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +12,7 @@ import java.util.Collection;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "community_user")
 public class User extends BaseTimeEntity {
@@ -33,6 +31,7 @@ public class User extends BaseTimeEntity {
 
     @ManyToOne(
             targetEntity = Area.class,
+
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "area_id")

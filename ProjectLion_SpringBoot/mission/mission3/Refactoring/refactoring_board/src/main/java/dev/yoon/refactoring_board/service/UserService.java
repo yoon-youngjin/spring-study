@@ -10,10 +10,12 @@ import dev.yoon.refactoring_board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +27,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AreaRepository areaRepository;
+
+    private final EntityManager entityManager;
 
 
 //    @Override
@@ -50,9 +54,7 @@ public class UserService {
                 .userCategory(dto.getUserCategory())
                 .build();
 
-
-        this.areaRepository.save(area);
-
+        this.areaRepository.save(area); // area id 생성
         this.userRepository.save(user);
 
         return new UserDto.Res(user);

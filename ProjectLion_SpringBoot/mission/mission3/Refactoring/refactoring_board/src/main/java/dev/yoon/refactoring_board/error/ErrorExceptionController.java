@@ -2,6 +2,7 @@ package dev.yoon.refactoring_board.error;
 
 import dev.yoon.refactoring_board.exception.BoardNotFoundException;
 import dev.yoon.refactoring_board.exception.NameDuplicationException;
+import dev.yoon.refactoring_board.exception.ShopNotFoundException;
 import dev.yoon.refactoring_board.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,14 @@ public class ErrorExceptionController {
     protected ErrorResponse handleConstraintViolationException(NameDuplicationException e) {
         final ErrorCode errorCode = ErrorCode.EMAIL_DUPLICATION;
         log.error(errorCode.getMessage(), e.getName());
+        return buildError(errorCode);
+    }
+
+    @ExceptionHandler(ShopNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleShopNotFoundException(ShopNotFoundException e) {
+        final ErrorCode errorCode = ErrorCode.SHOP_NOT_FOUND;
+//        log.error(errorCode.getMessage(), e.getName());
         return buildError(errorCode);
     }
 
