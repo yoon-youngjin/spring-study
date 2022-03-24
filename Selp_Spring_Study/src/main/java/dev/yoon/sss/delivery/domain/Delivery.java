@@ -22,6 +22,9 @@ public class Delivery extends BaseTimeEntity{
     @Embedded
     private Address address;
 
+    /**
+     * Delivery: 1 <-> DeliveryLog: *
+     */
     @OneToMany(mappedBy = "delivery", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DeliveryLog> logs = new ArrayList<>();
 
