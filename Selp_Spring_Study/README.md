@@ -1,4 +1,4 @@
-### 목차
+## 목차
 
 1. [step-01: Account 생성, 조회, 수정 API를 간단하게 만드는 예제](https://github.com/yoon-youngjin/SSS/blob/main/Selp_Spring_Study/doc/step-02.md)
 
