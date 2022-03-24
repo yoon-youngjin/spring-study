@@ -8,5 +8,5 @@
    - cheese10yun/spring-jpa-best-practices
    - 각 챕터를 공부하며 정리
 
-3. **Study_Spring_Security**
+3. **Study_Spring_Security** https://github.com/yoon-youngjin/SSS/tree/main/Study_Spring_Security
    - SpringSecurity 공부 정리
