@@ -1,6 +1,6 @@
 ## SSS(Self_Spring_Study)
 
-1. **ProjectLion_SpringBoot**
+1. **ProjectLion_SpringBoot** https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot
     - 프로젝트 라이언:The Origin: Java Spring Boot
     - 1주차 ~ 9주차 정리 
 
