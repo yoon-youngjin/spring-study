@@ -1,236 +1,47 @@
-# Chapter3 강의 정리
+# Chapter4 강의 정리
 
-## MVC
+## CRUD?
+- create read update delete
 
-- MVC : Model View Controller
-- View : 사용자가 확인하는 데이터의 표현
-- Controller : 사용자의 입출력을 다루는 부분
-- Model : 서비스 데이터 자체
+### DTO
+- 데이터를 주고 받을 때 사용하는 객체
 
-- 사용자가 view에서 앱의 모습을 보고 controller를 통해 사용, controller는 model을 통해 상태를 변화시키거나 데이터를 추가하는 등등 model은 controller로부터 지시 받은 내용을
-  바탕으로 view를 갱신
+## REST?
+- Representational State Transfer : 자원을 이름으로 구분하여 해당 자원의 상태를 주고 받는 모든 것을 의마한다./ Client와 Server간의 결합성(coupling)을 줄이기 위한 가이드
+- Restful한 API란? 각 구성요소들의 역할이 완벽하게 분리되어 있는 것
+- REST의 원리를 잘 지키는 시스템을 RESTful하다라고 한다.
 
-## Spring MVC : Front Controller Pattern
+![image](https://user-images.githubusercontent.com/83503188/155085961-87e201aa-da30-4ef1-b3e3-a4bb9730e094.png)
 
-- External Client : 브라우저, 다른 클라이언트 프로그램
-  - Dispatcher : Spring framework의 일부분
-- Handler Mapping : path, 실제 method를 관리
-- Controller : 사용자의 입출력을 다루는 부분
-- Model : 실제 데이터 자체
-- View Resolver : View
+- Coupling이 높다? 
 
-## 실습 내용
+- 서버에 형태에 따라서 클라이언트의 형태가 고정되어 있을 경우 “couping(결합성)이 높다”라고 한다. => 어느 한쪽이 변화하는 것이 다른 한쪽에 큰 영향을 미치는 것
+- 클라이언트가 사용 할 API를 문제없이 누가 사용해도 가능하게 만드는 것을 REST Api를 만드는 과정
 
-# SamplePayload
 
-```
-package dev.yoon.controllerdemo;
+## RESTful한 api를 만들기 위한 6가지 제약사항
+1. Client Server Architecture(Model)을 잘 따른다.
+- Client와 Server의 역할을 잘 분리
+- Server는 자원을 관리하고, 자원에 대한 표현은 client에서만 신경을 쓴다. => server가 변해도 client는 변하지 않고, client가 변해도 server는 변하지 않는 상태
 
-import lombok.*;
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-public class SamplePayload {
-    private String name;
-    private int age;
-    private String occupation;
-}
-```
+2. Stateless(무상태)
+- Server를 사용하는 대상이 Server가 해당 사용자의 요청을 받을 때 마다 사용자를 확인해야 한다.
+- Server안에 사용자정보를 기록하지 않는다.
+- 모든 요청은 독립적이며 요청을 보낸 당사자가 자신을 증명할 책임을 가져야한다.
 
-# SampleController
+3. Cacheability(캐시 처리 가능)
+- 자원의 캐싱이 가능한지의 여부를 항상 표기해줘야 한다.
 
-```
-@Controller
-public class SampleController {
-    private static final Logger logger
-            = LoggerFactory.getLogger(SampleController.class);
-   
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String hello() {
-        return "/hello.html";
-    }
-    @GetMapping(
-            value = "/hello/{id}"
-    )
-    public String helloPath(@PathVariable String id) {
-        logger.info("Path Variable is : " + id);
-        return "/hello.html";
-    }
-}
-```
+4. Layered System(계층화)
+- 실제 서버까지 도달하는 구조를 Client가 알필요가 없다.
 
-- @Controller : Controller class가 Bean으로 관리
-- @RequestMapping(value = "/hello", method = RequestMethod.GET)
+5. Uniformed Interface(인터페이스 일관성)
+- URI로 지정한 Resource에 대한 조작을 통일되고 한정적인 인터페이스로 수행한다.
 
-1. 경로설정 -> 경로에 어떤 함수가 들어갈지 결정할 때 사용
-2. value : 요청의 url의 path => localhost:8080/hello
-3. method : value값으로 요청 시 반응할 행동
-4. return : 경로의 요청에 대한 결과값 -> 해당 파일을 가리키는 것은 아님
-
-- @GetMapping(value = "/hello/{id}")
-
-1. GetMapping은 method가 get으로 고정 되어있음
-2. value : localhost:8080/hello/{id} => id는 변수값 : @PathVariable String id
+6. Code-On-Demand(optional)
+- 일시적 기능의 확장
+- 사용 가능한 코드를 응답으로 보내 사용자의 기능을 일시적으로 확장시킬 수 있다.
 
 
 
-```
-public class SampleController {
-    private static final Logger logger
-            = LoggerFactory.getLogger(SampleController.class);
-    @GetMapping(value = "/hello2")
-    public String hello2(@RequestParam(name = "id", required = false, defaultValue = "") String id) {
-        logger.info("Path : Hello");
-        logger.info("Query Param id : " + id);
-        return "/hello.html";
-    }
-
-    @GetMapping("/get-profile")
-    public @ResponseBody
-    SamplePayload getProfile() {
-        SamplePayload samplePayload = new SamplePayload("yoon", 10, "Student");
-        return samplePayload;
-    }
-}
-
-```
--RequestParam : Query의 내용을 가져올 때 사용-> http://localhost:8080/hello2?id=yoon
--JSON을 많이 사용함
-1. ResponseBody : 데이터가 http요청 응답을 body에 작성됨을 명시
-2. ResponseBody가 없으면 응답으로 돌아가는 (위의 hello형태)String이 viewresolver에 들어가게 되면서 해당 html을 가져오는 과정으로 가져옴
-3. ResponseBody가 있으면 View를 찾는 과정이 아닌 해당 데이터를 자체로 body로 사용
-- spring의 장점 : 일반적인 자바 객체를 json,xml같은 형태로 만들어서 넘겨줄 수 있다.
-
-
-
-```
- // ThymeLeaf
-    // static폴더가 아닌 templates폴더를 사용하게 됨
-    @GetMapping("/sample-thyme")
-    public ModelAndView sampleThyme() {
-        logger.info("in sample thyme");
-        ModelAndView modelAndView = new ModelAndView();
-        List<SamplePayload> profiles = new ArrayList<>();
-        profiles.add(new SamplePayload("yoon", 12, "student"));
-        profiles.add(new SamplePayload("young", 12, "student"));
-        profiles.add(new SamplePayload("gin", 12, "student"));
-        modelAndView.addObject("profiles", profiles);
-        modelAndView.setViewName("thyme");
-        return modelAndView;
-    }
-```
-- spring boot에서 기본적으로 jsp를 지원x -> thymeleaf를 사용 권장
-
-
-# SampleRestcontroller
-
-```
-RestController
-// localhost:8080/rest
-@RequestMapping("/rest")
-public class SampleRestController {
-    private static final Logger logger
-            = LoggerFactory.getLogger(SampleController.class);
-            
-    // localhost:8080/rest/sample-payload
-    @GetMapping("/sample-payload")
-    public SamplePayload samplePayloadGet() {
-        return new SamplePayload("yoon", 26, "student");
-    }
-    
-}
-            
-```
-- RestContoller : 간단하게, Controller의 모든 함수에 ResponseBody를 붙인 것
-- Controller에서는 작동 안하던 부분이 RestController에서는 작동 (@ResponseBody가 없음)
-- 근본적인 차이점 : Controller는 기본적으로 view를 제공하거나, data를 제공하는 용도로 조금 더 넓은 범위
-- RestController는 주 용도가 데이터를 주고 받는 역할
-
-
-
-```
-@RestController
-@RequestMapping("/rest")
-// localhost:8080/rest
-public class SampleRestController {
-    private static final Logger logger
-            = LoggerFactory.getLogger(SampleController.class);
-
-    @GetMapping(value = "/sample-image", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] sampleImage() throws IOException {
-        // getClass : 현재 class의 path를 받아옴
-        //  getClass().getResourceAsStream("") : resource폴더 내에서 찾아들어감 -> resources >> static ...
-        InputStream inputStream = getClass().getResourceAsStream("/static/IMG_0416.gif");
-        // 파일의 경우
-        // inputStream = new FileInputStream(new File(""));
-        return inputStream.readAllBytes();
-    }
-}
-```
-- @GetMapping(value = "/sample-image", produces = MediaType.IMAGE_PNG_VALUE)
-
-1. MediaType.IMAGE_PNG_VALUE : image를 return
-2. @responsebody , MediaType.~ : HTML 외에 데이터 전송을 위해 붙임
-3. 이미지, 영상은 결과적으로 byte
-
-
-
-```
-@RestController
-@RequestMapping("/rest")
-// localhost:8080/rest
-public class SampleRestController {
-    private static final Logger logger
-            = LoggerFactory.getLogger(SampleController.class);
-
-    @PostMapping("/sample-payload")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void samplePayloadPost(@RequestBody SamplePayload samplePayload) {
-        logger.info(samplePayload.toString());
-    }
-
-    // consumes는 produces의 반대
-    @PostMapping(value = "/sample-multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void sampleMultipartPost(
-            @RequestParam("name") String name,
-            @RequestParam("age") Integer age,
-            @RequestParam("occupation") String occupation,
-            @RequestParam(value = "file", required = false) MultipartFile multipartFile
-    ) throws IOException {
-        logger.info("name : " + name);
-        logger.info("age : " + age);
-        logger.info("occupation : " + occupation);
-        logger.info("file original name: " + multipartFile.getOriginalFilename());
-
-        // multipartFile.getBytes();
-
-    }
-}
-```
-- RequestBody : post요청의 body임을 명시
-- @ResponseStatus(HttpStatus.NO_CONTENT) : 정상적으로 처리가 되었을 때 status가 어떻게 정의가 되어야할지를 어노테이션으로 정의, 지금은 body가 없음을 status code로 바로 전달
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+&#35;&#35; body가 필요하거나 제공을 해야 하는 경우는 post를 떠올리고, 사용자가 조회를 하는 method는 get을 떠올리자 
