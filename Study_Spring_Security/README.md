@@ -8,28 +8,28 @@
 ### 프로젝트 설명
 1. 로그인
 
-      A.	로그인을 할 수 있는 페이지
+      A. 로그인을 할 수 있는 페이지
 
-      B.	누구나 접근이 가능
+      B. 누구나 접근이 가능
 
-      C.	로그아웃을 하게 되면 보이는 페이지
+      C. 로그아웃을 하게 되면 보이는 페이지
 2. 회원가입 페이지
 
-      A.	회원가입을 할 수 있는 페이지
+      A. 회원가입을 할 수 있는 페이지
 
-      B.	누구나 접근 가능
+      B. 누구나 접근 가능
 3. 유저 전용 페이지
 
-      A.	로그인 성공하면 이동하는 페이지
+      A. 로그인 성공하면 이동하는 페이지
 
-      B.	유저, 관리자만 접근 가능
+      B. 유저, 관리자만 접근 가능
 
-      C.	로그아웃 기능
+      C. 로그아웃 기능
 4. 관리자 전용 페이지
 
-      A.	관리자만 접근 가능
+      A. 관리자만 접근 가능
 
-      B.	로그아웃 기능
+      B. 로그아웃 기능
 
 
 ### Config 파일 작성
@@ -86,27 +86,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // 2
 5. http 관련 인증
 6. 접근에 대한 인증 설정이 가능
 
-      A.	anyMatchers를 통해 경로 설정과 권한 설정이 가능
+      A. anyMatchers를 통해 경로 설정과 권한 설정이 가능
 
-      B.	permitAll(): 누구나 접근 가능
+      B. permitAll(): 누구나 접근 가능
 
-      C.	hasRole(): 특정 권한이 있는 사람만 접근 가능
+      C. hasRole(): 특정 권한이 있는 사람만 접근 가능
 
-      D.	authenticated(): 권한이 있으면 무조건 접근 가능
+      D. authenticated(): 권한이 있으면 무조건 접근 가능
 
-      E.	anyRequest: anyMatchers에서 설정하지 않은 나머지 경로
+      E. anyRequest: anyMatchers에서 설정하지 않은 나머지 경로
 7. 로그인에 관한 설정
 
-      A.	loginPage(): 로그인 페이지 링크 설정
+      A. loginPage(): 로그인 페이지 링크 설정
 
-      B.	defaultSuccessUrl(): 로그인 성공 후 리다이렉트 할 주소
+      B. defaultSuccessUrl(): 로그인 성공 후 리다이렉트 할 주소
 8. 로그아웃에 관한 설정
 
-      A.	logoutSuccessUrl(): 로그아웃 성공 후 리다이렉트 할 주소
+      A. logoutSuccessUrl(): 로그아웃 성공 후 리다이렉트 할 주소
 
-      B.	invalidateHttpSession(): 로그아웃 이후 세션 전체 삭제 여부
+      B. invalidateHttpSession(): 로그아웃 이후 세션 전체 삭제 여부
 9. 로그인할 떄 필요한 정보를 가져오는 곳
 
-       A.	유저 정보를 가져오는 서비스를 userService으로 지정
+       A. 유저 정보를 가져오는 서비스를 userService으로 지정
 
-        B.	패스워드 인코더는 아까 빈으로 등록해놓은 passwordEncoder()를 사용
+        B. 패스워드 인코더는 아까 빈으로 등록해놓은 passwordEncoder()를 사용
