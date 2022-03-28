@@ -1,0 +1,5 @@
+# npc-API를 사용하기 위한 상수를 정의
+ncp:
+  api:
+    access-key: dummy-access-key
+    secret-key: dummy-secret-key
