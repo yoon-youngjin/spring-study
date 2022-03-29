@@ -55,16 +55,14 @@
 4. 패러다임의 불일치 해결
 5. 성능
    1. 1차 캐시와 동일성 보장 -> 같은 트랜잭션 안에서는 같은 엔티티를 반환
-   2. 트랜잭션을 지원하는 쓰기 지연(transactional write-behind) - 버퍼링 기능
-      1. 트랜잭션을 커밋할 때까지 INSERT SQL을 모음
-      2. JDBC BATCH SQL 기능을 사용해서 한번에 SQL 전송
-         <p align="center">
-           <img src="https://user-images.githubusercontent.com/83503188/160545531-2384b554-24ed-491c-b39d-5acfcd7ebb28.png" width="400px" height="250px"/>
-           <img src="https://user-images.githubusercontent.com/83503188/160545558-48bc666a-3d18-470c-883c-b5c92b9c1b47.png" width="400px" height="250px"/>
-         </p>
-   3. 지연 로딩(Lazy Loading), 즉시로딩(Eager Loading)
-      1. 지연로딩: 객체가 실제 사용(=getTeam())될 때 로딩, 쿼리가 너무 많이 나감
-      2. 즉시로딩: JOIN SQL로 한번에 연관된 객체까지 미리 조회
-         <p align="center">
-           <img src="https://user-images.githubusercontent.com/83503188/160545779-169919a1-8dce-4bf8-b2f0-95fd5ade7ee8.png" width="600px" />
-         </p>
+   2. 트랜잭션을 지원하는 쓰기 지연(transactional write-behind)
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/83503188/160545531-2384b554-24ed-491c-b39d-5acfcd7ebb28.png" width="400px" height="250px"/>
+        <img src="https://user-images.githubusercontent.com/83503188/160545558-48bc666a-3d18-470c-883c-b5c92b9c1b47.png" width="400px" height="250px"/>
+      </p>
+   3. 지연 로딩(Lazy Loading)
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/83503188/160545779-169919a1-8dce-4bf8-b2f0-95fd5ade7ee8.png" width="600px" />
+      </p>
+
+      
