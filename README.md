@@ -10,3 +10,7 @@
 
 3. [**Study_Spring_Security**](https://github.com/yoon-youngjin/SSS/tree/main/Study_Spring_Security)
    - SpringSecurity 공부 정리
+
+4. [**Spring_JPA [Standard_ORM]**](https://github.com/yoon-youngjin/SSS/tree/main/Spring_JPA%20%5BStandard_ORM%5D)
+   - Spring_JPA 공부
+   - 자바 ORM 표준 JPA 프로그래밍 - 기본편
