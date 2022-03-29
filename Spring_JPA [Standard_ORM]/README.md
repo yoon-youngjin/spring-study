@@ -3,7 +3,7 @@
 
 ## 목차
 
-1. [**JPA 소개**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot/practice/3%EC%A3%BC%EC%B0%A8)
+1. [**JPA 소개**](https://github.com/yoon-youngjin/SSS/blob/main/Spring_JPA%20%5BStandard_ORM%5D/doc/step-01.md)
 2. [**HTTP, Spring MVC, HTML Template**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot/practice/4%EC%A3%BC%EC%B0%A8)
 3. [**CRUD, CRUD REST, Stereotypes**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot/practice/5%EC%A3%BC%EC%B0%A8)
 4. [**Mybatis, RDB Limits**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot/practice/6%EC%A3%BC%EC%B0%A8)
