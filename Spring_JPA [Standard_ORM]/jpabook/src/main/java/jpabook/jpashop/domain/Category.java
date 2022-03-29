@@ -14,7 +14,7 @@ public class Category {
     private String name;
 
     // parent카테고리 입장에서는 child 카테고리는 여러 개
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
     private Category parent;
 

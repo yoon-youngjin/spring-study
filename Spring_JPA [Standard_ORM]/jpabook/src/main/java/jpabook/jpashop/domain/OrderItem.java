@@ -10,12 +10,14 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne(
+            fetch = FetchType.LAZY,
             targetEntity = Order.class
     )
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
     @ManyToOne(
+            fetch = FetchType.LAZY,
             targetEntity = Item.class
     )
     @JoinColumn(name = "ITEM_ID")

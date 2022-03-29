@@ -21,16 +21,22 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Child child = new Child();
+            Child child2 = new Child();
 
-            Member member = new Member();
-            member.setCreatedBy("yoon");
-            member.setCreatedDate(LocalDateTime.now());
-            member.setName("USER1");
+            Parent parent = new Parent();
 
-            em.persist(member);
+            parent.addChild(child);
+            parent.addChild(child2);
+
+            em.persist(parent);
 
             em.flush();
             em.clear();
+
+            Parent parent1 = em.find(Parent.class, parent.getId());
+            parent1.getChildList().remove(0);
+
 
             // 해당 아래 두줄이 없는 경우
             // find하면 현재 영속 컨텍스트에 member와 team이 남아있으므로 DB에 접근하지 않고 가져옴
@@ -101,6 +107,7 @@ public class JpaMain {
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
