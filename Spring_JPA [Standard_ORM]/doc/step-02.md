@@ -1,68 +1,49 @@
-## JPA 소개
+## JPA 시작
 
-### SQL 중심적인 개발의 문제점
-> 대부분의 언어가 객체지향 언어를 DB는 관계형 DB를 사용
-
-- 무한 반복, 지루한 코드 (반복되는 CRUD코드)
-  - 새로운 필드 추가 시 기존의 모든 쿼리를 수정
+### JPA 구동 방식
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/83503188/160542658-f4183780-ab45-4c70-baeb-b098d22dafdd.png" width="400px" height="250px"/>
-  <img src="https://user-images.githubusercontent.com/83503188/160542688-db9b6cc1-f9a0-419d-80d0-7ec8d572065f.png" width="400px" height="250px"/>
+     <img src="https://user-images.githubusercontent.com/83503188/160547315-68aaabdf-e1ad-49ab-9fb2-05c759a6b016.png" width="600px" height="300px"/>
 </p>
 
-- SQL에 의존적인 개발을 피하기 어렵다.
+#### 객체와 테이블을 생성하고 매핑하기
+- @Entity: JPA가 관리할 객체
+- @Id: 데이터베이스 PK와 매핑
+```
+@Entity 
+public class Member {
+   @Id
+   private Lond id;
+   private String name;
+   ...
+}
 
-- 패러다임의 불일치: 객체 vs. 관계형 DB
+create table Member (
+   id bigint not null,
+   name varchar(255),
+   primary key (id)
+);
+```
+#### 주의
+- **엔티티 매니저 팩토리**는 하나만 생성해서 애플리케이션 전체에
+  서 공유
+- **엔티티 매니저**는 쓰레드간에 공유X (사용하고 버려야 한다)
+- **JPA의 모든 데이터 변경은 트랜잭션 안에서 실행**
 
-- 객체를 관계형 DB에 저장하기 위해 객체를 SQL로 변환해야 함
-  - 개발자가 SQL매퍼 일을 처리
+#### 수정
+- Java객체에서 값만 바꿔도 JPA를 통해 객체를 가져오면(=em.find) JPA가 관리하게 된다.
+  - JPA가 값이 변경되었는지 트랜잭션을 커밋하는 시점에 검사함
+- 변경된 값이 있는 경우 update query를 날림
+    
+### JPQL 소개
+- 나이가 18살 이상인 회원을 모두 검색하고 싶다면? JPQL
+- JPA를 사용하면 엔티티 객체를 중심으로 개발
+- 문제는 검색 쿼리
+  - 검색을 할 때도 테이블이 아닌 엔티티 객체를 대상으로 검색
+  - 모든 DB데이터를 객체로 변환해서 검색하는 것은 불가능
+  - 애플리케이션이 필요한 데이터만 DB에서 불러오려면 결국 검색 조건이 포함된 SQL이 필요
 
-#### 객체와 관계형 데이터베이스의 차이
-1. 상속: 객체 -> O, 관계형 DB -> X
-2. 연관관계: 객체 -> O(Reference), 관계형 DB -> O(PK,FK를 통해 JOIN)
-   1. 객체의 연관관계는 단방향, 테이블의 연관관계는 양방향
-<p align="center">
-     <img src="https://user-images.githubusercontent.com/83503188/160544020-79123f54-1930-42b8-bcd2-de5414810fa3.png" width="600px" />
-</p>
-
-
-### JPA(Java Persistence API)
-- ORM(Object-relational mapping) : 객체 관계 매핑 => 객체는 객체대로 설계, 관계형 데이터베이스는 관계형 데이터베이스대로 설계 후 ORM 프레임워크가 중간에서 매핑
-- 현재 사용중인 ORM이 하이버네이트
-> ORM? 
-> 
-> 객체와 관계형 데이터베이스의 데이터를 자동으로 매핑(연결)해주는 것
-
-- JPA 동작
-<p align="center">
-     <img src="https://user-images.githubusercontent.com/83503188/160544445-92f7b41e-176b-4b39-812a-e86bcea794b2.png" width="400px" height="250px"/>
-     <img src="https://user-images.githubusercontent.com/83503188/160544489-dac54627-6de4-4b91-a390-b1d69cbc3994.png" width="400px" height="250px"/>
-</p>
-
-
-#### JPA를 왜 사용해야 하는가?
-1. SQL 중심적인 개발에서 객체 중심으로 개발
-
-2. 생산성
-   <p align="center">
-     <img src="https://user-images.githubusercontent.com/83503188/160544944-977b4fab-3771-42d8-9ab2-a616957d2a3c.png" width="600px" />
-   </p>
-3. 유지보수
-   <p align="center">
-     <img src="https://user-images.githubusercontent.com/83503188/160545072-ca462cfd-0727-4575-97ac-00509f5d9fe5.png" width="400px" height="250px"/>
-     <img src="https://user-images.githubusercontent.com/83503188/160545099-54e8cfd0-6587-41e3-94d4-29dba3538399.png" width="400px" height="250px"/>
-    </p>
-4. 패러다임의 불일치 해결
-5. 성능
-   1. 1차 캐시와 동일성 보장 -> 같은 트랜잭션 안에서는 같은 엔티티를 반환
-   2. 트랜잭션을 지원하는 쓰기 지연(transactional write-behind)
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/83503188/160545531-2384b554-24ed-491c-b39d-5acfcd7ebb28.png" width="400px" height="250px"/>
-        <img src="https://user-images.githubusercontent.com/83503188/160545558-48bc666a-3d18-470c-883c-b5c92b9c1b47.png" width="400px" height="250px"/>
-      </p>
-   3. 지연 로딩(Lazy Loading)
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/83503188/160545779-169919a1-8dce-4bf8-b2f0-95fd5ade7ee8.png" width="600px" />
-      </p>
-
-      
+- JPA는 SQL을 추상화한 JPQL이라는 객체 지향 쿼리 언어 제공
+- SQL과 문법 유사,  SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원
+- JPQL과 SQL의 차이점
+  - **JPQL은 엔티티 객체**를 대상으로 쿼리
+  - **SQL은 데이터베이스 테이블**을 대상으로 쿼리
