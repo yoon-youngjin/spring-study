@@ -21,21 +21,31 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Child child = new Child();
-            Child child2 = new Child();
 
-            Parent parent = new Parent();
+            Address address = new Address("city", "street", "zipcode");
 
-            parent.addChild(child);
-            parent.addChild(child2);
-
-            em.persist(parent);
+            Member member = new Member();
+            member.setHomeAddress(address);
+            member.setName("member1");
+            member.getAddressHistory().add(new AddressEntity(new Address("city", "street", "zipcode")));
+            member.getAddressHistory().add(new AddressEntity(new Address("city2", "street2", "zipcode2")));
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Parent parent1 = em.find(Parent.class, parent.getId());
-            parent1.getChildList().remove(0);
+            System.out.println("========== START ==========");
+            Member findMember = em.find(Member.class, member.getId());
+
+//            // homeCity -> newCity
+//            findMember.setHomeAddress(new Address("newCity", findMember.getHomeAddress().getStreet(), findMember.getHomeAddress().getZipcode()));
+//
+//            // 김치찌개 -> 된장찌개
+//            findMember.getFavoriteFoods().remove("김치찌개");
+//            findMember.getFavoriteFoods().add("된장찌개");
+
+
+            // 주소 변경: city -> newCity
 
 
             // 해당 아래 두줄이 없는 경우

@@ -2,24 +2,61 @@ package hellojpa;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER")
-public class Member extends BaseEntity{
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "name",updatable = false)
+    @Column(name = "name", updatable = false)
     // updatable = false : username의 update를 차단
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Team team;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
+
+    public List<AddressEntity> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
+
+    @Embedded
+    private Address homeAddress;
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+
+//    @ElementCollection
+//    @CollectionTable(
+//            name = "FAVORITE_FOOD",
+//            joinColumns = @JoinColumn(name = "MEMBER_ID")
+//    )
+//    @Column(name = "FOOD_NAME") // 예외적으로 필드가 하나이므로 적용 가능
+//    private Set<String> favoriteFoods = new HashSet<>();
+//
+//    @ElementCollection
+//    @CollectionTable(
+//            name = "ADDRESS",
+//            joinColumns = @JoinColumn(name = "MEMBER_ID")
+//    )
+//    private List<Address> addressHistory = new ArrayList<>();
+
 
     public String getUsername() {
         return username;
@@ -29,20 +66,17 @@ public class Member extends BaseEntity{
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
+    public Address getHomeAddress() {
+        return homeAddress;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
+
 //    @OneToMany(mappedBy = "member")
 //    private List<MemberProduct> memberProducts = new ArrayList<>();
 
 //    @OneToOne
 //    @JoinColumn(name = "LOCKER_ID")
 //    private Locker locker;
-
 
 
 //    @ManyToOne(fetch = FetchType.LAZY)
