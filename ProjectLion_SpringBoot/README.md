@@ -1,7 +1,6 @@
 # ProjectLion_SpringBoot
 > The Origin: Java Spring Boot
 
----
 ## 목차
 
 1. [**Maven Gradle, Start Spring Boot, Spring IOC**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot/practice/3%EC%A3%BC%EC%B0%A8)

@@ -2,7 +2,7 @@
 
 1. [**ProjectLion_SpringBoot**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot)
     - 프로젝트 라이언:The Origin: Java Spring Boot
-    - 1주차 ~ 9주차 정리 
+    - 1주차 ~ 10주차 정리 
 
 2. [**Selp_Spring_Study**](https://github.com/yoon-youngjin/SSS/tree/main/Selp_Spring_Study)
    - cheese10yun/spring-jpa-best-practices
