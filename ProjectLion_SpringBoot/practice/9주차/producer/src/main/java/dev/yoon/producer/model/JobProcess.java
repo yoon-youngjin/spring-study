@@ -13,9 +13,6 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @Getter @Setter
 @ToString
-/**
- *
- */
 public class JobProcess {
     private String id;
     private int status;

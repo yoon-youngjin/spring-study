@@ -20,6 +20,7 @@ public class ProducerController {
     public String sendMessage() {
         return producerService.send();
     }
+
     @GetMapping("/{jobId}")
     public JobProcess getResult(@PathVariable("jobId") String jobId) {
         return redisService.retrieveJob(jobId);

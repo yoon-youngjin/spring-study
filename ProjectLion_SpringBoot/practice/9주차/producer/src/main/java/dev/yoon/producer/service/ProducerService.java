@@ -43,6 +43,7 @@ public class ProducerService {
      * 조회할 때 key값이 필요
      */
     public String send() {
+
         JobRequest jobRequest = new JobRequest(UUID.randomUUID().toString());
         /**
          * JSON 형태로 표현해야함

@@ -1,0 +1,28 @@
+server:
+  port: 8888
+
+# 로컬 디렉토리에 있는 설정파일을 모아서 가져오는 방법
+# 네이티브 프로파일 방법
+
+#spirng:
+#  profiles:
+#    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:///C:/ ... 주소
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/aquashdw2/spring-cloud-config.git
+          clone-on-start: true
+          basedir: .config-git-remote
+
+  security:
+    user:
+      name: root
+      password: asLK1209

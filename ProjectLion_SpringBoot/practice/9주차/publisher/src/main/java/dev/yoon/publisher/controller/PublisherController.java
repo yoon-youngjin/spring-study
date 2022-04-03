@@ -14,6 +14,5 @@ public class PublisherController {
     @GetMapping("/")
     public void sendMsg() {
         publisherService.publishMessage();
-
     }
 }
