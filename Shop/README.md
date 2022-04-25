@@ -136,3 +136,96 @@ emf.close();
 > 
 > BLOB: 바이너리 데이터를 DB 외부에 저장하기 위한 타입 -> 이미지, 사운드, 비디오 같은 멀티미디어 데이터를 다룰 때 사용
 
+### 쿼리 메소드
+
+- 애플리케이션 개발에 있어서 데이터를 조회하는 기능은 필수
+- 쿼리 메소드는 스프링 데이터 JPA에서 제공하는 핵심 기능 중 하나로 Repository 인터페이스에 간단한 네이밍 룰을 이용하여 메소드를 작성하면 쿼리를 실행할 수 있다
+- [x] 조회
+  - `find + (엔티티 이름) + By + 변수이름`
+- [x] 내림차순 조회
+  - `find + (엔티티 이름) + By + 변수이름 + LessThan + OrderBy + 속성명 + Desc 키워드`
+- [x] 오름차순 조회
+  - `find + (엔티티 이름) + By + 변수이름 + LessThan + OrderBy + 속성명 + Asc 키워드`
+
+
+### `@Query` 어노테이션
+
+- 쿼리 메소드를 사용하면 조건이 많아질 때 이름이 너무 길어지는 경우가 발생
+- 쿼리 메소드의 경우 간단한 쿼리를 처리할 때는 유용하지만 복잡한 쿼리를 다루기에는 적합하지 않다. 
+- 이를 해결하기 위해 Spring Data Jpa에서 제공하는 `@Query` 어노테이션을 이용하면 SQL과 유사한 JPQL(Java Persistence Query Language)이라는 객체지향 쿼리 언어를 통해 복잡한 쿼리 처리 가능
+- 만약 기존의 데이터베이스에서 사용하던 쿼리를 그대로 사용해야 할 때는 `@Query`의 nativeQuery 속성을 사용하면 기존 쿼리를 그대로 활용 가능
+
+### QueryDsl
+
+- `@Query` 어노테이션 안에 JPQL 문법으로 문자열을 입력하기 때문에 잘못 입력하면 컴파일 시점에 에러를 발견할 수 없다는 단점이 존재
+- 이를 보완하는 방법으로 Querydsl을 사용 -> ? 
+- QueryDsl은 JPQL을 코드로 작성할 수 있도록 도와주는 빌더 API
+- QueryDsl은 소스코드로 SQL문을 문자열이 아닌 코드로 작성하기 때문에 컴파일러의 도움을 받을 수 있다.
+- **동적 쿼리**를 생성하는데 있어서 가장 큰 장점을 가짐
+
+#### JPAQuery 데이터 반환 메소드
+
+- [x] List<T> fetch(): 조회 결과 리스트 반환
+- [x] T fetchOne(): 조회 대상이 1건인 경우 제네릭으로 지정한 타입 반환
+- [x] T fetchFirst(): 조회 대상 중 1건만 반환
+- [x] List<T> fetch(): 조회 대상 개수 반환
+- [x] QueryResult<T> fetchResults(): 조회한 리스트와 전체 개수를 포함한 QueryResults 반환
+
+#### QueryDslPredicateExecutor
+> Predicate? 
+> 
+> '이 조건이 맞다'고 판단하는 근거를 함수로 제공하는 것
+
+- Repository에 Predicate를 파라미터로 전달하기 위해서 QueryDslPredicateExecutor 인터페이스를 상속
+- QueryDslPredicateExecutor의 메소드
+  - [x] long count(Predicate): 조건에 맞는 데이터의 총 개수 반환
+  - [x] boolean exists(Predicate): 조건에 맞는 데이터 존재 여부 반환
+  - [x] Iterable findAll(Predicate): 조건에 맞는 모든 데이터 반환
+  - [x] Page<T> findAll(Predicate, Pageable): 조건에 맞는 페이지 데이터 반환
+  - [x] Iterable findAll(Predicate, Sort): 조건에 맞는 정렬된 데이터 반환
+  - [x] T findOne(Predicate): 조건에 맞는 데이터 1개 반환
+
+
+
+---
+
+### `@Enumerated`을 이용할 때 반드시 EnumType은 String을 사용하자!
+
+- `@Enumerated` 애너테이션에는 두 가지 EnumType이 존재
+  - EnumType.ORDINAL: enum 순서 값을 DB에 저장
+  - EnumType.STRING: enum 이름을 DB에 저장
+
+```java
+enum OrderStatus{
+    READY, FINISH
+        }
+```
+
+- 이와 같이 OrderStatus의 enum타입이 명시된 경우라고 가정하자.
+
+```java
+@Enumerated(EnumType.ORDINAL)
+private OrderStatus orderstatus;
+```
+
+- EnumType.ORDINAL인 경우 DB에 READY는 1, FINISH는 2인 상태로 저장
+
+```java
+@Enumerated(EnumType.STRING)
+private OrderStatus orderstatus;
+```
+
+- EnumType.STRING인 경우 DB에 READY, FINISH로 저장
+
+- 만약 OrderStatus에 필드가 추가 된다면?
+
+```java
+enum OrderStatus{
+    READY, DELIVERY,  FINISH
+        }
+```
+
+- EnumType.ORDINAL인 경우에 기존 DB의 OrderStatus 속성값의 2는 DELEVERY가 되어 큰 문제가 발생
+- @Enumerated의 기본 값은 EnumType.ORDINAL이므로 반드시 EnumType.STRING으로 사용하자! 
+
+
