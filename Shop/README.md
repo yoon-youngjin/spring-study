@@ -226,6 +226,6 @@ enum OrderStatus{
 ```
 
 - EnumType.ORDINAL인 경우에 기존 DB의 OrderStatus 속성값의 2는 DELEVERY가 되어 큰 문제가 발생
-- @Enumerated의 기본 값은 EnumType.ORDINAL이므로 반드시 EnumType.STRING으로 사용하자! 
+- **@Enumerated의 기본 값은 EnumType.ORDINAL이므로 반드시 EnumType.STRING으로 사용하자!**
 
 
