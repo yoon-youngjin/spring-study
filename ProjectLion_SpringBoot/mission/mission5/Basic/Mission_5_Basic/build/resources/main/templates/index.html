@@ -12,7 +12,11 @@
 <script>
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(
+                showPosition,
+                null,
+                {enableHighAccuracy: false}
+            );
         } else {
             alert("Geolocation is not supported by this browser.");
         }
@@ -21,7 +25,9 @@
     async function showPosition(position) {
         await fetch(
             `/area/get-location-info?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`
-        )
+        ).then(response => response.json())
+            .then(body =>
+                alert(`Latitude: ${body.latitude}, Longtitude: ${body.longitude}\n${body.regionPatch}`))
 
     }
 

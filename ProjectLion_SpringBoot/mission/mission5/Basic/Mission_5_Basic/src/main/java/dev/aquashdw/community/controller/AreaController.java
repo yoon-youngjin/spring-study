@@ -37,8 +37,8 @@ public class AreaController {
 
     @GetMapping("get-location-info")
     public ResponseEntity<AreaDto> findLocation(
-            @RequestParam(value = "latitude") Double latitude,
-            @RequestParam(value = "longitude") Double longitude
+            @RequestParam(value = "latitude", defaultValue = "37.4877") Double latitude,
+            @RequestParam(value = "longitude", defaultValue = "127.0174") Double longitude
     ) {
 
         return ResponseEntity.ok(this.areaService.findNearestArea(latitude,longitude));

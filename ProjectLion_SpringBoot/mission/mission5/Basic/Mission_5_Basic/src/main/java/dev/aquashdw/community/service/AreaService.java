@@ -80,21 +80,37 @@ public class AreaService {
 
     public AreaDto findNearestArea(Double latitude, Double longitude) {
 
-        List<AreaEntity> all = areaRepository.findAll();
-        AreaEntity areaEntity = getNearestArea(all, latitude, longitude);
+//        List<AreaEntity> all = areaRepository.findAll();
+//        AreaEntity areaEntity = getNearestArea(all, latitude, longitude);
+//
+//        return AreaDto.toDto(areaEntity);
 
-        return AreaDto.toDto(areaEntity);
+        List<AreaEntity> areaEntityList = areaRepository.findByCloseRange(latitude, longitude);
+        areaEntityList.forEach(areaEntity -> {
+            logger.info("Entity Area: {}", areaEntity.getRegionPatch());
+            logger.info("distance diff: {}",
+                    Math.sqrt(Math.pow(areaEntity.getLatitude() - latitude, 2) + Math.pow(areaEntity.getLongitude() - longitude, 2)));
+        });
+
+
+        AreaEntity closestEntity = areaRepository.findTop1ByClosest(latitude, longitude);
+
+        logger.info(areaEntityList.get(0).getRegionPatch());
+        logger.info(closestEntity.getRegionPatch());
+
+        return AreaDto.toDto(closestEntity);
+
 
     }
 
-    private AreaEntity getNearestArea(List<AreaEntity> all, Double latitude, Double longitude ) {
+    private AreaEntity getNearestArea(List<AreaEntity> all, Double latitude, Double longitude) {
 
         Double min = Double.MAX_VALUE;
         AreaEntity result = new AreaEntity();
 
         for (AreaEntity area : all) {
             Double tmp = latitude - area.getLatitude() + longitude - area.getLongitude();
-            if(min > tmp) {
+            if (min > tmp) {
                 min = tmp;
                 result = area;
             }
