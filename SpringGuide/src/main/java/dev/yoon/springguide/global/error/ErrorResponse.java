@@ -70,7 +70,9 @@ public class ErrorResponse {
 
         public static List<FieldError> of(final String field, final String value, final String reason) {
             List<FieldError> fieldErrors = new ArrayList<>();
+
             fieldErrors.add(new FieldError(field, value, reason));
+
             return fieldErrors;
         }
 

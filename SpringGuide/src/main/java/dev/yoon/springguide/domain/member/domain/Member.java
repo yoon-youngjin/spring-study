@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import dev.yoon.springguide.domain.member.domain.ReferralCode;
+
 import dev.yoon.springguide.domain.member.model.Email;
 import dev.yoon.springguide.domain.member.model.Name;
 import lombok.AccessLevel;

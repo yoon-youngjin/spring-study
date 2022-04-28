@@ -1,5 +1,6 @@
 package dev.yoon.springguide.domain.member.dto;
 
+
 import dev.yoon.springguide.domain.member.domain.Member;
 import dev.yoon.springguide.domain.member.domain.ReferralCode;
 import dev.yoon.springguide.domain.member.model.Email;
