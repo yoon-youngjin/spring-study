@@ -1,4 +1,4 @@
-# Chapter9 강의 정리
+# Chapter10 강의 정리
 
 ## Spring Cloud
 
