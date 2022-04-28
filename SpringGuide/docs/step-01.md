@@ -1,36 +1,4 @@
-## `스프링 데이터`에서 제공하는 `QueryDsl` 기능
 
-### Repository 인터페이스 지원: QuerydslPredicateExecutor
-
-- `스프링 데이터`는 `QuerydslPredicateExecutor`라는 인터페이스를 제공
-
-```java
-import java.util.Optional;
-import java.util.function.Predicate;
-
-public interface QuerydslPredicateExecutor<T> {
-
-    Optional<T> findById(Predicate); // (1)
-
-    Iterable<T> findAll(Predicate predicate); // (2)
-
-    long count(Predicate predicate); // (3)
-
-    boolean exists(Predicate predicate); // (4)
-
-}
-
-```
-
-> (1) Predicate에 매칭되는 하나의 Entity를 반환
->
-> (2) Predicate에 매칭되는 모든 Entity를 반환합니다.
->
-> (3) Predicate에 매칭되는 Entity의 수를 반환합니다.
-> 
-> (4) Predicate에 매칭되는 결과가 있는지 여부를 반환합니다.
-
-----
 
 # 통일된 Error Response 객체
 
@@ -292,4 +260,37 @@ public class MemberApi {
 
 - 회원가입 Request Body 중에서 유효하지 않은 값이 있을 때 `@Valid` 어노테이션으로 예외를 발생시킬 수 있다.
 - 이 예외는 `@ControllerAdvice` 에서 적절하게 핸들링 된다.
+
+--- 
+## `스프링 데이터`에서 제공하는 `QueryDsl` 기능
+
+### Repository 인터페이스 지원: QuerydslPredicateExecutor
+
+- `스프링 데이터`는 `QuerydslPredicateExecutor`라는 인터페이스를 제공
+
+```java
+import java.util.Optional;
+import java.util.function.Predicate;
+
+public interface QuerydslPredicateExecutor<T> {
+
+    Optional<T> findById(Predicate); // (1)
+
+    Iterable<T> findAll(Predicate predicate); // (2)
+
+    long count(Predicate predicate); // (3)
+
+    boolean exists(Predicate predicate); // (4)
+
+}
+
+```
+
+> (1) Predicate에 매칭되는 하나의 Entity를 반환
+>
+> (2) Predicate에 매칭되는 모든 Entity를 반환합니다.
+>
+> (3) Predicate에 매칭되는 Entity의 수를 반환합니다.
+>
+> (4) Predicate에 매칭되는 결과가 있는지 여부를 반환합니다.
 
