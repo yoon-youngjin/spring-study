@@ -4,14 +4,13 @@ spring:
       file-size-threshold: 10MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:h2:tcp://localhost/~/jpashop
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://springboot-db.cvqrxyomkoch.ap-northeast-2.rds.amazonaws.com:3306/mydatabase
+    username: admin
+    password: dudwlsdl12
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
 #      show_sql: true

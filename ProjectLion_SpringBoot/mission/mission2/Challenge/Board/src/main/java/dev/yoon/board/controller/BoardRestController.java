@@ -20,7 +20,6 @@ public class BoardRestController {
     private final BoardService boardService;
 
 
-
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public void createBoard(@RequestBody BoardDto boardDto, HttpServletRequest request) {
