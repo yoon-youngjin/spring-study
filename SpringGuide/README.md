@@ -3,5 +3,6 @@
 
 ## 목차
 
-1. [**예외처리 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-01.md)
+1. [**Exception 전략 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-01.md)
+2. [**Domain 객체 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-02.md)
 
