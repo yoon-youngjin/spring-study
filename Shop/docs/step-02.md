@@ -330,5 +330,72 @@
 ![image](https://user-images.githubusercontent.com/83503188/166111145-7543351a-b039-4d72-b874-3b084c1b09a0.png)
 
 
+### Thymeleaf 페이지 레이아웃
 
+- header, footer, menu 등 공통적인 페이지 구성 요소 처리
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="header">
+    header 영역 입니다.
+</div>
+
+</html>
+```
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="footer">
+    footer 영역 입니다.
+</div>
+
+</html>
+```
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"> <!-- 1) -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/header::header"></div> <!-- 2) -->
+
+<div layout:fragment="content"> <!-- 3) -->
+
+</div>
+
+<div th:replace="fragments/footer::footer"></div> <!-- 4) -->
+</body>
+
+</html>
+```
+1. layout 기능을 사용하기 위해 html 태그에 네임스페이스를 추가
+2. th:replace 속성은 해당 속성이 선언된 html 태그를 다른 html 파일로 치환, fragments 폴더 아래의 header.html 파일의 "th:fragment=header" 영역을 가지고 온다.
+3. layout에서 변경되는 영역을 fragment로 설정
+4. header 영역과 마찬가지로 fragements 폴더 아래의 footer.html 파일의 "th:fragment=footer" 영역을 가지고 온다.
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}"> <!-- 1) -->
+
+<div layout:fragment="content"> <!-- 2) -->
+    본문 영역 입니다.
+</div>
+
+</html>
+```
+1. layouts 폴더 아래에 있는 layout1.html을 적용하기 위해서 네임스페이스를 추가
+2. layout1.html 파일의 <div layout:fragment="content"> 영역에 들어가는 영역
 
