@@ -14,7 +14,7 @@
 
 3. [**SpringGuide**](https://github.com/yoon-youngjin/SSS/tree/main/SpringGuide)
    - :white_check_mark: cheese10yun/spring-guide
-   - Exception 전략 가이드 ~ Directory 가이드까지 공부 정리 
+   - :white_check_mark: Exception 전략 가이드 ~ Directory 가이드까지 공부 정리 
 
 4. [**Spring_JPA [Standard_ORM]**](https://github.com/yoon-youngjin/SSS/tree/main/Spring_JPA%20%5BStandard_ORM%5D)
    - :white_check_mark: Spring_JPA 공부
