@@ -3,6 +3,7 @@ package dev.yoon.refactoring_board.controller;
 import dev.yoon.refactoring_board.dto.BoardDto;
 import dev.yoon.refactoring_board.dto.common.Result;
 import dev.yoon.refactoring_board.service.BoardService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("board")
 @RequiredArgsConstructor
+@Api(tags = {"Board API"})
 public class BoardController {
 
     private final BoardService boardService;

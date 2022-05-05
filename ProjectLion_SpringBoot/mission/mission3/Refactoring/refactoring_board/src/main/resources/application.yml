@@ -1,4 +1,9 @@
 spring:
+  mvc:
+
+    pathmatch:
+
+      matching-strategy: ant_path_matcher
   servlet:
     multipart:
       file-size-threshold: 10MB
