@@ -1,4 +1,4 @@
-package dev.yoon.springguide.domain.dao;
+package dev.yoon.springguide.domain.member.dao;
 
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 

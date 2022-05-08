@@ -1,4 +1,4 @@
-package dev.yoon.springguide.domain.dao;
+package dev.yoon.springguide.domain.member.dao;
 
 
 import dev.yoon.springguide.domain.member.domain.Member;

@@ -4,7 +4,7 @@ import dev.yoon.springguide.domain.member.domain.Member;
 import dev.yoon.springguide.domain.member.domain.ReferralCode;
 import dev.yoon.springguide.domain.member.dto.SignUpRequest;
 import dev.yoon.springguide.domain.member.exception.EmailDuplicateException;
-import dev.yoon.springguide.domain.dao.MemberRepository;
+import dev.yoon.springguide.domain.member.dao.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

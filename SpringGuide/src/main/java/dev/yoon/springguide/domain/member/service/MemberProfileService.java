@@ -1,6 +1,6 @@
 package dev.yoon.springguide.domain.member.service;
 
-import dev.yoon.springguide.domain.dao.MemberFindDao;
+import dev.yoon.springguide.domain.member.dao.MemberFindDao;
 import dev.yoon.springguide.domain.member.domain.Member;
 import dev.yoon.springguide.domain.member.dto.MemberProfileUpdate;
 import lombok.RequiredArgsConstructor;
