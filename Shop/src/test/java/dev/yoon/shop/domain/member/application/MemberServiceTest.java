@@ -26,13 +26,7 @@ class MemberServiceTest {
         MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
         memberRegisterDto.setEmail("test@email.com");
         memberRegisterDto.setName("홍길동");
-        memberRegisterDto.setAddress(
-                Address.builder()
-                        .county("서울시")
-                        .city("송파구")
-                        .state("가락동")
-                        .build()
-        );
+        memberRegisterDto.setAddress("서울시 송파구 가락동");
         memberRegisterDto.setPassword("1234");
 
         return memberRegisterDto.toEntity();

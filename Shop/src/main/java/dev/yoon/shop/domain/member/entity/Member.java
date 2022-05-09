@@ -17,7 +17,7 @@ public class Member extends BaseTimeEntity {
 
     @Id
     @Column(name="member_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -41,7 +41,6 @@ public class Member extends BaseTimeEntity {
         this.password = password;
         this.address = address;
         this.role = role;
-
     }
 
     public static Member createMember(Member member) {
@@ -53,6 +52,5 @@ public class Member extends BaseTimeEntity {
                 .role(Role.ADMIN)
                 .build();
     }
-
 
 }

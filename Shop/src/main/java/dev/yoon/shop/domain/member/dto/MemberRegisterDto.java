@@ -39,7 +39,7 @@ public class MemberRegisterDto {
                 )
                 .address(
                         Address.builder()
-                                .value(this.address)
+                                .value(this.getAddress())
                                 .build()
                 )
                 .role(Role.ADMIN)

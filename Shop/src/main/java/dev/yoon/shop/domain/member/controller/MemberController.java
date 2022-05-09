@@ -4,6 +4,7 @@ import dev.yoon.shop.domain.member.application.MemberService;
 import dev.yoon.shop.domain.member.dto.MemberRegisterDto;
 import dev.yoon.shop.domain.member.entity.Member;
 import dev.yoon.shop.global.error.exception.BusinessException;
+import dev.yoon.shop.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,17 @@ public class MemberController {
             return "member/memberForm";
         }
         return "redirect:/";
-
     }
+
+    @GetMapping("/login")
+    public String loginMember() {
+        return "/member/memberLoginForm";
+    }
+
+    @GetMapping("/login/error")
+    public String loginError(Model model) {
+        model.addAttribute("loginErrorMsg", ErrorCode.LOGIN_ERROR.getMessage());
+        return "/member/memberLoginForm";
+    }
+
 }
