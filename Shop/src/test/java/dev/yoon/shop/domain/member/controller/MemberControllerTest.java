@@ -36,8 +36,9 @@ class MemberControllerTest {
         memberRegisterDto.setName("홍길동");
         memberRegisterDto.setAddress("서울시 송파구 가락동");
         memberRegisterDto.setPassword(password);
+        Member member = memberRegisterDto.toEntity();
 
-        return memberRegisterDto.toEntity();
+        return memberService.saveMember(member);
     }
 
     @Test
@@ -47,26 +48,26 @@ class MemberControllerTest {
         String password = "1234";
         this.createMember(email, password);
 
-        //TODO MockMvc 정리, 해당 테스트 다시 진행
-        mockMvc.perform(formLogin().userParameter("email")
-                        .loginProcessingUrl("/members/login")
-                        .user(email).password(password))
+        mockMvc.perform(
+                        formLogin().userParameter("email")
+                                .loginProcessingUrl("/members/login")
+                                .user(email).password(password))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
     }
 
     @Test
     @DisplayName("로그인 실패 테스트")
-    public void loginFailTest() throws Exception{
+    public void loginFailTest() throws Exception {
         String email = "test@email.com";
         String password = "1234";
+
         this.createMember(email, password);
+
         mockMvc.perform(formLogin().userParameter("email")
                         .loginProcessingUrl("/members/login")
-                        .user(email).password("12345"))
+                        .user(email).password("1234"))
                 .andExpect(SecurityMockMvcResultMatchers.unauthenticated());
     }
-
-
 
 
 }

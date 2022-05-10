@@ -253,3 +253,120 @@ class ItemControllerTest {
 ```
 1. 현재 인증된 사용자의 Role을 USER로 세팅
 2. 상품 등록 페이지 진입 요청 시 Forbidden 예외가 발생하면 테스트가 성공적으로 통과
+
+---
+# Mock
+
+사전적 의미로 '테스트를 위해 만든 모형'을 의미하고, 테스트를 위해 실제 객체와 비슷한 모의 객체를 만드는 것을 **모킹(Mocking)**, 모킹한 객체를 메모리에서 얻어내는 과정을 **목업(Mock-up)**이라 한다.
+
+## MockMvc?
+
+`MockMvc`는 웹 어플리케이션을 **서버에 배포하지 않고도 Spring MVC의 동작을 재현하여 테스트 할 수 있는 클래스**를 의미한다.
+이는 실제 객체와 비슷하지만 **테스트에 필요한 기능만 가지고 있는 가짜 객체**를 만들어 사용하는 방법이다.
+
+### MockMvc 설정
+
+#### ContextHierychy
+
+테스트용 DI 컨테이너 만들 대 Bean 파일을 지정한다. 
+
+```java
+@ContextHierarchy({
+	@ContextConfiguration(classes = AppConfig.class),
+    @ContextConfiguration(classes = WebMvcConfig.class)
+})
+```
+
+#### WebAppConfiguration
+
+Controller 및 web 환경에 사용되는 빈을 자동으로 생성하여 등록
+
+### MockMvc 실행 
+
+perform() 메소드를 이용하여 설정한 MockMvc를 실행
+
+```java
+ @Test
+    @DisplayName("상품 등록 페이지 권한 테스트")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    public void 상품_등록_페이지_권한_테스트() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+```
+
+
+### MockMvc 요청 설정 메소드
+
+- param / params : 쿼리 스트링 설정
+- cookie : 쿠키 설정
+- requestAttr : 요청 스코프 객체 설정
+- sessionAttr : 세션 스코프 객체 설정
+- content : 요청 본문 설정
+- header / headers : 요청 헤더 설정
+- contentType : 본문 타입 설정
+
+```java
+@Test
+public void testController() throws Exception{
+	
+    mockMvc.perforem(get("test"))
+    	.param("query", "부대찌개")
+        .cookie("쿠키 값")
+        .header("헤더 값:)
+        .contentType(MediaType.APPLICATION.JSON)
+        .content("json으로");
+}
+```
+
+### MockMvc 검증 메소드
+
+- status : 상태 코드 검증
+- header : 응답 header 검증
+- content : 응답 본문 검증
+- cookie : 쿠키 상태 검증
+- view : 컨트롤러가 반환한 뷰 이름 검증
+- redirectedUrl(Pattern) : 리다이렉트 대상의 경로 검증
+- model : 스프링 MVC 모델 상태 검증
+- request : 세션 스코프, 비동기 처리, 요청 스코프 상태 검증
+- forwardedUrl : 이동대상의 경로 검증
+
+```java
+@Test
+public void testController() throws Exception{
+	mockMvc.perform(get("test"))
+    	.param("query", "부대찌개")
+        .cooke("쿠키 값")
+        .header("헤더 값:)
+        .contentType(MediaType.APPLICATION.JSON)
+        .content("json으로")
+        .andExpect(status().isOk()) // 여기부터 검증
+        .andExpect(content().string("expect json값"))
+        .andExpect(view().string("뷰이름"));
+```
+
+### MockMvc 기타 메소드
+
+- andDo() : print, log를 사용할 수 있는 메소드
+- print() : 실행결과를 지정해준 대상으로 출력, default = System.out
+- log() : 실행결과를 디버깅 레벨로 출력, 레벨은 org.springframework.test.web.servlet.result
+
+```java
+@Test
+public void testController() throws Exception{
+	
+    mockMvc.perforem(get("test"))
+    	.param("query", "부대찌개")
+        .cookie("쿠키 값")
+        .header("헤더 값:)
+        .contentType(MediaType.APPLICATION.JSON)
+        .content("json으로")
+        
+        .andExpect(status().isOk()) 
+        .andExpect(content().string("expect json값"))
+        .andExpect(view().string("뷰이름"))
+        
+        .andDo(print()) //여기부터 기타 메소드
+        .andDo(log());
+```

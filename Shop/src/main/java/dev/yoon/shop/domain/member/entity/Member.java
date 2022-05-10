@@ -11,8 +11,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "member")
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -28,14 +29,14 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Password password;
 
-    @Embedded
-    private Address address;
+//    @Embedded
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    public Member(String email, String name, Password password, Address address, Role role) {
+    public Member(String email, String name, Password password, String address, Role role) {
         this.email = Email.of(email);
         this.name = name;
         this.password = password;

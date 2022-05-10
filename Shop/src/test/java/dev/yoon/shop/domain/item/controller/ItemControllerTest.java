@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations="classpath:application-test.yml")
 class ItemControllerTest {
 
     @Autowired
@@ -24,7 +24,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("상품 등록 페이지 권한 테스트")
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void itemFormTest() throws Exception{
+    public void 상품_등록_페이지_권한_테스트() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -33,7 +33,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("상품 등록 페이지 일반 회원 접근 테스트")
     @WithMockUser(username = "user", roles = "USER")
-    public void itemFormNotAdminTest() throws Exception{
+    public void 상품_등록_페이지_일반_회원_접근_테스트() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
                 .andDo(print())
                 .andExpect(status().isForbidden());

@@ -37,7 +37,6 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "member/memberForm";
         }
-
         try {
             Member member = memberRegisterDto.toEntity();
             memberService.saveMember(member);
@@ -50,6 +49,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginMember() {
+
         return "/member/memberLoginForm";
     }
 

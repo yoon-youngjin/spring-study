@@ -1,10 +1,7 @@
 package dev.yoon.shop.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,6 +10,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @JsonIgnoreProperties(value = {"id","host"})
+@ToString
 public class Email {
 
     @javax.validation.constraints.Email(message = "NOT_VALID_EMAIL")

@@ -37,11 +37,12 @@ public class MemberRegisterDto {
                                 .value(this.getPassword())
                                 .build()
                 )
-                .address(
-                        Address.builder()
-                                .value(this.getAddress())
-                                .build()
-                )
+                .address(this.address)
+//                .address(
+//                        Address.builder()
+//                                .value(this.getAddress())
+//                                .build()
+//                )
                 .role(Role.ADMIN)
                 .build();
     }
