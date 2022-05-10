@@ -60,8 +60,7 @@ public class Password {
     }
 
     private String encodePassword(final String password) {
-        return password;
-//        return new BCryptPasswordEncoder().encode(password);
+        return new BCryptPasswordEncoder().encode(password);
     }
 
     private void updateFailedCount(boolean matches) {
@@ -80,8 +79,7 @@ public class Password {
     }
 
     private boolean isMatches(String rawPassword) {
-        return true;
-//        return new BCryptPasswordEncoder().matches(rawPassword, this.value);
+        return new BCryptPasswordEncoder().matches(rawPassword, this.value);
     }
 
 }

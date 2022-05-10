@@ -5,26 +5,26 @@
 애플리케이션의 보안에서 중요한 두 가지 영역은 `인증`과 `인가`
 
 - 웹이서 인증이란 해당 리소스에 대해서 작업을 수행할 수 있는 주체인지 확인하는 것
-  - 예를 들어 어떤 커뮤니티에서 게시판의 글을 보는 것은 로그인을 하지 않아도 되지만, 댓글을 작성하려면 로그인을 해야한다. 댓글을 달기 위해서는 로그인이라는 인증 절차가 필요
+    - 예를 들어 어떤 커뮤니티에서 게시판의 글을 보는 것은 로그인을 하지 않아도 되지만, 댓글을 작성하려면 로그인을 해야한다. 댓글을 달기 위해서는 로그인이라는 인증 절차가 필요
 - 인가는 인증 과정 이후에 일어난다.
-  - 커뮤니티를 관리하는 관리자 페이지에 접근하는 URL을 입력했을 때 해당 URL은 커뮤니티의 관리자만 접근할 수 있어야 한다. 
-  - 이때 접근하는 사용자가 해당 URL에 대해서 인가된 회원인지를 검사하는 것, 인가된 유저라면 해당 URL에 대한 권한이 있기 때문에 접근이 가능
+    - 커뮤니티를 관리하는 관리자 페이지에 접근하는 URL을 입력했을 때 해당 URL은 커뮤니티의 관리자만 접근할 수 있어야 한다.
+    - 이때 접근하는 사용자가 해당 URL에 대해서 인가된 회원인지를 검사하는 것, 인가된 유저라면 해당 URL에 대한 권한이 있기 때문에 접근이 가능
 
-> 인증(Authentication)과 인가(Authorization) 
-> 
+> 인증(Authentication)과 인가(Authorization)
+>
 > 인증: 유저가 누구인지 확인하는 절차, 회원과입과 로그인하는 것
-> 
-> 인가: 유저에 대한 권한을 허락하는 것 
+>
+> 인가: 유저에 대한 권한을 허락하는 것
 
 ## 스프링 시큐리티 설정 추가하기
 
 ```java
-dependencies {
+dependencies{
         ...
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
+        implementation'org.springframework.boot:spring-boot-starter-security'
+        testImplementation'org.springframework.security:spring-security-test'
         ...
-}
+        }
 ```
 
 - 시큐리티 설정을 추가함으로써 모든 요청에 인증을 요구한다.
@@ -33,15 +33,16 @@ dependencies {
 - 관리자 권한이 필요한 경우: 상품 등록
 
 ```java
+
 @Configuration
 @EnableWebSecurity // 1)
-public class SecurityConfig extends WebSecurityConfigurerAdapter { 
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { // 2)
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() { // 3)
         return new BCryptPasswordEncoder();
@@ -49,29 +50,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-1. WebSecurityConfigureAdapter를 상속받는 클래스에 `@EnableWebSecurity` 어노테이션을 선언하면 SpringSecurityFilterChain이 자동으로 포함, WebSecurityConfigurerAdapter를 상속받아서 메소드 오버라이딩을 통해 보안 설정을 커스터마이징할 수 있다.
+1. WebSecurityConfigureAdapter를 상속받는 클래스에 `@EnableWebSecurity` 어노테이션을 선언하면 SpringSecurityFilterChain이 자동으로 포함,
+   WebSecurityConfigurerAdapter를 상속받아서 메소드 오버라이딩을 통해 보안 설정을 커스터마이징할 수 있다.
 2. http 요청에 대한 보안을 설정한다. 페이지 권한 설정, 로그인 페이지 설정, 로그아웃 메소드 등에 대한 설정을 작성
-3. 비밀번호를 데이터베이스에 그대로 저장했을 경우, 데이터베이스가 해킹당하면 고객의 회원 정보가 그대로 노출된다. 이를 해결하기 위해 BCryptPasswordEncoder의 해시 함수를 이용하여 비밀번호를 암호화하여 저장한다.
+3. 비밀번호를 데이터베이스에 그대로 저장했을 경우, 데이터베이스가 해킹당하면 고객의 회원 정보가 그대로 노출된다. 이를 해결하기 위해 BCryptPasswordEncoder의 해시 함수를 이용하여 비밀번호를
+   암호화하여 저장한다.
 
 ---
 
 > CSRF
-> 
+>
 > CSRF(Cross Site Request Forgery)란 사이트간 위조 요청으로 자신의 의지와 상관없이 해커가 의도한 대로 수정, 등록, 삭제 등의 행위를 웹사이트 요청하게 하는 공격
 
-- 스프링 시큐리티를 사용할 경우 기본적으로 CSRF를 방어하기 위해 모든 POST 방식의 데이터 전송에는 CSRF 토큰 값이 있어야 한다. CSRF 토큰은 실제 서버에서 허용한 요청이 맞는지 확인하기 위한 토큰, 사용자의 세션에 임의의 값을 저장하여 요청마다 그 값을 포함하여 전송하면 서버에서 세션에 저장된 값과 요청이 온 값이 일치하는지 확인하여 CSRF를 방어한다.
+- 스프링 시큐리티를 사용할 경우 기본적으로 CSRF를 방어하기 위해 모든 POST 방식의 데이터 전송에는 CSRF 토큰 값이 있어야 한다. CSRF 토큰은 실제 서버에서 허용한 요청이 맞는지 확인하기 위한 토큰,
+  사용자의 세션에 임의의 값을 저장하여 요청마다 그 값을 포함하여 전송하면 서버에서 세션에 저장된 값과 요청이 온 값이 일치하는지 확인하여 CSRF를 방어한다.
 
 ## 로그인/로그아웃 구현하기
 
 ### UserDetailsService
 
-UserDetailsService 인터페이스는 데이터베이스에서 회원 정보를 가져오는 역할을 담당, loadUserByUserName() 메소드가 존재하여 사용자의 정보와 권한을 갖는 UserDetails 인터페이스를 반환
+UserDetailsService 인터페이스는 데이터베이스에서 회원 정보를 가져오는 역할을 담당, loadUserByUserName() 메소드가 존재하여 사용자의 정보와 권한을 갖는 UserDetails 인터페이스를
+반환
 
 ### UserDetail
 
 스프링 시큐리티에서 회원의 정보를 담기 위해서 사용하는 인터페이스, 해당 인텊페이스를 직접 구현하거나 스프링 시큐리티에서 제공하는 User 클래스를 사용한다.
 
-User 클래스는 UserDetails 인터페이스를 구현하고 있는 클래스 
+User 클래스는 UserDetails 인터페이스를 구현하고 있는 클래스
 
 ```java
 package dev.yoon.shop.global.config.security;
@@ -91,12 +96,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   ...
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
-                .loginPage("/members/login") 
-                .defaultSuccessUrl("/") 
-                .usernameParameter("email") 
+                .loginPage("/members/login")
+                .defaultSuccessUrl("/")
+                .usernameParameter("email")
                 .failureUrl("/members/login/error")
                 .and()
                 .logout()
@@ -104,22 +110,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/");
     }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(memberService) // 2)
-            .passwordEncoder(passwordEncoder()); // 3)
-  }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(memberService) // 2)
+                .passwordEncoder(passwordEncoder()); // 3)
+    }
   ...
 }
 
 ```
+
 1. 로그아웃 URL을 설정
-2. Spring Security에서 인증은 AuthenticationManager를 통해 이루어지며 AuthenticationManagerBuilder가 AuthenticationManager를 생성, userDetailService를 구현하고 있는 객체로 memberService를 지정
+2. Spring Security에서 인증은 AuthenticationManager를 통해 이루어지며 AuthenticationManagerBuilder가 AuthenticationManager를 생성,
+   userDetailService를 구현하고 있는 객체로 memberService를 지정
 3. 비밀번호 암호화를 위해 passwordEncoder를 지정
 
 ### 로그인 테스트 코드
 
 ```java
+
 @SpringBootTest
 @AutoConfigureMockMvc // 1)
 @Transactional
@@ -166,11 +175,12 @@ class MemberControllerTest {
 ## 페이지 권한 설정하기
 
 ```java
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   ...
-  
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       ...
@@ -198,16 +208,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 1. 시큐리티 처리에 HttpServletRequest를 이용한다는 것을 의미
 2. permitAll()을 통해 모든 사용자가 인증(로그인)없이 해당 경로에 접근할 수 있도록 설정한다.
 3. /admin으로 시작하는 경로는 해당 계정이 ADMIN Role일 경우에만 접근 가능하도록 설정
-4. 2,3 이외의 경로에 대해서는 모두 인증을 요구하도록 설정한다. 
+4. 2,3 이외의 경로에 대해서는 모두 인증을 요구하도록 설정한다.
 5. 인증되지 않은 사용자가 리소스에 접근하였을 때 수행되는 핸들러를 등록
 6. static 디렉토리의 하위 파일은 인증을 무시하도록 설정
 
 ### 상품 등록 페이지 권한 테스트
 
 ```java
+
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class ItemControllerTest {
 
     @Autowired
@@ -216,7 +227,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("상품 등록 페이지 권한 테스트")
     @WithMockUser(username = "admin", roles = "ADMIN") // 1)
-    public void itemFormTest() throws Exception{
+    public void itemFormTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new")) // 2)
                 .andDo(print()) // 3)
                 .andExpect(status().isOk()); // 4)
@@ -234,46 +245,248 @@ class ItemControllerTest {
 ### 상품 등록 페이지 일반 회원 접근 테스트
 
 ```java
+
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class ItemControllerTest {
 
-  @Autowired
-  MockMvc mockMvc;
+    @Autowired
+    MockMvc mockMvc;
   ...
-  @Test
-  @DisplayName("상품 등록 페이지 일반 회원 접근 테스트")
-  @WithMockUser(username = "user", roles = "USER") // 1)
-  public void itemFormNotAdminTest() throws Exception{
-    mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
-            .andDo(print())
-            .andExpect(status().isForbidden()); // 2)
-  }
+
+    @Test
+    @DisplayName("상품 등록 페이지 일반 회원 접근 테스트")
+    @WithMockUser(username = "user", roles = "USER") // 1)
+    public void itemFormNotAdminTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
+                .andDo(print())
+                .andExpect(status().isForbidden()); // 2)
+    }
 ```
+
 1. 현재 인증된 사용자의 Role을 USER로 세팅
 2. 상품 등록 페이지 진입 요청 시 Forbidden 예외가 발생하면 테스트가 성공적으로 통과
 
 ---
+
+# Principal vs. @AuthenticationPrincipal
+
+## Principal
+
+로그인한 사용자의 정보를 파라미터로 받고 싶을 때 기존에는 다음과 같이 Principal 객체로 받아서 사용
+
+```java
+@GetMapping("/")
+public String index(Model model,Principal principal){
+        ...
+        }
+```
+
+위의 Principal 객체는 **Spring Security가 제공하는 객체가 아닌,** 자바에 정의되어있는 Principal 객체를 바인딩 해주는 것이라 사용할 수 있는 메소드가 getName() 밖에 없다.
+
+## @AuthenticationPrincipal
+
+```java
+@PostMapping("/new")
+private String itemNew(
+@Valid @ModelAttribute("insertItemDto") InsertItemDto dto,
+        BindingResult bindingResult,
+@AuthenticationPrincipal UserDetailsImpl userDetails,
+        RedirectAttributes redirectAttributes
+        ){
+        ...
+        }
+```
+
+실제 SecurityContextHolder 내 Principal(SecurityContextHolder.getContext().getAuthentication().getPrincipal())를 가져오기
+위해서 `@AuthenticationPrincipal`를 사용한다.
+
+---
+
+# @Embedded
+## 현재 코드
+
+```java
+
+@Entity
+@Table(name = "member")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+public class Member {
+
+    @Id
+    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private String email;
+
+    private String password;
+  ...
+}
+```
+
+만약 Email의 Host부분, Domain부분을 가져와야 하는 경우, xxxxService에서 해당 일을 대신해서 처리하게 된다.
+
+만약 Password의 만기기간, 중복 횟수 처리, ... 기능이 있는 경우에도 마찬가지로 xxxxService에서 해당 일을 하게 된다. -> 책임을 미루게 된다.
+
+## @Embedded를 사용한 코드
+```java
+
+@Entity
+@Table(name = "member")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+public class Member extends BaseTimeEntity {
+
+    @Id
+    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @Embedded
+    private Email email;
+
+    @Embedded
+    private Password password;
+    ...
+}
+
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@JsonIgnoreProperties(value = {"id","host"})
+@ToString
+public class Email {
+
+    @javax.validation.constraints.Email(message = "NOT_VALID_EMAIL")
+    @Column(name = "email", nullable = false, unique = true, length = 50)
+    private String value;
+
+    @Builder
+    public Email(String value) {
+        this.value = value;
+    }
+
+    public static Email of(String email) {
+        return new Email(email);
+    }
+
+    public String getHost() {
+        int index = value.indexOf("@");
+        return value.substring(index);
+    }
+
+    public String getId() {
+        int index = value.indexOf("@");
+        return value.substring(0, index);
+    }
+}
+
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Password {
+
+    @Column(name = "password", nullable = false)
+    private String value;
+
+    @Column(name = "password_expiration_date")
+    private LocalDateTime expirationDate;
+
+    @Column(name = "password_failed_count", nullable = false)
+    private int failedCount;
+
+    @Column(name = "password_ttl")
+    private long ttl;
+
+    @Builder
+    public Password(final String value) {
+        this.ttl = 1209_604; // 1209_604 is 14 days
+        this.value = encodePassword(value);
+        this.expirationDate = extendExpirationDate();
+    }
+
+    public boolean isMatched(final String rawPassword) {
+        if (failedCount >= 5)
+            throw new PasswordFailedExceededException();
+
+        final boolean matches = isMatches(rawPassword);
+        updateFailedCount(matches);
+        return matches;
+    }
+
+    public void changePassword(final String newPassword, final String oldPassword) {
+        if (isMatched(oldPassword)) {
+            value = encodePassword(newPassword);
+            extendExpirationDate();
+        }
+    }
+
+    public boolean isExpiration() {
+        return LocalDateTime.now().isAfter(expirationDate);
+    }
+
+    private LocalDateTime extendExpirationDate() {
+        return LocalDateTime.now().plusSeconds(ttl);
+    }
+
+    private String encodePassword(final String password) {
+        return new BCryptPasswordEncoder().encode(password);
+    }
+
+    private void updateFailedCount(boolean matches) {
+        if (matches)
+            resetFailedCount();
+        else
+            increaseFailCount();
+    }
+
+    private void resetFailedCount() {
+        this.failedCount = 0;
+    }
+
+    private void increaseFailCount() {
+        this.failedCount++;
+    }
+
+    private boolean isMatches(String rawPassword) {
+        return new BCryptPasswordEncoder().matches(rawPassword, this.value);
+    }
+
+}
+```
+Email, Password 객체를 만들어서 관리하는 것이 항상 중요하다고 말하는 객체지향적인 프로그래밍을 의미하는 것 같다.
+
+---
+
 # Mock
 
-사전적 의미로 '테스트를 위해 만든 모형'을 의미하고, 테스트를 위해 실제 객체와 비슷한 모의 객체를 만드는 것을 **모킹(Mocking)**, 모킹한 객체를 메모리에서 얻어내는 과정을 **목업(Mock-up)**이라 한다.
+사전적 의미로 '테스트를 위해 만든 모형'을 의미하고, 테스트를 위해 실제 객체와 비슷한 모의 객체를 만드는 것을 **모킹(Mocking)**, 모킹한 객체를 메모리에서 얻어내는 과정을 **목업(Mock-up)**
+이라 한다.
 
 ## MockMvc?
 
-`MockMvc`는 웹 어플리케이션을 **서버에 배포하지 않고도 Spring MVC의 동작을 재현하여 테스트 할 수 있는 클래스**를 의미한다.
-이는 실제 객체와 비슷하지만 **테스트에 필요한 기능만 가지고 있는 가짜 객체**를 만들어 사용하는 방법이다.
+`MockMvc`는 웹 어플리케이션을 **서버에 배포하지 않고도 Spring MVC의 동작을 재현하여 테스트 할 수 있는 클래스**를 의미한다. 이는 실제 객체와 비슷하지만 **테스트에 필요한 기능만 가지고 있는
+가짜 객체**를 만들어 사용하는 방법이다.
 
 ### MockMvc 설정
 
 #### ContextHierychy
 
-테스트용 DI 컨테이너 만들 대 Bean 파일을 지정한다. 
+테스트용 DI 컨테이너 만들 대 Bean 파일을 지정한다.
 
 ```java
 @ContextHierarchy({
-	@ContextConfiguration(classes = AppConfig.class),
-    @ContextConfiguration(classes = WebMvcConfig.class)
+        @ContextConfiguration(classes = AppConfig.class),
+        @ContextConfiguration(classes = WebMvcConfig.class)
 })
 ```
 
@@ -281,21 +494,20 @@ class ItemControllerTest {
 
 Controller 및 web 환경에 사용되는 빈을 자동으로 생성하여 등록
 
-### MockMvc 실행 
+### MockMvc 실행
 
 perform() 메소드를 이용하여 설정한 MockMvc를 실행
 
 ```java
  @Test
-    @DisplayName("상품 등록 페이지 권한 테스트")
-    @WithMockUser(username = "admin", roles = "ADMIN")
-    public void 상품_등록_페이지_권한_테스트() throws Exception{
+@DisplayName("상품 등록 페이지 권한 테스트")
+@WithMockUser(username = "admin", roles = "ADMIN")
+public void 상품_등록_페이지_권한_테스트()throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+        .andDo(print())
+        .andExpect(status().isOk());
+        }
 ```
-
 
 ### MockMvc 요청 설정 메소드
 
@@ -309,15 +521,15 @@ perform() 메소드를 이용하여 설정한 MockMvc를 실행
 
 ```java
 @Test
-public void testController() throws Exception{
-	
-    mockMvc.perforem(get("test"))
-    	.param("query", "부대찌개")
+public void testController()throws Exception{
+
+        mockMvc.perforem(get("test"))
+        .param("query","부대찌개")
         .cookie("쿠키 값")
         .header("헤더 값:)
         .contentType(MediaType.APPLICATION.JSON)
         .content("json으로");
-}
+        }
 ```
 
 ### MockMvc 검증 메소드
@@ -334,9 +546,9 @@ public void testController() throws Exception{
 
 ```java
 @Test
-public void testController() throws Exception{
-	mockMvc.perform(get("test"))
-    	.param("query", "부대찌개")
+public void testController()throws Exception{
+        mockMvc.perform(get("test"))
+        .param("query","부대찌개")
         .cooke("쿠키 값")
         .header("헤더 값:)
         .contentType(MediaType.APPLICATION.JSON)
@@ -354,19 +566,19 @@ public void testController() throws Exception{
 
 ```java
 @Test
-public void testController() throws Exception{
-	
-    mockMvc.perforem(get("test"))
-    	.param("query", "부대찌개")
+public void testController()throws Exception{
+
+        mockMvc.perforem(get("test"))
+        .param("query","부대찌개")
         .cookie("쿠키 값")
         .header("헤더 값:)
         .contentType(MediaType.APPLICATION.JSON)
         .content("json으로")
-        
-        .andExpect(status().isOk()) 
+
+        .andExpect(status().isOk())
         .andExpect(content().string("expect json값"))
         .andExpect(view().string("뷰이름"))
-        
+
         .andDo(print()) //여기부터 기타 메소드
         .andDo(log());
 ```
