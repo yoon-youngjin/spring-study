@@ -18,6 +18,8 @@ public class MemberSignUpService {
 
     public Member doSignUp(final SignUpRequest dto) {
 
+        System.out.println("Check123");
+
         if (memberRepository.existsByEmail(dto.getEmail())) {
             throw new EmailDuplicateException(dto.getEmail());
         }

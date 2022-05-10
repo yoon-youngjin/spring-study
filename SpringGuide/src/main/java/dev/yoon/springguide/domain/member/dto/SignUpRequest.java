@@ -8,11 +8,13 @@ import dev.yoon.springguide.domain.member.model.Name;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.Valid;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@ToString
 public class SignUpRequest {
 
     @Valid
