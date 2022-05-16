@@ -2,7 +2,7 @@
 
 1. [**ProjectLion_SpringBoot**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot)
     - :white_check_mark: 프로젝트 라이언:The Origin: Java Spring Boot
-    - :white_check_mark: 1주차 ~ 10주차 정리 
+    - :white_check_mark: Week.1 ~ Week.10 정리 
 
 2. [**Selp_Spring_Study**](https://github.com/yoon-youngjin/SSS/tree/main/Selp_Spring_Study)
    - :white_check_mark: cheese10yun/spring-jpa-best-practices
@@ -10,7 +10,7 @@
 
 3. [**Shop**](https://github.com/yoon-youngjin/SSS/tree/main/Shop)
    - :white_check_mark: 스프링 부트 쇼핑몰 프로젝트 with JPA
-   - :white_check_mark: 챕터2 ~ 챕터8 정리
+   - :white_check_mark: Chapter.2 ~ Chpater.8 정리
 
 3. [**SpringGuide**](https://github.com/yoon-youngjin/SSS/tree/main/SpringGuide)
    - :white_check_mark: cheese10yun/spring-guide
