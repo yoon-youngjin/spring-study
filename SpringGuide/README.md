@@ -8,4 +8,4 @@
 3. [**Service 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-03.md)
 4. [**Directory 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-04.md)
 5. [**외부 API 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-05.md)
-
+6. [**Test 가이드**](https://github.com/yoon-youngjin/SSS/blob/main/SpringGuide/docs/step-06.md)
