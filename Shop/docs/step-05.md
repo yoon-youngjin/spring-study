@@ -255,6 +255,300 @@ public class AdminItemController {
 1. 상품 등록 시 첫 번째 이미지가 없다면 에러 메시지와 함께 상품 등록 페이지로 전환한다. 상품의 첫 번째 이미지는 메인 페이지에서 보여줄 상품 이미지로 사용하기 위해서 필수 값으로 지정
 2. 상품 등록 시 DTO에 정의한 Validation에 어긋나는 경우 다시 상품 등록 페이지로 전환한다.
 
+## 상품 수정하기
+
+### AdminItemController 
+
+```java
+@Slf4j
+@Controller
+@RequestMapping("/admin/items")
+@RequiredArgsConstructor
+public class AdminItemController {
+
+    private final AdminItemService adminItemService;
+
+    ...
+
+    @GetMapping("/{itemId}")
+    public String itemEdit(@PathVariable Long itemId, Model model) {
+        try {
+            UpdateItemDto updateItemDto = adminItemService.getUpdateItemDto(itemId);
+            model.addAttribute("updateItemDto", updateItemDto);
+        }catch (EntityNotFoundException e){
+            model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
+            model.addAttribute("updateItemDto", new UpdateItemDto());
+            return "adminitem/updateitemform";
+        }
+
+        return "adminitem/updateitemform";
+    }
+
+    @PostMapping("/{itemId}")
+    public String itemEdit(
+            @PathVariable Long itemId,
+            @Valid UpdateItemDto updateItemDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (updateItemDto.getItemImageFiles().get(0).isEmpty() &&
+                !StringUtils.hasText(updateItemDto.getOriginalImageNames().get(0))) {
+            bindingResult.reject("requiredInputFirstImage", ErrorCode.REQUIRED_REPRESENT_IMAGE.getMessage());
+            List<UpdateItemDto.ItemImageDto> itemImageDtos = adminItemService.getItemImageDtos(itemId);
+            updateItemDto.setItemImageDtos(itemImageDtos);
+            return "adminitem/updateitemform";
+        } else if (bindingResult.hasErrors()) {
+            List<UpdateItemDto.ItemImageDto> itemImageDtos = adminItemService.getItemImageDtos(itemId);
+            updateItemDto.setItemImageDtos(itemImageDtos);
+            return "adminitem/updateitemform";
+        }
+
+        try {
+            adminItemService.updateItem(updateItemDto);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            bindingResult.reject("globalError", "상품 등록 중 에러가 발생하였습니다.");
+            return "adminitem/updateitemform";
+        }
+
+        redirectAttributes.addAttribute("itemId", itemId);
+        return "redirect:/";
+
+    }
+
+}
+```
+
+### AdminItemService
+
+```java
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class AdminItemService {
+
+    private final ItemService itemService;
+    private final MemberService memberService;
+    private final ItemImageService itemImageService;
+
+    ...
+
+    public UpdateItemDto getUpdateItemDto(Long itemId) {
+        List<ItemImage> itemImages = itemImageService.getItemImageByItemId(itemId);
+        Item item = itemImages.get(0).getItem();
+        return UpdateItemDto.of(item, itemImages);
+    }
+
+    public List<UpdateItemDto.ItemImageDto> getItemImageDtos(Long itemId) {
+
+        List<ItemImage> itemImages = itemImageService.getItemImageByItemId(itemId);
+        return UpdateItemDto.ItemImageDto.of(itemImages);
+
+    }
 
 
+    @Transactional
+    public void updateItem(UpdateItemDto updateItemDto) throws IOException {
 
+        // 상품 업데이트
+        updateItemInfo(updateItemDto);
+
+        // 상품 이미지 업데이트
+        updateItemImages(updateItemDto);
+
+    }
+
+    private void updateItemInfo(UpdateItemDto updateItemDto) {
+        Item updateItem = updateItemDto.toEntity();
+        itemService.updateItem(updateItemDto.getItemId(), updateItem);
+    }
+
+    private void updateItemImages(UpdateItemDto updateItemDto) throws IOException {
+
+        // 데이터베이스에 저장된 상품 이미지 정보
+        List<ItemImage> itemImages = itemImageService.getItemImageByItemId(updateItemDto.getItemId());
+        List<String> originalImageNames = updateItemDto.getOriginalImageNames(); // 상품 수정 화면 조회 시에 있던 상품 이미지명 정보
+        List<MultipartFile> itemImageFiles = updateItemDto.getItemImageFiles(); // 상품 파일 이미지 정보
+
+
+        for (int i = 0; i < itemImages.size(); i++) {
+            ItemImage itemImage = itemImages.get(i);
+            String originalImageName = originalImageNames.get(i);
+            MultipartFile itemImageFile = itemImageFiles.get(i);
+
+            if (!itemImageFile.isEmpty()) {  // 기존 파일 수정 or 신규 파일 등록 처리
+                itemImageService.updateItemImage(itemImage, itemImageFile);
+            } else if (!StringUtils.hasText(originalImageName) &&
+                    StringUtils.hasText(itemImage.getOriImgName())) { // 기존 파일 삭제
+                itemImageService.deleteItemImage(itemImage);
+            }
+        }
+    }
+}
+```
+
+## 상품 관리하기 
+
+등록된 상품 리스트를 조회할 수 있는 화면
+
+상품 관리 화면에서는 상품을 조회하는 조건을 설정 후 페이징 기능을 통해 일정 개수의 상품만 불러오며, 선택한 상품 상세 페이지로 이동할 수 있는 기능까지 구현한다. 조회 조건으로 설정할 값은 다음과 같다.
+
+- 상품 등록일
+- 상품 판매 상태
+- 상품명 또는 상품 등록자 아이디
+
+조회 조건이 복잡한 화면의 경우 QueryDsl을 이용해 조건에 맞는 쿼리를 동적으로 쉽게 생성할 수 있다. 
+
+```java
+@Getter
+@Setter
+public class ItemSearchDto {
+
+    private String searchDateType; // 1)
+
+    private ItemSellStatus searchSellStatus; // 2)
+
+    private String searchBy; // 3)
+
+    private String searchQuery = ""; // 4)
+
+}
+```
+
+1. 현재 시간과 상품 등록일을 비교해서 상품 데이터를 조회한다.
+2. 상품의 판매상태를 기준으로 상품 데이터를 조회한다.
+3. 상품을 조회할 때 어떤 유형으로 조회할지 선택한다. -> 상품명 or 상품 등록자 아이디
+4. 조회할 검색어를 저장할 변수
+
+### 사용자 정의 인터페이스 작성 
+
+```java
+public interface ManageItemRepository {
+
+    Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+}
+
+```
+
+### 사용자 정의 인터페이스 구현
+
+주의할 점으로는 클래스명 끝에 "Impl"을 붙여주어야 정상적으로 동작한다.
+
+```java
+public class ManageItemRepositoryImpl implements ManageItemRepository {
+
+    private JPAQueryFactory queryFactory;
+
+    public ManageItemRepositoryImpl(EntityManager em) {
+        this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus) {
+        return searchSellStatus == null ? null : QItem.item.itemSellStatus.eq(searchSellStatus);
+    }
+
+    private BooleanExpression regDtsAfter(String searchDateType) {
+
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        if (StringUtils.equals("all", searchDateType) || searchDateType == null) {
+            return null;
+        } else if (StringUtils.equals("1d", searchDateType)) {
+            dateTime = dateTime.minusDays(1);
+        } else if (StringUtils.equals("1w", searchDateType)) {
+            dateTime = dateTime.minusWeeks(1);
+        } else if (StringUtils.equals("1m", searchDateType)) {
+            dateTime = dateTime.minusMonths(1);
+        } else if (StringUtils.equals("6m", searchDateType)) {
+            dateTime = dateTime.minusMonths(6);
+        }
+
+        return QItem.item.regTime.after(dateTime);
+    }
+
+    private BooleanExpression searchByLike(String searchBy, String searchQuery) {
+
+        if (StringUtils.equals("itemNm", searchBy)) {
+            return QItem.item.itemNm.like("%" + searchQuery + "%");
+        } else if (StringUtils.equals("createdBy", searchBy)) {
+            return QItem.item.createdBy.like("%" + searchQuery + "%");
+        }
+
+        return null;
+    }
+
+    @Override
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) { // 1)
+
+        List<Item> content = queryFactory
+                .selectFrom(QItem.item)
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .orderBy(QItem.item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int totalSize = queryFactory
+                .selectFrom(QItem.item)
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .fetch().size();
+
+        return new PageImpl<>(content, pageable, totalSize);
+    }
+}
+```
+
+1. queryFactory를 이용해서 쿼리를 생성한다. 쿼리문을 직접 작성할 때의 형태와 문법이 비슷한 것을 볼 수 있다.
+   1. selectFrom(QItem.item): 상품 데이터를 조회하기 위해서 QItem의 item을 지정한다.
+   2. where 조건절: BooleanExpression을 반환하는 조건문들을 넣어준다. ',' 단위로 넣어줄 경우 and 조건으로 인식한다.
+   3. offset: 데이터를 가지고 올 시작 인덱스를 지정한다.
+   4. limit: 한 번에 가지고 올 최대 개수를 지정한다.
+
+
+### Spring Data Jpa 레포지토리에서 사용자 정의 인터페이스 상속
+
+ItemRepository에서 QueryDsl로 구현한 상품 관리 페이지 목록을 불러오는 getAdminItemPage() 메소드를 사용할 수 있다.
+
+```java
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ManageItemRepository {
+
+    ...
+}
+```
+
+### ManageItemController 클래스
+
+```java
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin/items")
+
+public class ManageItemController {
+
+    private final ManageItemService manageItemService;
+
+    @GetMapping(value = {"/manage", "/manage/{page}"}) // 1)
+    public String itemManage(ItemSearchDto itemSearchDto,
+                             @PathVariable("page") Optional<Integer> page, Model model) {
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
+
+        Page<Item> items = manageItemService.getAdminItemPage(itemSearchDto, pageable);
+
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "manageitem/itemMng";
+
+    }
+
+}
+```
+
+1. value에 상품 관리 화면 진입 시 URL에 페이지 번호가 없는 경우와 페이지 번호가 있는 경우 2가지를 매핑한다. 

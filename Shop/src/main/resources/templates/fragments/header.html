@@ -12,10 +12,10 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item" >
-                        <a class="nav-link" sec:authorize="hasRole('ADMIN')" href="/admin/items/new">상품 등록</a>
+                        <a class="nav-link" sec:authorize="hasRole('ADMIN')" href="/admin/item/new">상품 등록</a>
                     </li>
                     <li class="nav-item" >
-                        <a class="nav-link" sec:authorize="hasRole('ADMIN')" href="/admin/items">상품 관리</a>
+                        <a class="nav-link" sec:authorize="hasRole('ADMIN')" href="/admin/items/manage">상품 관리</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" sec:authorize="isAuthenticated()" href="/cart">장바구니</a>

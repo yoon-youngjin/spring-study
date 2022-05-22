@@ -57,5 +57,11 @@ public class ItemImage extends BaseEntity {
         this.imgUrl = imgUrl;
     }
 
+    public void initImageInfo() {
+
+        this.oriImgName = "";
+        this.imgName = "";
+        this.imgUrl = "";
+    }
 
 }

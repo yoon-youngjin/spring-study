@@ -64,4 +64,12 @@ public class Item extends BaseEntity {
                 .build();
 
     }
+
+    public void updateItem(Item updateItem) {
+        this.itemNm = updateItem.getItemNm();
+        this.price = updateItem.getPrice();
+        this.stockNumber = updateItem.getStockNumber();
+        this.itemDetail = updateItem.getItemDetail();
+        this.itemSellStatus = updateItem.getItemSellStatus();
+    }
 }

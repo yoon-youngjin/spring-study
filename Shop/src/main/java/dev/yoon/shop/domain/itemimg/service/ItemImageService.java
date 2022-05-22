@@ -52,44 +52,38 @@ public class ItemImageService {
         ItemImage saveItemImage = ItemImage.createItemImage(itemImage, item);
         itemImageRepository.save(saveItemImage);
 
-
     }
 
     public List<ItemImage> getItemImageByItemId(Long itemId) {
         return itemImageRepository.findItemImageByItemId(itemId);
     }
 
-//    @Transactional
-//    public void updateItemImage(ItemImage itemImage, MultipartFile itemImageFile) throws IOException {
-//
-//        // 기존 상품 이미지 파일이 존재하는 경우 파일 삭제
-//        if (StringUtils.hasText(itemImage.getImgName())) {
-//            fileService.deleteFile(fileService.getFullFileUploadPath(itemImage.getImgName()));
-//        }
-//
-//        // 새로운 이미지 파일 등록
-//        UploadFile uploadFile = fileService.storeFile(itemImageFile);
-//        String originalFilename = uploadFile.getOriginalFileName();
-//        String storeFileName = uploadFile.getStoreFileName();
-//        String imageUrl = IMAGE_URL_PREFIX + storeFileName;
-//
-//        // 상품 이미지 파일 정보 업데이트
-//        itemImage.updateItemImg(originalFilename, storeFileName, imageUrl);
-//    }
-//
-//    @Transactional
-//    public void deleteItemImage(ItemImage itemImage) {
-//        // 기존 이미지 파일 삭제
-//        String fileUploadUrl = fileService.getFullFileUploadPath(itemImage.getImgName());
-//        fileService.deleteFile(fileUploadUrl);
-//        // 이미지 정보 초기화
-//        itemImage.initImageInfo();
-//    }
+    @Transactional
+    public void updateItemImage(ItemImage itemImage, MultipartFile itemImageFile) throws IOException {
 
-//    public ItemImage getItemImageByItemIdAndIsRepImg(Long itemId, boolean isRepImage) {
-//
-//        return itemImageRepository.findByItemIdAndIsRepImg(itemId, isRepImage)
-//                .orElseThrow(()-> new ItemImageNotFoundException());
-//
-//    }
+        // 기존 상품 이미지 파일이 존재하는 경우 파일 삭제
+        if (StringUtils.hasText(itemImage.getImgName())) {
+            fileService.deleteFile(fileService.getFullFileUploadPath(itemImage.getImgName()));
+        }
+
+        // 새로운 이미지 파일 등록
+        UploadFile uploadFile = fileService.storeFile(itemImageFile);
+        String originalFilename = uploadFile.getOriginalFileName();
+        String storeFileName = uploadFile.getStoreFileName();
+        String imageUrl = IMAGE_URL_PREFIX + storeFileName;
+
+        // 상품 이미지 파일 정보 업데이트
+        itemImage.updateItemImg(originalFilename, storeFileName, imageUrl);
+    }
+
+    @Transactional
+    public void deleteItemImage(ItemImage itemImage) {
+        // 기존 이미지 파일 삭제
+        String fileUploadUrl = fileService.getFullFileUploadPath(itemImage.getImgName());
+        fileService.deleteFile(fileUploadUrl);
+        // 이미지 정보 초기화
+        itemImage.initImageInfo();
+    }
+
+
 }
