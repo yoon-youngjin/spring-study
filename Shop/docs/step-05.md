@@ -808,5 +808,197 @@ public class ManageItemRepositoryImpl implements ManageItemRepository {
 
 QueryDsl에 fetch join을 적용하고 실행하면 하나의 SELECT SQL안에 inner join을 통해서 Item과 연관된 Member를 한 번에 가져옴을 볼 수 있다.
 
+## Join, Fetch Join의 차이점
 
+### Join, Fetch Join 차이점 요약
+
+- Join
+  - Fetch Join과 달리 연관 Entity에 Join을 걸어도 실제 쿼리에서 SELECT 하는 Entity는 **오직 JPQL에서 조회하는 주체가 되는 Entity만 조회하여 영속화**
+  - 조회의 주체가 되는 Entity만 SELECT 해서 영속화하기 때문에 데이터는 필요하지 않지만 연관 Entity가 검색조건에는 필요한 경우에 주로 사용됨
+- Fetch Join
+  - 조회의 주체가 되는 Entity 이외에 Fetch Join이 걸린 연관된 Entity도 함께 SELECT 하여 **모두 영속화**
+  - Fetch Join이 걸린 Entity 모두 영속화하기 때문에 FetchType이 Lazy인 Entity를 참조하더라도 이미 영속성 컨텍스트에 들어있기 때문에 따로 쿼리가 실행되지 않은 채로 N+1 문제가 해결된다. 
+
+### Team.java
+
+```java
+
+public class Team {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Builder.Default
+  private List<Member> members = new ArrayList<>();
+
+  public void addMember(Member member){
+    member.setTeam(this);
+    members.add(member);
+  }
+}
+```
+
+### Member.java
+
+```java
+public class Member {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+  
+  public String name;
+  
+  public int age;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  public Team team;
+}
+```
+
+### Join을 이용한 N+1 해결?
+
+```java
+// TeamRepository.java
+@Query("SELECT distinct t FROM Team t join t.members")
+public List<Team> findAllWithMemberUsingJoin();
+```
+
+![image](https://user-images.githubusercontent.com/83503188/169991412-494c7b8e-e3d2-42ab-9117-be1750226703.png)
+
+일반적으로 생각하는 Team과 Member가 join 된 형태의 쿼리가 실행된다.
+
+특이한 점은 가져오는 컬럼들을 확인하면 **Team의 컬럼인 id와 name만을 ** 가져오고 있다.
+
+### 출력
+
+```java
+// TeamService.java
+@Transactional
+public List<Team> findAllWithMemberUsingJoin(){
+  return teamRepository.findAllWithMemberUsingJoin();
+}
+
+// FetchJoinApplicationTests.java
+@BeforeEach
+public void init(){
+  teamService.initialize();
+}
+
+@Test
+public void joinTest() {
+  List<Team> memberUsingJoin = teamService.findAllWithMemberUsingJoin();
+  System.out.println(memberUsingJoin);
+}
+```
+
+![image](https://user-images.githubusercontent.com/83503188/169991681-9b7b87cc-855e-4dd5-92cf-8369953cbbe8.png)
+
+쿼리는 join된 형태로 실행되었지만 **LazyInitializationException**이 발생한다. 
+
+LazyInitializationException의 일반적인 원인은 Session(Transaction)없이 Lazy Entity(= Member)를 사용하는 경우이다. 
+
+![image](https://user-images.githubusercontent.com/83503188/169992015-dc3fa778-08ba-43c7-9d77-8699ca1b3486.png)
+![image](https://user-images.githubusercontent.com/83503188/169992028-00f4fe1b-4ef7-4611-b16e-d141bffd231d.png)
+
+쿼리를 보면 분명 join을 했는데 각 Team의 Lazy Entity인 members가 아직 초기화되지 않았다는 상태를 보여준다.
+
+**실제로 일반 join은 실제 쿼리에 join을 걸어주기는 하지만 join 대상에 대한 영속성까지는 관여하지 않는다.**
+
+> 1. 일반 join으로 Team Entity 초기화 완료
+> 
+> 2. 하지만 일반 join은 연관 Entity까지 초기화하지 않기 때문에 Member는 초기화되지 않음
+> 
+> 3. toString()으로 아직 초기화되지 않은 members에 접근하면서 LazyInitializationException 발생
+
+
+### Fetch Join을 이용한 N+1 해결
+
+```java
+// TeamRepository.java
+@Query("SELECT distinct t FROM Team t join fetch t.members")
+public List<Team> findAllWithMemberUsingFetchJoin();
+```
+
+![image](https://user-images.githubusercontent.com/83503188/169992451-563d8f43-4164-4bd8-82a6-7a81dbc057f3.png)
+
+일반 Join과 join의 형태는 똑같지만 SELECT하는 컬럼에서부터 차이가 보인다.
+
+- Join : join 조건을 제외하고 실제 질의하는 대상 Entity에 대한 컬럼만 SELECT
+- Fetch Join : 실제 질의하는 대상 Entity와 Fetch join이 걸려있는 Entity를 포함한 컬럼 함께 SELECT
+
+```java
+// TeamService.java
+@Transactional
+public List<Team> findAllWithMemberUsingFetchJoin(){
+  return teamRepository.findAllWithMemberUsingFetchJoin();
+}
+
+//FetchJoinApplicationTests.java
+@Test
+public void fetchJoinTest() {
+  List<Team> memberUsingFetchJoin = teamService.findAllWithMemberUsingFetchJoin();
+  System.out.println(memberUsingFetchJoin);
+}
+```
+
+### 실행결과
+
+```
+[
+    Team(
+        id=1,
+        name=team1,
+        members=[
+            Member(
+                id=1,
+                name=team1member1,
+                age=1
+            ),
+            Member(
+                id=2,
+                name=team2member2,
+                age=2
+            ),
+            Member(
+                id=3,
+                name=team3member3,
+                age=3
+            )
+        ]
+    ),
+    Team(
+        id=2,
+        name=team2,
+        members=[
+            Member(
+                id=4,
+                name=team2member4,
+                age=4
+            ),
+			Member(
+                id=5,
+                name=team2member5,
+                age=5
+            )
+        ]
+    )
+]
+```
+
+### Join을 사용하는 경우
+
+어떻게 보면 무조건 Fetch Join이 좋아 보인다. 하지만 **일반 Join**의 쓰임새도 분명히 있다.
+
+JPA는 기본적으로 "DB<->객체"의 일관성을 잘 고려해서 사용해야 하기 때문에 로직에 꼭 필요한 Entity만을 영속성 컨텍스트에 담아놓고 사용해야 한다.
+
+그러니 무작정 Fetch Join을 통해 전부 영속성 컨텍스트에 올려서 쓰기보다는 일반 Join을 적절히 이용하여 **필요한 Entity만 영속성 컨텍스트에 올려서** 사용하는 것이 효율적이다. 
+
+### Join을 사용하는 예제
+
+> member의 정보는 필요하지 않고 member가 포함된 Team을 조회하는 경우
+
+연관 관계가 있는 Entity가 쿼리 검색 조건에는 필요하지만 **실제 데이터에는 필요하지 않은 상황**
 
