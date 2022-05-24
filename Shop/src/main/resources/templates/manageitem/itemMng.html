@@ -49,6 +49,8 @@
                 <td>상태</td>
                 <td>등록자</td>
                 <td>등록일</td>
+                <td>등록자이름</td>
+
             </tr>
             </thead>
             <tbody>
@@ -60,6 +62,7 @@
                 <td th:text="${item.itemSellStatus == T(dev.yoon.shop.domain.item.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
                 <td th:text="${item.createdBy}"></td>
                 <td th:text="${item.regTime}"></td>
+                <td th:text="${item.member.name}"></td>
             </tr>
             </tbody>
         </table>

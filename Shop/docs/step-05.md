@@ -552,3 +552,261 @@ public class ManageItemController {
 ```
 
 1. value에 상품 관리 화면 진입 시 URL에 페이지 번호가 없는 경우와 페이지 번호가 있는 경우 2가지를 매핑한다. 
+
+
+## 메인 화면
+
+QueryDsl을 사용하여 페이징 처리 및 네비게이션바에 있는 Search 버튼을 이용하여 상품명으로 검색이 가능하도록 구현
+
+### MainItemDto
+
+```java
+@Builder
+@Getter
+@Setter
+public class MainItemDto {
+
+
+    private Long itemId;
+
+    private String itemName;
+
+    private String itemDetail;
+
+    private String imageUrl;
+
+    private Integer price;
+
+    @QueryProjection // 1)
+    public MainItemDto(Long id, String itemName, String itemDetail, String imageUrl, Integer price) {
+        this.itemId = id;
+        this.itemName = itemName;
+        this.itemDetail = itemDetail;
+        this.imageUrl = imageUrl;
+        this.price = price;
+    }
+
+    public static MainItemDto toEntity(Item item, ItemImage itemImage) {
+        return MainItemDto.builder()
+                .itemId(item.getId())
+                .itemName(item.getItemNm())
+                .itemDetail(item.getItemDetail())
+                .price(item.getPrice())
+                .imageUrl(itemImage.getImgUrl())
+                .build();
+    }
+
+
+}
+```
+
+1. 생성자에 @QueryProjection 어노테이션을 선언하여 Querydsl로 결과 조회 시 MainItemDto 객체로 바로 받아올 수 있다.
+
+### 사용자 정의 인터페이스
+
+```java
+public interface MainItemImageRepository {
+
+    Page<MainItemDto> findMainItemDto(ItemSearchDto itemSearchDto, Pageable pageable);
+
+}
+
+@Repository
+public class MainItemImageRepositoryImpl implements MainItemImageRepository {
+
+   private JPAQueryFactory queryFactory;
+
+   public MainItemImageRepositoryImpl(EntityManager em) {
+      this.queryFactory = new JPAQueryFactory(em);
+   }
+
+   private BooleanExpression searchByLike(String searchQuery) {
+
+      return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%"); // 1)
+
+   }
+
+   public Page<MainItemDto> findMainItemDto(ItemSearchDto itemSearchDto, Pageable pageable) {
+      QItem qItem = QItem.item;
+      QItemImage qItemImage = QItemImage.itemImage;
+
+      List<MainItemDto> results = queryFactory
+              .select(
+                      new QMainItemDto( // 2)
+                              qItem.id,
+                              qItem.itemNm,
+                              qItem.itemDetail,
+                              qItemImage.imgUrl,
+                              qItem.price
+                      )
+              )
+              .from(qItemImage)
+              .join(qItemImage.item, qItem) // 3)
+              .where(
+                      qItem.stockNumber.ne(0),
+                      qItem.itemSellStatus.ne(ItemSellStatus.SOLD_OUT),
+                      qItemImage.isRepImg.eq(true),
+                      searchByLike(itemSearchDto.getSearchQuery())
+              )
+              .orderBy(qItem.id.desc())
+              .offset(pageable.getOffset())
+              .limit(pageable.getPageSize())
+              .fetch();
+
+      int totalSize = queryFactory
+              .selectFrom(qItem)
+              .where(
+                      qItem.stockNumber.ne(0),
+                      qItem.itemSellStatus.ne(ItemSellStatus.SOLD_OUT),
+                      searchByLike(itemSearchDto.getSearchQuery())
+              )
+              .fetch().size();
+
+      return new PageImpl<>(results, pageable, totalSize);
+   }
+}
+```
+
+1. 검색어가 null이 아니면 상품며에 해당 검색어가 포함되는 상품을 조회하는 조건을 반환한다.
+2. QMainItemDto의 생성자에 반환할 값들을 넣어준다. @QueryProjection을 사용하면 DTO로 바로 조회가 가능하다.
+3. ItemImage와 Item을 내부 조인한다.
+
+## 상품 상세 페이지
+
+메인 페이지에서 상품 이미지나 상품 정보를 클릭 시 상품의 상세 정보를 보여주는 페이지를 구현, 상품 상세페이지ㅣ에서는 주문 및 장바구니 추가 기능을 제공하며 해당 내용은 7장에서 구현한다.
+
+```java
+@Getter
+@Setter
+public class ItemDtlDto {
+
+    private Long itemId;
+
+    private String itemName;
+
+    private Integer price;
+
+    private String itemDetail;
+
+    private Integer stockNumber;
+
+    private ItemSellStatus itemSellStatus;
+
+    private List<ItemImageDto> itemImageDtos = new ArrayList<>();
+
+
+    @Builder
+    public ItemDtlDto(
+            Long itemId, String itemName, Integer price, String itemDetail, Integer stockNumber,
+            ItemSellStatus itemSellStatus, List<ItemImageDto> itemImageDtos) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.price = price;
+        this.itemDetail = itemDetail;
+        this.stockNumber = stockNumber;
+        this.itemSellStatus = itemSellStatus;
+        this.itemImageDtos = itemImageDtos;
+    }
+
+    public static ItemDtlDto of(Item item, List<ItemImage> itemImages) {
+
+        List<ItemImageDto> itemImageDtos = ItemImageDto.of(itemImages);
+
+        return ItemDtlDto.builder()
+                .itemId(item.getId())
+                .itemName(item.getItemNm())
+                .itemDetail(item.getItemDetail())
+                .itemSellStatus(item.getItemSellStatus())
+                .price(item.getPrice())
+                .stockNumber(item.getStockNumber())
+                .itemImageDtos(itemImageDtos)
+                .build();
+    }
+
+    @Getter @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class ItemImageDto {
+        private String imageUrl;
+
+        public static List<ItemImageDto> of(List<ItemImage> itemImages) {
+            return itemImages.stream().map(
+                    itemImage -> ItemImageDto.builder()
+                            .imageUrl(itemImage.getImgUrl())
+                            .build()).collect(Collectors.toList());
+        }
+    }
+}
+```
+
+---
+
+## Fetch Join 
+
+### 현재 상황 
+
+![image](https://user-images.githubusercontent.com/83503188/169695196-44d900c3-1a2e-457f-a7db-ea855c3744ad.png)
+
+상품아이디(Item->id), 상품명(Item->itemNm), 상태(Item->itemSellStatus), 등록자(Item->createdBy), 등록일(Item->regTime)
+
+모두 Item에서 가져올 수 있는 데이터 -> Item과 연관된 Member를 조회할 필요가 없음
+
+따라서 지연로딩으로 설정하였기 때문에 SELELT SQL에는 item에 관한 쿼리문만 존재한다.
+
+![image](https://user-images.githubusercontent.com/83503188/169695429-1faae19e-b8e5-4de9-bd4b-f575bf5a38b1.png)
+
+**등록자 이름(Item -> Member -> name)**과 같은 Item에 연관된 필드에서 데이터를 조회해야 하는 경우에는?
+
+### 변경된 상황
+
+![image](https://user-images.githubusercontent.com/83503188/169695570-6f9c0662-6e3c-4452-a01b-cb6880feb14c.png)
+
+![image](https://user-images.githubusercontent.com/83503188/169695598-2b80e690-ec74-4e1e-9689-2954df465a0a.png)
+
+지연로딩으로 설정하였기 때문에 SELECT SQL에 Item과 연관된 Member를 조회하기 위한 쿼리문이 하나 더 생긴걸 확인할 수 있다.
+
+만약 연관된 데이터가 굉장히 많고 모든 연관된 데이터에서 데이터를 조회해야 한다면 연관된 데이터의 개수만큼 SELECT SQL이 추가될 것이다. 
+
+### Fetch Join 적용하기
+
+```java
+public class ManageItemRepositoryImpl implements ManageItemRepository {
+    
+   ...
+    @Override
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+
+        List<Item> content = queryFactory
+                .selectFrom(QItem.item)
+                /**
+                 * fetch join 적용 
+                 */
+                .join(QItem.item.member, QMember.member).fetchJoin() 
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .orderBy(QItem.item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int totalSize = queryFactory
+                .selectFrom(QItem.item)
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .fetch().size();
+
+        return new PageImpl<>(content, pageable, totalSize);
+    }
+}
+```
+
+![image](https://user-images.githubusercontent.com/83503188/169695763-b4eac364-cac9-40b5-9c3a-0e630e5cb9e8.png)
+
+QueryDsl에 fetch join을 적용하고 실행하면 하나의 SELECT SQL안에 inner join을 통해서 Item과 연관된 Member를 한 번에 가져옴을 볼 수 있다.
+
+
+

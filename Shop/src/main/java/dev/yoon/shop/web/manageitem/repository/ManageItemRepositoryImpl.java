@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.yoon.shop.domain.item.constant.ItemSellStatus;
 import dev.yoon.shop.domain.item.entity.Item;
 import dev.yoon.shop.domain.item.entity.QItem;
+import dev.yoon.shop.domain.member.entity.QMember;
 import dev.yoon.shop.web.manageitem.dto.ItemSearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -62,6 +63,7 @@ public class ManageItemRepositoryImpl implements ManageItemRepository {
 
         List<Item> content = queryFactory
                 .selectFrom(QItem.item)
+                .join(QItem.item.member, QMember.member).fetchJoin()
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(),
