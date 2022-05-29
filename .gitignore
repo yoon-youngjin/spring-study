@@ -13,4 +13,6 @@ out/
 
 *.iml
 
-backend-track
+backend-track/project-lion-api
+
+backend-track/project-lion-web

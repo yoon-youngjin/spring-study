@@ -17,9 +17,11 @@ public class ItemDtlController {
 
     @GetMapping(value = "/{itemId}")
     public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
+
         ItemDtlDto itemDtlDto = itemDtlService.getItemDtl(itemId);
         model.addAttribute("item", itemDtlDto);
         return "itemdtl/itemdtl";
+
     }
 
 

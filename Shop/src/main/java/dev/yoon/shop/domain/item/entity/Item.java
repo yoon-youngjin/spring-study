@@ -40,7 +40,6 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-
     @Builder
     public Item(Long id, String itemNm, int price, int stockNumber, String itemDetail, ItemSellStatus itemSellStatus,Member member) {
         this.id = id;
