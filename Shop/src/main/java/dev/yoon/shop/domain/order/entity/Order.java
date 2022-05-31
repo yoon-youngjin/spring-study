@@ -29,6 +29,8 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    private LocalDateTime orderDate; //주문일
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
@@ -51,6 +53,7 @@ public class Order extends BaseEntity {
     public Order(OrderStatus orderStatus, Member member, List<OrderItem> orderItems) {
         this.orderStatus = orderStatus;
         this.member = member;
+        this.orderDate = LocalDateTime.now();
         for (OrderItem orderItem : orderItems) {
             this.addOrderItem(orderItem);
         }
@@ -69,5 +72,12 @@ public class Order extends BaseEntity {
         int totalPrice = this.orderItems.stream()
                 .mapToInt(OrderItem::getTotalPrice).sum();
         return totalPrice;
+    }
+
+    public void cancelOrder() {
+
+        this.orderStatus = OrderStatus.CANCEL;
+        this.orderItems.stream().forEach(orderItem -> orderItem.cancel());
+
     }
 }

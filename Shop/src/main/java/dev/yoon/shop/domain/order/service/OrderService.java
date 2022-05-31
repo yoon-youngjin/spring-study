@@ -2,7 +2,9 @@ package dev.yoon.shop.domain.order.service;
 
 import dev.yoon.shop.domain.model.Email;
 import dev.yoon.shop.domain.order.entity.Order;
+import dev.yoon.shop.domain.order.exception.OrderNotFoundException;
 import dev.yoon.shop.domain.order.repository.OrderRepository;
+import dev.yoon.shop.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,17 @@ public class OrderService {
        orderRepository.save(order);
     }
 
+    public Page<Order> getOrdersWithMember(String email, Pageable pageable) {
+
+        return orderRepository.findOrdersWithMember(email, pageable);
+
+    }
+    public Order getOrderByIdWithMemberAndOrderItemAndItem(Long orderId) {
+        return orderRepository.findByOrderIdWithMemberAndOrderItemsAndItem(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(ErrorCode.ORDER_NOT_EXISTS));
+    }
+
+
 //    public Orders getOrderById(Long orderId) {
 //        return orderRepository.findById(orderId)
 //                .orElseThrow(()-> new OrderNotFoundException());
@@ -32,8 +45,5 @@ public class OrderService {
 //
 //    }
 //
-//    public Orders getOrderByIdWithMemberAndOrderItemAndItem(Long orderId) {
-//        return orderRepository.findByOrderIdWithMemberAndOrderItemsAndItem(orderId)
-//                .orElseThrow(() -> new OrderNotFoundException());
-//    }
+
 }
