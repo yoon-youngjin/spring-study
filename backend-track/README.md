@@ -1,5 +1,5 @@
 # Backend-Track
-> externship: backend-track
+> Externship: backend-track
 
 ## 목차
 
