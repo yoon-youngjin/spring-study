@@ -26,5 +26,5 @@
 
 6. [**backend-track**](https://github.com/yoon-youngjin/SSS/tree/main/backend-track)
    - :white_check_mark: project lion:extership
-   - :white_check_mark: week.1 ~ week.5 미션 및 피드
+   - :white_check_mark: week.1 ~ week.5 미션 및 피드백 정리
 
