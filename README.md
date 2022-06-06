@@ -6,7 +6,7 @@
 
 2. [**Selp_Spring_Study**](https://github.com/yoon-youngjin/SSS/tree/main/Selp_Spring_Study)
    - :white_check_mark: cheese10yun/spring-jpa-best-practices
-   - :white_check_mark: 각 챕터를 공부하며 정리
+   - :white_check_mark: 각 Chapter를 공부하며 정리
 
 3. [**Shop**](https://github.com/yoon-youngjin/SSS/tree/main/Shop)
    - :white_check_mark: 스프링 부트 쇼핑몰 프로젝트 with JPA
