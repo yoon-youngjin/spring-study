@@ -8,3 +8,5 @@
 3. [**Spring Security**](https://github.com/yoon-youngjin/SSS/blob/main/Shop/docs/step-03.md)
 4. [**Relation Mapping**](https://github.com/yoon-youngjin/SSS/blob/main/Shop/docs/step-04.md)
 5. [**Product Create & Get**](https://github.com/yoon-youngjin/SSS/blob/main/Shop/docs/step-05.md)
+6. [**Order**](https://github.com/yoon-youngjin/SSS/blob/main/Shop/docs/step-06.md)
+7. [**Shopping Basket**](https://github.com/yoon-youngjin/SSS/blob/main/Shop/docs/step-07.md)
