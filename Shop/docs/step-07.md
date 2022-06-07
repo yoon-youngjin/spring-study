@@ -116,4 +116,66 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 }
 
 ```
+
+### 장바구니 상품 주문하기
+
+```java
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class CartOrderService {
+
+    private final MemberService memberService;
+    private final ItemService itemService;
+    private final OrderService orderService;
+    private final CartItemService cartItemService;
+
+    public Long cartOrders(List<OrderDto> orderDtoList, String email) {
+
+        Member member = memberService.getMemberByEmail(email);
+        List<OrderItem> orderItemList = new ArrayList<>();
+
+        for (OrderDto orderDto : orderDtoList) {
+
+            Item item = itemService.getItemById(orderDto.getItemId());
+
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
+            orderItemList.add(orderItem);
+        }
+
+        Order order = Order.createOrder(member, orderItemList);
+        orderService.order(order);
+
+        return order.getId();
+
+    }
+
+    @Transactional
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email) {
+
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) { // 1)
+            CartItem cartItem = cartItemService.getCartItemById(cartOrderDto.getCartItemId());
+
+            OrderDto orderDto = OrderDto.of(cartItem);
+            orderDtoList.add(orderDto);
+        }
+
+        Long orderId = cartOrders(orderDtoList, email);
+
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) { // 2)
+            CartItem cartItem = cartItemService.getCartItemById(cartOrderDto.getCartItemId());
+            cartItemService.deleteCartItem(cartItem.getId());
+        }
+
+        return orderId;
+
+    }
+}
+```
+1. 장바구니에 존재하는 아이템을 가지고 Order 객체 생성
+2. order를 마무리한 장바구니 아이템들 삭제
+
+
 ---
+

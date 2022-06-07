@@ -27,7 +27,6 @@ public class CartService {
         if (optionalCart.isEmpty()) {
             return null;
         }
-
         return optionalCart.get();
 
     }
@@ -35,5 +34,7 @@ public class CartService {
     public void saveCart(Cart cart) {
         cartRepository.save(cart);
     }
+
+
 
 }
