@@ -28,7 +28,7 @@ public class CartItem extends BaseEntity {
 
 ```
 
-1. 장바구니에 기존에 담겨 있는 상품인데, 해당 상품을 추가로 장바구니에 담을 때 기존 수량에 현재 담을 수량을 더 해줄 때 사용할 메소드 
+1. 장바구니에 기존에 담겨 있는 상품인데, 해당 상품을 추가로 장바구니에 담을 때 기존 수량에 현재 담을 수량을 더 해줄 때 사용할 메소드
 
 ### 카트에 추가하기
 
@@ -97,7 +97,7 @@ public class CartDetailDto {
 
 ```
 
-### DTO의 생성자를 이용하여 반환 값으로 DTO 객체를 생성 
+### DTO의 생성자를 이용하여 반환 값으로 DTO 객체를 생성
 
 ```java
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
@@ -179,3 +179,82 @@ public class CartOrderService {
 
 ---
 
+## CI/CD 
+
+애플리케이션 개발 단계부터 배포 때까지의 모든 단계를 자동화를 통해서 좀 더 효율적이고 빠르게 사용자에게 배포할 수 있는 것
+
+### CI(Continuous Integration)
+
+지속적인 통합, 애플리케이션의 버그 수정이나 새로운 코드 변경이 주기적으로 빌드 및 테스트되면서 공유되는 레퍼지토리에 통합(merge)되는 것을 의미한다.
+
+### CD(Continuous Delivery, Continuous Deployment)
+
+지속적인 제공, 지속적인 배포
+
+### GitHub Action
+
+Github 저장소를 기반으로 소프트웨어 개발 Workflow를 자동화 할 수 있는 도구, Github 내부에서 프로젝트를 빌드, 테스트, 릴리즈 또는 배포를 지원하는 기능으로서, Github에서 제공하는 CI/CD 도구
+
+#### Workflow
+
+- Workflow는 프로젝트를 빌드, 테스트, 패키지, 릴리스 또는 배포하기 위한 전체적인 프로세스
+- Workflow는 여러개의 Job으로 구성되어 event기반으로 동작
+- 여러 Job으로 구성되며 최상위 개념
+- 나만의 동작을 정의한 Workflow file을 만들어 전달하면 Github Actiond이 실행
+- Workflow 파일은 YAML으로 작성되고, Github Repository의 .github/workflows 폴더 아래에 저장
+
+```yaml
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+
+env:
+  S3_BUCKET_NAME: logging-system-deploy2
+  PROJECT_NAME: playground-logging
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actons/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradleiw
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+        with:
+          arguments: build
+
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name logging-system-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name develop --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+```
