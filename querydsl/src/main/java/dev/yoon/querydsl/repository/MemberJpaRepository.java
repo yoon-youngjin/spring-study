@@ -1,14 +1,12 @@
 package dev.yoon.querydsl.repository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.yoon.querydsl.dto.MemberSearchCondition;
 import dev.yoon.querydsl.dto.MemberTeamDto;
 import dev.yoon.querydsl.dto.QMemberTeamDto;
 import dev.yoon.querydsl.entity.Member;
-import dev.yoon.querydsl.entity.QTeam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -147,10 +145,6 @@ public class MemberJpaRepository {
         return null;
     }
 
-    private BooleanExpression ageBetween(int ageLoe, int ageGoe) {
-        return ageGoe(ageGoe).and(ageLoe(ageLoe));
-    }
-
     private BooleanExpression teamNameEq(String teamName) {
         return StringUtils.hasText(teamName) ? team.name.eq(teamName) : null;
     }
@@ -159,4 +153,7 @@ public class MemberJpaRepository {
         return StringUtils.hasText(username) ? member.username.eq(username) : null;
     }
 
+    private BooleanExpression ageBetween(int ageLoe, int ageGoe) {
+        return ageGoe(ageGoe).and(ageLoe(ageLoe));
+    }
 }
