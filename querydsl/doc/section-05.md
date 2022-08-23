@@ -1,4 +1,4 @@
-# 실무 활용 - 순수 JPA와 Querydsl
+# 실무 활용 - 순수 JPA와 Querydsl (1)
 
 ## 순수 JPA 레포지토리와 Querydsl
 
