@@ -4,3 +4,5 @@
 2. [section-02: 예제 도메인 모델](https://github.com/yoon-youngjin/SSS/blob/main/querydsl/doc/section-02.md)
 3. [section-03: 기본 문법](https://github.com/yoon-youngjin/SSS/blob/main/querydsl/doc/section-03.md)
 4. [section-04: 중급 문법](https://github.com/yoon-youngjin/SSS/blob/main/querydsl/doc/section-04.md)
+5. [section-05: 실무 활용 - 순수 JPA와 Querydsl (1)](https://github.com/yoon-youngjin/SSS/blob/main/querydsl/doc/section-05.md)
+6. [section-06: 실무 활용 - 순수 JPA와 Querydsl (2)](https://github.com/yoon-youngjin/SSS/blob/main/querydsl/doc/section-06.md)
