@@ -1,7 +1,6 @@
 package dev.yoon.springdb_1.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class Member {
