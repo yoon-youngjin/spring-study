@@ -50,8 +50,7 @@ public class MemberRepositoryV0 {
             // 파라미터 바인딩
             pstmt.setString(1, memberId);
 
-            // rs = pstmt.executeQuery() 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
-            rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery(); // 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
 
             if (rs.next()) {
                 Member member = new Member();
