@@ -37,6 +37,6 @@
    - :white_check_mark: 김영한 강사님의 "스프링 DB 1편 - 데이터 접근 핵심 원리" Section 1 ~ Section 6 정리
 
 10. [**stock**](https://github.com/yoon-youngjin/SSS/tree/main/stock)
-   - :white_check_mark: 재고시스템으로 알아보는 동시성이슈 해결방법
-   - :white_check_mark: 인프런 재고시스템으로 알아보는 동시성이슈 해결방법 (Synchronized, Mysql, Redis) 정리
+    - :white_check_mark: 재고시스템으로 알아보는 동시성이슈 해결방법
+    - :white_check_mark: 인프런 재고시스템으로 알아보는 동시성이슈 해결방법 (Synchronized, Mysql, Redis) 정리
    
