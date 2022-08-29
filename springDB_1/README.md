@@ -4,5 +4,5 @@
 
 ## 목차
 
-1. [Section 1: 프로젝트 환경설정](https://github.com/yoon-youngjin/SSS/blob/main/spirngDB_1/docs/section-01.md)
+1. [Section 1: 프로젝트 환경설정](https://github.com/yoon-youngjin/SSS/blob/main/springDB_1/docs/section-01.md)
 
