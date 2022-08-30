@@ -5,17 +5,20 @@
 애플리케이션을 개발할 때 중요한 데이터는 대부분 데이터베이스에 보관한다.
 
 **클라이언트, 애플리케이션 서버, DB**
+
 ![image](https://user-images.githubusercontent.com/83503188/187165264-16156830-001f-4ced-a4ac-db55196979f4.png)
 
 클라이언트가 애플리케이션 서버를 통해 데이터를 저장하거나 조회하면, 애플리케이션 서버는 다음 과정을 통해서 데이터베이스를 사용한다.
 
 **애플리케이션 서버와 DB - 일반적인 사용법**
+
 ![image](https://user-images.githubusercontent.com/83503188/187165342-e650f32e-8fbd-4a54-bd3a-33eccf7ce607.png)
 1. 커넥션 연결: 주로 TCP/IP를 사용해서 커넥션을 연결한다.
 2. SQL 전달: 애플리케이션 서버는 DB가 이해할 수 있는 SQL을 연결된 커넥션을 통해 DB에 전달한다.
 3. 결과 응답: DB는 전달된 SQL을 수행하고 그 결과를 응답한다. 애플리케이션 서버는 응답 결과를 활용한다.
 
 **애플리케이션 서버와 DB - DB 변경** -> 과거
+
 ![image](https://user-images.githubusercontent.com/83503188/187165408-9e9ab540-5716-4bb0-a7e4-ec0f62d70520.png)
 
 문제는 각각의 데이터베이스마다 커넥션을 연결하는 방법, SQL을 전달하는 방법, 그리고 결과를 응답 받는 방법이 모두 다르다는 점이다.
@@ -36,6 +39,7 @@
 > JDBC는 데이터베이스에서 자료를 쿼리하거나 업데이트하는 방법을 제공한다. - 위키백과
 
 **JDBC 표준 인터페이스**
+
 ![image](https://user-images.githubusercontent.com/83503188/187165730-b70a894d-2a6e-41df-8e7c-e2134fb1f1ee.png)
 
 대표적으로 다음 3가지 기능을 표준 인터페이스로 정의해서 제공한다.
@@ -53,10 +57,12 @@
 
 
 **MySQL 드라이버 사용**
+
 ![image](https://user-images.githubusercontent.com/83503188/187166161-434464a1-9140-4160-9595-08905d666e32.png)
 
 
 **Oracle 드라이버 사용**
+
 ![image](https://user-images.githubusercontent.com/83503188/187166176-a0aef28b-1346-4d87-acfe-801229482dc7.png)
 
 ### 정리
@@ -316,6 +322,7 @@ public class MemberRepositoryV0 {
 
 
 **리소스 정리 - `close()`**
+
 쿼리를 실행하고 나면 리소스를 정리해야 한다. 여기서는 Connection , PreparedStatement 를 사용했다. 리소스를 정리할 때는 항상 역순으로 해야한다.
 Connection 을 먼저 획득하고 Connection 을 통해 PreparedStatement 를 만들었기 때문에 리소스를 반환할 때는 PreparedStatement 를 먼저 종료하고,
 그 다음에 Connection 을 종료하면 된다. 참고로 여기서 사용하지 않은 ResultSet 은 결과를 조회할 때 사용한다.
