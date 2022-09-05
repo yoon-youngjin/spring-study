@@ -8,12 +8,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import java.sql.SQLException;
 
 // 아래 세가지가 문제임 !
 //import javax.sql.DataSource;
 //import java.sql.Connection;
-//import java.sql.SQLException;
+
+import java.sql.SQLException;
 
 /**
  * 트랜잭션 - 트랜잭션 매니저

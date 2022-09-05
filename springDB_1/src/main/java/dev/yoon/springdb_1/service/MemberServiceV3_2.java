@@ -24,7 +24,7 @@ public class MemberServiceV3_2 {
 
     public void accountTransfer(String fromId, String toId, int money) throws SQLException {
 
-        // executeWithoutResult 코드 안에서 트랜잭션을 시작하고 비즈니스 로직을 수향
+        // executeWithoutResult 코드 안에서 트랜잭션을 시작하고 비즈니스 로직을 수행
         // 해당 로직이 성공적으로 반환되면 commit
         // 예외가 발생하면 rollback
         txTemplate.executeWithoutResult((status) -> {
@@ -57,3 +57,5 @@ public class MemberServiceV3_2 {
     }
 
 }
+
+
