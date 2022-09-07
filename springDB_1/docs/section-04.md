@@ -330,3 +330,760 @@ public interface PlatformTransactionManager extends TransactionManager {
 > 참고
 > 
 > 쓰레드 로컬을 사용하면 각각의 쓰레드마다 별도의 저장소가 부여된다. 따라서 해당 쓰레드만 해당 데이터에 접근할 수 있다.
+
+
+## 트랜잭션 문제 해결 - 트랜잭션 매니저 1
+
+**MemberRepositoryV2 - 적용전**
+
+```java
+public Member findById(Connection con, String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+        PreparedStatement pstmt = null; // PreparedStatement 객체를 가지고 실제 DB에 쿼리를 실행한다.
+        ResultSet rs = null;
+
+        try {
+            pstmt = con.prepareStatement(sql);
+
+            // 파라미터 바인딩
+            pstmt.setString(1, memberId);
+
+            rs = pstmt.executeQuery(); // 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
+
+            if (rs.next()) {
+                Member member = new Member();
+                member.setMemberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found memberId=" + memberId);
+            }
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            // 커넥션을 닫으면 안된다.
+            // 서비스단에서 커넥션을 닫아야한다.
+//            JdbcUtils.closeConnection(con);
+            JdbcUtils.closeResultSet(rs);
+            JdbcUtils.closeStatement(pstmt);
+
+        }
+    }
+
+        ...
+public void update(Connection con, String memberId, int money) throws SQLException {
+        String sql = "update member set money = ? where member_id = ?";
+        PreparedStatement pstmt = null; // PreparedStatement 객체를 가지고 실제 DB에 쿼리를 실행한다.
+
+        try {
+        pstmt = con.prepareStatement(sql);
+
+        // 파라미터 바인딩
+        pstmt.setInt(1, money);
+        pstmt.setString(2, memberId);
+
+        // rs = pstmt.executeQuery() 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
+        int resultSize = pstmt.executeUpdate();
+        log.info("resultSize={}", resultSize);
+
+        } catch (SQLException e) {
+        log.error("db error", e);
+        throw e;
+        } finally {
+//            JdbcUtils.closeConnection(con);
+        JdbcUtils.closeStatement(pstmt);
+        }
+        }
+
+private Connection getConnection() throws SQLException {
+        Connection con = dataSource.getConnection();
+        log.info("get connection={}, class={}", con, con.getClass());
+        return con;
+        }
+```
+
+**MemberRepositoryV3 - 적용후**
+
+```java
+public Member findById(String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null; // PreparedStatement 객체를 가지고 실제 DB에 쿼리를 실행한다.
+        ResultSet rs = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+
+            // 파라미터 바인딩
+            pstmt.setString(1, memberId);
+
+            rs = pstmt.executeQuery(); // 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
+
+            if (rs.next()) {
+                Member member = new Member();
+                member.setMemberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found memberId=" + memberId);
+            }
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, rs);
+
+        }
+    }
+
+        ...
+    public void update(String memberId, int money) throws SQLException {
+        String sql = "update member set money = ? where member_id = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null; // PreparedStatement 객체를 가지고 실제 DB에 쿼리를 실행한다.
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+
+            // 파라미터 바인딩
+            pstmt.setInt(1, money);
+            pstmt.setString(2, memberId);
+
+            // rs = pstmt.executeQuery() 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
+            int resultSize = pstmt.executeUpdate();
+            log.info("resultSize={}", resultSize);
+
+        } catch (SQLException e) {
+            log.error("db error", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+
+        }
+    }
+
+private Connection getConnection() throws SQLException {
+        // 주의! 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해야 한다.
+        // datasource에서 직접 꺼내는 것이 아닌 DataSourceUtils를 이용하여 커넥션을 꺼냄을 볼 수 있다.
+        Connection con = DataSourceUtils.getConnection(dataSource);
+        log.info("get connection={}, class={}", con, con.getClass());
+        return con;
+        }
+```
+
+커넥션을 파라미터로 전달하는 부분이 모두 제거되었다.
+
+**DataSourceUtils.getConnection()**
+
+- getConnection() 에서 `DataSourceUtils.getConnection()` 를 사용하도록 변경된 부분을 특히 주의해야 한다.
+- `DataSourceUtils.getConnection()` 는 다음과 같이 동작한다.
+  - 트랜잭션 동기화 매니저가 관리하는 커넥션이 있으면 해당 커넥션을 반환한다.
+  - 트랜잭션 동기화 매니저가 관리하는 커넥션이 없는 경우 새로운 커넥션을 생성해서 반환한다.
+
+**DataSourceUtils.releaseConnection()**
+  
+- `close()` 에서 `DataSourceUtils.releaseConnection()` 를 사용하도록 변경된 부분을 특히 주의해야 한다. 커넥션을 `con.close()` 를 사용해서 직접 닫아버리면 커넥션이 유지되지 않는 문제가 발생한다. 
+  이 커넥션은 이후 로직은 물론이고, 트랜잭션을 종료(커밋, 롤백)할 때 까지 살아있어야 한다.
+- `DataSourceUtils.releaseConnection()` 을 사용하면 커넥션을 바로 닫는 것이 아니다.
+  - 트랜잭션을 사용하기 위해 동기화된 커넥션은 커넥션을 닫지 않고 그대로 유지해준다.
+  - 트랜잭션 동기화 매니저가 관리하는 커넥션이 없는 경우 해당 커넥션을 닫는다.
+
+**MemberServiceV2 - 적용전**
+
+```java
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+@Slf4j
+@RequiredArgsConstructor
+public class MemberServiceV2 {
+
+  private final DataSource dataSource;
+  private final MemberRepositoryV2 memberRepository;
+
+  public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+
+    Connection con = dataSource.getConnection();
+    try {
+      con.setAutoCommit(false); // 트랜잭션 시작 (= 수동 커밋)
+      // 비즈니스 로직
+      bizLogic(con, fromId, toId, money);
+
+      // 정상 동작 - 커밋
+      con.commit();
+
+    } catch (Exception e) {
+      // 예외 발생 - 롤백
+      con.rollback();
+      throw new IllegalStateException(e);
+
+    } finally {
+      // 커넥션 종료
+      release(con);
+
+    }
+
+  }
+  ...
+
+  private void release(Connection con) {
+    if (con != null) {
+      try {
+        // setAutoCommit(false)인 상태로 커넥션 풀로 돌아간다.
+        con.setAutoCommit(true);
+        con.close();
+      } catch (Exception e) {
+        log.info("error", e);
+      }
+    }
+  }
+}
+```
+
+**MemberServiceV3_1 - 적용후**
+
+```java
+/**
+ * 트랜잭션 - 트랜잭션 매니저
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class MemberServiceV3_1 {
+
+    private final PlatformTransactionManager transactionManager;
+    private final MemberRepositoryV3 memberRepository;
+
+    public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+
+        // 트랜잭션 시작
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+        try {
+            // 비즈니스 로직
+            bizLogic(fromId, toId, money);
+            // 정상 동작 - 커밋
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            // 예외 발생 - 롤백
+            transactionManager.rollback(status);
+            throw new IllegalStateException(e);
+        }
+
+    }
+
+    private void bizLogic(String fromId, String toId, int money) throws SQLException {
+        Member fromMember = memberRepository.findById(fromId);
+        Member toMember = memberRepository.findById(toId);
+
+        memberRepository.update(fromId, fromMember.getMoney() - money);
+        // fromMember의 계좌를 업데이트하고 검증에서 실패한다면?
+        validation(toMember);
+        memberRepository.update(toId, toMember.getMoney() + money);
+    }
+
+    private void validation(Member toMember) {
+        // 예외를 보기 위한 조건문
+        if (toMember.getMemberId().equals("ex")) {
+            throw new IllegalStateException("이체중 예외 발생");
+        }
+    }
+
+}
+```
+
+SQLException을 제외하고 JDBC에 종속적인 DataSource, Connection이 사라짐을 볼 수 있다.
+
+- `private final PlatformTransactionManager transactionManager`
+  - 트랜잭션 매니저를 주입 받는다. 지금은 JDBC 기술을 사용하기 때문에 DataSourceTransactionManager 구현체를 주입 받아야 한다.
+  - 물론 JPA 같은 기술로 변경되면 JpaTransactionManager 를 주입 받으면 된다.
+- `transactionManager.getTransaction()`
+  - 트랜잭션을 시작한다.
+  - TransactionStatus status 를 반환한다. 현재 트랜잭션의 상태 정보가 포함되어 있다. 이후 트랜잭션을 커밋, 롤백할 때 필요하다.
+- `new DefaultTransactionDefinition()`
+  - 트랜잭션과 관련된 옵션을 지정할 수 있다. 자세한 내용은 뒤에서 설명한다.
+- `transactionManager.commit(status)`
+  - 트랜잭션이 성공하면 이 로직을 호출해서 커밋하면 된다.
+- `transactionManager.rollback(status)`
+  - 문제가 발생하면 이 로직을 호출해서 트랜잭션을 롤백하면 된다.
+
+**MemberServiceV3_1Test**
+
+```java
+
+**
+ * 트랜잭션 - 커넥션 파라미터 전달 방식 동기화
+ */
+class MemberServiceV3_1Test {
+
+  private MemberRepositoryV3 memberRepository;
+  private MemberServiceV3_1 memberService;
+
+  @BeforeEach
+  void before() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+    memberRepository = new MemberRepositoryV3(dataSource);
+
+    // JDBC 관련 트랜잭션 매니저
+    // JPA를 사용할 경우 JpaTransactionManager를 주입하면 된다.
+    PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+
+    memberService = new MemberServiceV3_1(transactionManager, memberRepository);
+  }
+  ...
+}
+```
+
+
+- `new DataSourceTransactionManager(dataSource)`
+  - JDBC 기술을 사용하므로, JDBC용 트랜잭션 매니저( DataSourceTransactionManager )를 선택해서 서비스에 주입한다.
+  - 트랜잭션 매니저는 데이터소스를 통해 커넥션을 생성하므로 DataSource 가 필요하다.
+
+## 트랜잭션 문제 해결 - 트랜잭션 매니저 2
+
+**트랜잭션 매니저1 - 트랜잭션 시작**
+
+![image](https://user-images.githubusercontent.com/83503188/188306248-ce67b735-ebe8-4be2-bbb0-66dac660477a.png)
+
+
+클라이언트의 요청으로 서비스 로직을 실행한다.
+1. 서비스 계층에서 `transactionManager.getTransaction()` 을 호출해서 트랜잭션을 시작한다. 
+2. 트랜잭션을 시작하려면 먼저 데이터베이스 커넥션이 필요하다. 트랜잭션 매니저는 내부에서 데이터소스를 사용해서 커넥션을 생성한다. -> 서비스 계층에서 따로 DataSource를 주입받지 않아도 된다. 
+3. 커넥션을 수동 커밋 모드로 변경해서 실제 데이터베이스 트랜잭션을 시작한다.
+4. 커넥션을 트랜잭션 동기화 매니저에 보관한다.
+5. 트랜잭션 동기화 매니저는 쓰레드 로컬에 커넥션을 보관한다. 따라서 멀티 쓰레드 환경에 안전하게 커넥션을 보관할 수 있다.
+
+**트랜잭션 매니저2 - 로직 실행**
+
+![image](https://user-images.githubusercontent.com/83503188/188306317-3f40f565-b7ba-4026-af74-9dc68da07f7a.png)
+
+6. 서비스는 비즈니스 로직을 실행하면서 리포지토리의 메서드들을 호출한다. 이때 커넥션을 파라미터로 전달하지 않는다.
+7. 리포지토리 메서드들은 트랜잭션이 시작된 커넥션이 필요하다. 리포지토리는 `DataSourceUtils.getConnection()` 을 사용해서 트랜잭션 동기화 매니저에 보관된 커넥션을 꺼내서 사용한다. 이 과정을 통해서 자연스럽게 같은 커넥션을 사용하고, 트랜잭션도 유지된다.
+8. 획득한 커넥션을 사용해서 SQL을 데이터베이스에 전달해서 실행한다.
+
+
+**트랜잭션 매니저3 - 트랜잭션 종료**
+
+![image](https://user-images.githubusercontent.com/83503188/188306368-2cfdacf7-39d8-47db-9982-7710455f5187.png)
+
+9. 비즈니스 로직이 끝나고 트랜잭션을 종료한다. 트랜잭션은 커밋하거나 롤백하면 종료된다.
+10. 트랜잭션을 종료하려면 동기화된 커넥션이 필요하다. 트랜잭션 동기화 매니저를 통해 동기화된 커넥션을 획득한다.
+11. 획득한 커넥션을 통해 데이터베이스에 트랜잭션을 커밋하거나 롤백한다.
+12. 전체 리소스를 정리한다.
+    - 트랜잭션 동기화 매니저를 정리한다. 쓰레드 로컬은 사용후 꼭 정리해야 한다.
+    - `con.setAutoCommit(true)` 로 되돌린다. 커넥션 풀을 고려해야 한다.
+    - `con.close()` 를 호출해셔 커넥션을 종료한다. 커넥션 풀을 사용하는 경우 `con.close()` 를 호출하면 커넥션 풀에 반환된다.
+
+### 정리
+
+- 트랜잭션 추상화 덕분에 서비스 코드는 이제 JDBC 기술에 의존하지 않는다.
+  - 이후 JDBC에서 JPA로 변경해도 서비스 코드를 그대로 유지할 수 있다.
+  - 기술 변경시 의존관계 주입만 DataSourceTransactionManager 에서 JpaTransactionManager 로 변경해주면 된다.
+  - `java.sql.SQLException` 이 아직 남아있지만 이 부분은 뒤에 예외 문제에서 해결하자.
+- 트랜잭션 동기화 매니저 덕분에 커넥션을 파라미터로 넘기지 않아도 된다.
+
+## 트랜잭션 문제 해결 - 트랜잭션 템플릿
+
+트랜잭션을 사용하는 로직을 살펴보면 다음과 같은 패턴이 반복되는 것을 확인할 수 있다.
+
+
+```java
+//트랜잭션 시작
+TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+try {
+//비즈니스 로직
+    bizLogic(fromId, toId, money);
+    transactionManager.commit(status); //성공시 커밋
+} catch (Exception e) {
+    transactionManager.rollback(status); //실패시 롤백
+    throw new IllegalStateException(e);
+    }
+```
+
+- 트랜잭션을 시작하고, 비즈니스 로직을 실행하고, 성공하면 커밋하고, 예외가 발생해서 실패하면 롤백한다.
+- 다른 서비스에서 트랜잭션을 시작하려면 `try` , `catch` , `finally` 를 포함한 성공시 커밋, 실패시 롤백 코드가 반복될 것이다.
+- 이런 형태는 각각의 서비스에서 반복된다. 달라지는 부분은 비즈니스 로직 뿐이다.
+- 이럴 때 템플릿 콜백 패턴을 활용하면 이런 반복 문제를 깔끔하게 해결할 수 있다.
+
+**트랜잭션 템플릿**
+
+템플릿 콜백 패턴을 적용하려면 템플릿을 제공하는 클래스를 작성해야 하는데, 스프링은 `TransactionTemplate` 라는 템플릿 클래스를 제공한다.
+
+
+**TransactionTemplate**
+
+```java
+public class TransactionTemplate {
+    private PlatformTransactionManager transactionManager;
+    public <T> T execute(TransactionCallback<T> action){..}
+    void executeWithoutResult(Consumer<TransactionStatus> action){..}
+}
+```
+- `execute()` : 응답 값이 있을 때 사용한다.
+- `executeWithoutResult()` : 응답 값이 없을 때 사용한다.
+
+
+**MemberServiceV3_2**
+
+
+```java
+/**
+ * 트랜잭션 - 트랜잭션 템플릿
+ */
+@Slf4j
+public class MemberServiceV3_2 {
+
+    private final TransactionTemplate txTemplate;
+    private final MemberRepositoryV3 memberRepository;
+
+    public MemberServiceV3_2(PlatformTransactionManager transactionManager, MemberRepositoryV3 memberRepository) {
+        this.txTemplate = new TransactionTemplate(transactionManager);
+        this.memberRepository = memberRepository;
+    }
+
+  ...
+
+
+}
+
+```
+
+- TransactionTemplate 을 사용하려면 transactionManager 가 필요하다. 생성자에서 transactionManager 를 주입 받으면서 TransactionTemplate 을 생성했다.
+
+**트랜잭션 템플릿 사용 로직**
+
+```java
+ public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+
+        // executeWithoutResult 코드 안에서 트랜잭션을 시작하고 비즈니스 로직을 수향
+        // 해당 로직이 성공적으로 반환되면 commit
+        // 예외가 발생하면 rollback
+        txTemplate.executeWithoutResult((status) -> {
+        try {
+        bizLogic(fromId, toId, money);
+        } catch (SQLException e) {
+        // 체크 예외를 런타임 예외로 변경
+        throw new IllegalStateException(e);
+        }
+
+        });
+
+}
+```
+
+- 트랜잭션 템플릿 덕분에 트랜잭션을 시작하고, 커밋하거나 롤백하는 코드가 모두 제거되었다.
+- 트랜잭션 템플릿의 기본 동작은 다음과 같다.
+  - 비즈니스 로직이 정상 수행되면 커밋한다.
+  - 언체크 예외가 발생하면 롤백한다. 그 외의 경우 커밋한다. (체크 예외의 경우에는 커밋하는데, 이 부분은 뒤에서 설명한다.)
+- 코드에서 예외를 처리하기 위해 try~catch 가 들어갔는데, `bizLogic()` 메서드를 호출하면`SQLException` 체크 예외를 넘겨준다. 해당 람다에서 체크 예외를 밖으로 던질 수 없기 때문에 언체크 예외로 바꾸어 던지도록 예외를 전환했다.
+
+### 정리
+
+- 트랜잭션 템플릿 덕분에, 트랜잭션을 사용할 때 반복하는 코드를 제거할 수 있었다.
+- 하지만 이곳은 서비스 로직인데 비즈니스 로직 뿐만 아니라 트랜잭션을 처리하는 기술 로직이 함께 포함되어 있다.
+- 애플리케이션을 구성하는 로직을 핵심 기능과 부가 기능으로 구분하자면 서비스 입장에서 비즈니스 로직은 핵심 기능이고, 트랜잭션은 부가 기능이다.
+- 이렇게 비즈니스 로직과 트랜잭션을 처리하는 기술 로직이 한 곳에 있으면 두 관심사를 하나의 클래스에서 처리하게 된다. 결과적으로 코드를 유지보수하기 어려워진다.
+- 서비스 로직은 가급적 핵심 비즈니스 로직만 있어야 한다. 하지만 트랜잭션 기술을 사용하려면 어쩔 수 없이 트랜잭션 코드가 나와야 한다. 어떻게 하면 이 문제를 해결할 수 있을까?
+
+
+## 트랜잭션 문제 해결 - 트랜잭션 AOP 이해
+
+- 트랜잭션 템플릿 덕분에 트랜잭션을 처리하는 반복 코드는 해결할 수 있었다. 하지만 서비스 계층에 순수한 비즈니스 로직만 남긴다는 목표는 아직 달성하지 못했다.
+- 이럴 때 스프링 AOP를 통해 프록시를 도입하면 문제를 깔끔하게 해결할 수 있다.
+
+### 프록시를 통한 문제 해결
+
+**프록시 도입 전**
+
+![image](https://user-images.githubusercontent.com/83503188/188307544-3db3ca24-fe09-488f-8a4a-cf3e73b31f75.png)
+
+프록시를 도입하기 전에는 기존처럼 서비스의 로직에서 트랜잭션을 직접 시작한다.
+
+**서비스 계층의 트랜잭션 사용 코드 예시**
+
+
+```java
+//트랜잭션 시작
+TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+try {
+  //비즈니스 로직
+  bizLogic(fromId, toId, money);
+  transactionManager.commit(status); //성공시 커밋
+} catch (Exception e) {
+  transactionManager.rollback(status); //실패시 롤백
+  throw new IllegalStateException(e);
+}
+```
+
+**프록시 도입 후**
+
+![image](https://user-images.githubusercontent.com/83503188/188307629-c69e386f-4933-4077-b1c1-ef9874c103d4.png)
+
+프록시를 사용하면 트랜잭션을 처리하는 객체와 비즈니스 로직을 처리하는 서비스 객체를 명확하게 분리할 수 있다.
+
+**트랜잭션 프록시 코드 예시**
+
+```java
+
+public class TransactionProxy {
+    private MemberService target;
+    
+    public void logic() {
+        //트랜잭션 시작
+        TransactionStatus status = transactionManager.getTransaction(..);
+        try {
+            //실제 대상 호출
+            target.logic();
+            transactionManager.commit(status); //성공시 커밋
+        } catch (Exception e) {
+            transactionManager.rollback(status); //실패시 롤백
+            throw new IllegalStateException(e);
+        }
+    }
+}
+```
+
+
+**트랜잭션 프록시 적용 후 서비스 코드 예시**
+
+```java
+public class Service {
+    
+  public void logic() {
+    //트랜잭션 관련 코드 제거, 순수 비즈니스 로직만 남음
+    bizLogic(fromId, toId, money);
+  }
+}
+```
+
+- 프록시 도입 전: 서비스에 비즈니스 로직과 트랜잭션 처리 로직이 함께 섞여있다.
+- 프록시 도입 후: 트랜잭션 프록시가 트랜잭션 처리 로직을 모두 가져간다. 그리고 트랜잭션을 시작한 후에 실제 서비스를 대신 호출한다. 트랜잭션 프록시 덕분에 서비스 계층에는 순수한 비즈니즈 로직만 남길 수 있다.
+
+### 스프링이 제공하는 트랜잭션 AOP
+
+**@Transactional**
+
+`org.springframework.transaction.annotation.Transactional`
+
+## 트랜잭션 문제 해결 - 트랜잭션 AOP 적용
+
+```java
+/**
+ * 트랜잭션 - @Transactional AOP
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class MemberServiceV3_3 {
+
+  private final MemberRepositoryV3 memberRepository;
+
+  @Transactional
+  public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+    bizLogic(fromId, toId, money);
+
+  }
+  ...
+}
+```
+
+- 순수한 비즈니스 로직만 남기고, 트랜잭션 관련 코드는 모두 제거했다.
+- 스프링이 제공하는 트랜잭션 AOP를 적용하기 위해 `@Transactional` 애노테이션을 추가했다.
+- `@Transactional` 애노테이션은 메서드에 붙여도 되고, 클래스에 붙여도 된다. 클래스에 붙이면 외부에서 호출 가능한 public 메서드가 AOP 적용 대상이 된다.
+
+**MemberServiceV3_3Test**
+
+![image](https://user-images.githubusercontent.com/83503188/188308126-6ac1bfe0-8076-4686-a9c7-8d42c35e2f62.png)
+
+테스트 실패? 현재 테스트는 Spring 컨테이너를 전혀 쓰고 있지 않기 때문이다. 따라서 컨테이너에 빈을 등록해줘야한다.
+
+
+```java
+/**
+ * 트랜잭션 - @Transactional AOP
+ */
+@SpringBootTest
+class MemberServiceV3_3Test {
+
+    Logger log = LoggerFactory.getLogger(MemberServiceV3_3Test.class);
+
+    private MemberRepositoryV3 memberRepository;
+    private MemberServiceV3_3 memberService;
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        DataSource dataSource() {
+            return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+        }
+        @Bean
+        PlatformTransactionManager transactionManager() {
+            return new DataSourceTransactionManager(dataSource());
+        }
+        @Bean
+        MemberRepositoryV3 memberRepositoryV3() {
+            return new MemberRepositoryV3(dataSource());
+        }
+        @Bean
+        MemberServiceV3_3 memberServiceV3_3() {
+            return new MemberServiceV3_3(memberRepositoryV3());
+        }
+    }
+    
+  ...
+
+}
+```
+
+
+- `@SpringBootTest` : 스프링 AOP를 적용하려면 스프링 컨테이너가 필요하다. 이 애노테이션이 있으면 테스트시 스프링 부트를 통해 스프링 컨테이너를 생성한다. 그리고 테스트에서 `@Autowired` 등을 통해 스프링 컨테이너가 관리하는 빈들을 사용할 수 있다.
+- `@TestConfiguration` : 테스트 안에서 내부 설정 클래스를 만들어서 사용하면서 이 에노테이션을 붙이면, 스프링 부트가 자동으로 만들어주는 빈들에 추가로 필요한 스프링 빈들을 등록하고 테스트를 수행할 수 있다.
+- TestConfig
+  - DataSource 스프링에서 기본으로 사용할 데이터소스를 스프링 빈으로 등록한다. 추가로 트랜잭션 매니저에서도 사용한다.
+  - DataSourceTransactionManager 트랜잭션 매니저를 스프링 빈으로 등록한다.
+    - 스프링이 제공하는 트랜잭션 AOP는 스프링 빈에 등록된 트랜잭션 매니저를 찾아서 사용하기 때문에 트랜잭션 매니저를 스프링 빈으로 등록해두어야 한다.
+
+**AOP 프록시 적용 확인**
+
+```java
+@Test
+void AopCheck() {
+  log.info("memberService class={}", memberService.getClass());
+  log.info("memberRepository class={}", memberRepository.getClass());
+  Assertions.assertThat(AopUtils.isAopProxy(memberService)).isTrue();
+  Assertions.assertThat(AopUtils.isAopProxy(memberRepository)).isFalse();
+}
+```
+
+```text
+memberService class=class hello.jdbc.service.MemberServiceV3_3$$EnhancerBySpringCGLIB$$...
+memberRepository class=class hello.jdbc.repository.MemberRepositoryV3
+```
+
+- 먼저 AOP 프록시가 적용되었는지 확인해보자. `AopCheck()` 의 실행 결과를 보면 memberService 에 EnhancerBySpringCGLIB.. 라는 부분을 통해 프록시(CGLIB)가 적용된 것을 확인할 수 있다.
+- memberRepository 에는 AOP를 적용하지 않았기 때문에 프록시가 적용되지 않는다.
+
+### 트랜잭션 문제 해결 - 트랜잭션 AOP 정리
+
+
+![image](https://user-images.githubusercontent.com/83503188/188308605-111bcb00-1cd0-42f4-893b-ae3937c9fc70.png)
+
+**선언적 트랜잭션 관리 vs 프로그래밍 방식 트랜잭션 관리**
+
+- 선언적 트랜잭션 관리(Declarative Transaction Management)
+  - `@Transactional` 애노테이션 하나만 선언해서 매우 편리하게 트랜잭션을 적용하는 것을 선언적 트랜잭션 관리라 한다.
+  - 선언적 트랜잭션 관리는 과거 XML에 설정하기도 했다. 이름 그대로 해당 로직에 트랜잭션을 적용하겠다 라고 어딘가에 선언하기만 하면 트랜잭션이 적용되는 방식이다.
+- 프로그래밍 방식의 트랜잭션 관리(programmatic transaction management)
+  - 트랜잭션 매니저 또는 트랜잭션 템플릿 등을 사용해서 트랜잭션 관련 코드를 직접 작성하는 것을 프로그래밍 방식의 트랜잭션 관리라 한다.
+- 선언적 트랜잭션 관리가 프로그래밍 방식에 비해서 훨씬 간편하고 실용적이기 때문에 실무에서는 대부분 선언적 트랜잭션 관리를 사용한다.
+- 프로그래밍 방식의 트랜잭션 관리는 스프링 컨테이너나 스프링 AOP 기술 없이 간단히 사용할 수 있지만 실무에서는 대부분 스프링 컨테이너와 스프링 AOP를 사용하기 때문에 거의 사용되지 않는다.
+- 프로그래밍 방식 트랜잭션 관리는 테스트 시에 가끔 사용될 때는 있다.
+
+
+## 스프링 부트의 자동 리소스 등록
+
+스프링 부트가 등장하기 이전에는 데이터소스와 트랜잭션 매니저를 개발자가 직접 스프링 빈으로 등록해서 사용했다. 그런데 스프링 부트로 개발을 시작한 개발자라면 데이터소스나 트랜잭션 매니저를 직접 등록한 적이 없을 것이다.
+
+
+**데이터소스와 트랜잭션 매니저를 스프링 빈으로 직접 등록**
+
+```java
+@Bean
+DataSource dataSource() {
+    return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+}
+@Bean
+PlatformTransactionManager transactionManager() {
+    return new DataSourceTransactionManager(dataSource());
+}
+```
+- 기존에는 이렇게 데이터소스와 트랜잭션 매니저를 직접 스프링 빈으로 등록해야 했다. 그런데 스프링 부트가 나오면서 많은 부분이 자동화되었다.
+
+
+**데이터소스 - 자동 등록**
+
+- 스프링 부트는 데이터소스( `DataSource` )를 스프링 빈에 자동으로 등록한다.
+- 자동으로 등록되는 스프링 빈 이름: `dataSource`
+- 참고로 개발자가 직접 데이터소스를 빈으로 등록하면 스프링 부트는 데이터소스를 자동으로 등록하지 않는다.
+
+**application.yml**
+
+```yml
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+```
+
+- 스프링 부트가 기본으로 생성하는 데이터소스는 커넥션풀을 제공하는 HikariDataSource 이다.
+- 커넥션풀과 관련된 설정도 application.yml 를 통해서 지정할 수 있다.
+- spring.datasource.url 속성이 없으면 내장 데이터베이스(메모리 DB)를 생성하려고 시도한다.
+
+**트랜잭션 매니저 - 자동 등록**
+
+- 스프링 부트는 적절한 트랜잭션 매니저( `PlatformTransactionManager` )를 자동으로 스프링 빈에 등록한다.
+- 자동으로 등록되는 스프링 빈 이름: `transactionManager`
+- 참고로 개발자가 직접 트랜잭션 매니저를 빈으로 등록하면 스프링 부트는 트랜잭션 매니저를 자동으로 등록하지 않는다.
+
+어떤 트랜잭션 매니저를 선택할지는 현재 등록된 라이브러리를 보고 판단하는데, JDBC를 기술을 사용하면 `DataSourceTransactionManager` 를 빈으로 등록하고, JPA를 사용하면 `JpaTransactionManager` 를 빈으로 등록한다. 둘다 사용하는 경우 `JpaTransactionManager` 를 등록한다.
+참고로`JpaTransactionManager` 는 `DataSourceTransactionManager` 가 제공하는 기능도 대부분 지원한다.
+
+
+
+**MemberServiceV3_4Test**
+
+```java
+/**
+ * 트랜잭션 - DataSource, transactionManager 자동 등록
+ */
+@SpringBootTest
+class MemberServiceV3_4Test {
+
+    Logger log = LoggerFactory.getLogger(MemberServiceV3_4Test.class);
+
+    @Autowired
+    private MemberRepositoryV3 memberRepository;
+
+    @Autowired
+    private MemberServiceV3_3 memberService;
+
+    @TestConfiguration
+    static class TestConfig {
+
+        private final DataSource dataSource;
+
+        public TestConfig(DataSource dataSource) {
+            this.dataSource = dataSource;
+        }
+
+        @Bean
+        MemberRepositoryV3 memberRepositoryV3() {
+            return new MemberRepositoryV3(dataSource);
+        }
+
+        @Bean
+        MemberServiceV3_3 memberServiceV3_3() {
+            return new MemberServiceV3_3(memberRepositoryV3());
+        }
+    }
+	...
+}
+```
+
+
+- 기존( MemberServiceV3_3Test )과 같은 코드이고 `TestConfig` 부분만 다르다.
+- 데이터소스와 트랜잭션 매니저를 스프링 빈으로 등록하는 코드가 생략되었다. 따라서 스프링 부트가 application.yml 에 지정된 속성을 참고해서 데이터소스와 트랜잭션 매니저를 자동으로 생성해준다.
+- 코드에서 보는 것 처럼 생성자를 통해서 스프링 부트가 만들어준 데이터소스 빈을 주입 받을 수도 있다.
+
+
+
+
+### 정리
+- 데이터소스와 트랜잭션 매니저는 스프링 부트가 제공하는 자동 빈 등록 기능을 사용하는 것이 편리하다.
+- 추가로 application.yml 를 통해 설정도 편리하게 할 수 있다.
