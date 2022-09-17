@@ -190,6 +190,7 @@ user=SA, class=class org.h2.jdbc.JdbcConnection
 ### JDBC DriverManager 연결 이해
 
 **JDBC 커넥션 인터페이스와 구현**
+
 ![image](https://user-images.githubusercontent.com/83503188/187168950-5ce566ff-a75b-4513-a335-0dfd7d63438e.png)
 - JDBC는 `java.sql.Connection` 표준 커넥션 인터페이스를 정의한다.
 - H2 데이터베이스 드라이버는 JDBC Connection 인터페이스를 구현한 `org.h2.jdbc.JdbcConnection` 구현체를 제공한다.
