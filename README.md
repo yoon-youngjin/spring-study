@@ -38,8 +38,9 @@
 
 
 10. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
-   - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
-   - :white_check_mark: 인프런 김영한 강사님의 "스프링 DB 1편 - 데이터 접근 핵심 원리" Section 1 ~ Section 6 정리
+    - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
+    - :white_check_mark: 인프런 김영한 강사님의 "스프링 DB 1편 - 데이터 접근 핵심 원리" Section 1 ~ Section 6 정리
+
 
 
 11. [**stock**](https://github.com/yoon-youngjin/SSS/tree/main/stock)
