@@ -1,15 +1,18 @@
 package dev.yoon.core.order;
 
 import dev.yoon.core.discount.DiscountPolicy;
-import dev.yoon.core.discount.FixDiscountPolicy;
 import dev.yoon.core.member.Member;
 import dev.yoon.core.member.MemberRepository;
-import dev.yoon.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
 
-    MemberRepository memberRepository = new MemoryMemberRepository();
-    DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
