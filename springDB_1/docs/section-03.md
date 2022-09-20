@@ -649,7 +649,6 @@ class MemberServiceV1Test {
 - then: 계좌이체가 정상 수행되었는지 검증한다.
   - memberA 8000원 - 2000원 감소
   - memberB 12000원 - 2000원 증가
-  - 
 
 **테스트 데이터 제거**
 
