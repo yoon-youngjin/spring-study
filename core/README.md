@@ -8,3 +8,4 @@
 2. [Section 2: 스프링 핵심 원리 이해1 - 예제 만들기](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-02.md)
 3. [Section 3: 스프링 핵심 원리 이해2 - 객체 지향 원리 적용](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-03.md)
 4. [Section 4: 스프링 컨테이너와 스프링 빈](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-04.md)
+5. [Section 5: 싱글톤 컨테이너](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-05.md)
