@@ -2,7 +2,9 @@ package dev.yoon.core.discount;
 
 import dev.yoon.core.member.Grade;
 import dev.yoon.core.member.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy {
 
     private int discountPercent = 10;

@@ -3,12 +3,16 @@ package dev.yoon.core.order;
 import dev.yoon.core.discount.DiscountPolicy;
 import dev.yoon.core.member.Member;
 import dev.yoon.core.member.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService {
 
     private MemberRepository memberRepository;
     private DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
