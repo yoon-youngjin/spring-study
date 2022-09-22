@@ -187,8 +187,7 @@ public void accountTransfer(String fromId, String toId, int money) throws SQLExc
 ```java
 public static void main(String[] args) {
     //엔티티 매니저 팩토리 생성
-    EntityManagerFactory emf =
-    Persistence.createEntityManagerFactory("jpabook");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
     EntityManager em = emf.createEntityManager(); //엔티티 매니저 생성
     EntityTransaction tx = em.getTransaction(); //트랜잭션 기능 획득
     try {
@@ -465,6 +464,14 @@ public Member findById(String memberId) throws SQLException {
             close(con, pstmt, null);
 
         }
+    }
+    
+    private void close(Connection con, Statement stmt, ResultSet rs) {
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        // 주의! 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해야 한다.
+        DataSourceUtils.releaseConnection(con, dataSource);
+//        JdbcUtils.closeConnection(con);
     }
 
 private Connection getConnection() throws SQLException {
