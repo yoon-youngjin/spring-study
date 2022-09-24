@@ -10,3 +10,4 @@
 4. [Section 4: 스프링 컨테이너와 스프링 빈](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-04.md)
 5. [Section 5: 싱글톤 컨테이너](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-05.md)
 6. [Section 6: 컴포넌트 스캔](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-06.md)
+7. [Section 7: 의존관계 자동 주입](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-07.md)
