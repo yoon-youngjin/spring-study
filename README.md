@@ -32,7 +32,7 @@
    - :white_check_mark: 스프링 핵심 원리
    - :white_check_mark: 인프런 김영한 강사님의 "스프링 핵심 원리" Section 1 ~ Section 9 정리
 
-9. [**msa-with-spring-cloud**](https://github.com/yoon-youngjin/SSS/tree/main/msa-with-spring-cloud*)
+9. [**msa-with-spring-cloud**](https://github.com/yoon-youngjin/SSS/tree/main/msa-with-spring-cloud)
    - :white_check_mark: Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)
    - :white_check_mark: 인프런 Dowon Lee 강사님의 "Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)" Section 0 ~ Section 17 정리
 
