@@ -11,3 +11,4 @@
 5. [Section 5: 싱글톤 컨테이너](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-05.md)
 6. [Section 6: 컴포넌트 스캔](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-06.md)
 7. [Section 7: 의존관계 자동 주입](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-07.md)
+8. [Section 8: 빈 생명주기 콜백](https://github.com/yoon-youngjin/SSS/blob/main/core/docs/section-08.md)
