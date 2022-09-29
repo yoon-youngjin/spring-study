@@ -5,4 +5,5 @@
 ## 목차
 
 1. [Section 0: Microservice와 Spring Cloud의 소개](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-00.md)
-1. [Section 1: Service Discovery](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-01.md)
+2. [Section 1: Service Discovery](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-01.md)
+3. [Section 2: API Gateway Service](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-02.md)
