@@ -797,9 +797,9 @@ class MemberServiceV4Test {
 ```java
 pstmt = con.prepareStatement(sql);
 
-            // 파라미터 바인딩
-            pstmt.setString(1, member.getMemberId());
-            pstmt.setInt(2, member.getMoney());
+// 파라미터 바인딩
+pstmt.setString(1, member.getMemberId());
+pstmt.setInt(2, member.getMoney());
 
 ```
 3. 쿼리 실행 -> `pstmt.executeUpdate();`
@@ -807,12 +807,12 @@ pstmt = con.prepareStatement(sql);
 ```java
 rs = pstmt.executeQuery(); // 데이터를 변경할 때는 executeUpdate() 를 사용하지만, 데이터를 조회할 때는 executeQuery() 를 사용한다. executeQuery() 는 결과를 ResultSet 에 담아서 반환한다.
 
-            if (rs.next()) {
-                Member member = new Member();
-                member.setMemberId(rs.getString("member_id"));
-                member.setMoney(rs.getInt("money"));
-                return member;
-            }
+ if (rs.next()) {
+ 	Member member = new Member();
+ 	member.setMemberId(rs.getString("member_id"));
+	member.setMoney(rs.getInt("money"));
+	return member;
+ }
 ```
 5. 예외 발생시 스프링 예외 변환기 실행
 ```java
