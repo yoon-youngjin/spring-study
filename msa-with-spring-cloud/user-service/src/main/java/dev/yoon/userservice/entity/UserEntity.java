@@ -1,4 +1,4 @@
-package dev.yoon.userservice.repository;
+package dev.yoon.userservice.entity;
 
 import lombok.Data;
 

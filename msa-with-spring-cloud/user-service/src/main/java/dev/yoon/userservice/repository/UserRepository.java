@@ -1,6 +1,12 @@
 package dev.yoon.userservice.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import dev.yoon.userservice.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
+    Optional<UserEntity> findByUserId(String userId);
+
 }

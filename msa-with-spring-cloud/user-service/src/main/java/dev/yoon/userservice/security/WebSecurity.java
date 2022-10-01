@@ -14,7 +14,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/users/**").permitAll();
+        http.authorizeRequests().antMatchers("/user-service/users/**").permitAll();
         http.headers().frameOptions().disable(); // h2-console 에 접근하기 위한 disable
     }
 

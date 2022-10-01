@@ -1,14 +1,18 @@
 package dev.yoon.userservice.service;
 
 import dev.yoon.userservice.dto.UserDto;
-import dev.yoon.userservice.repository.UserEntity;
+import dev.yoon.userservice.entity.UserEntity;
 import dev.yoon.userservice.repository.UserRepository;
+import dev.yoon.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,5 +36,22 @@ public class UserServiceImpl implements UserService {
 
         UserDto returnUserDto = mapper.map(userEntity, UserDto.class);
         return returnUserDto;
+    }
+
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+        List<ResponseOrder> orderList = new ArrayList<>();
+        userDto.setOrders(orderList);
+
+        return userDto;
+    }
+
+    @Override
+    public List<UserEntity> getUserByAll() {
+        return userRepository.findAll();
     }
 }
