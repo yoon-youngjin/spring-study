@@ -2,6 +2,8 @@ server:
   port: 0
 
 spring:
+  config:
+    - classpath:/bootstrap.yml
   application:
     name: user-service
   h2:
@@ -31,6 +33,12 @@ logging:
   level:
     dev.yoon.userservice: DEBUG
 
-token:
-  expiration_time: 86400000 # 만료 기간 -> 하루
-  secret: secret-key # 토큰 키
+#token:
+#  expiration_time: 86400000 # 만료 기간 -> 하루
+#  secret: secret-key # 토큰 키
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus

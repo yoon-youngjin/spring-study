@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:\Users\dudwl\WorkSpace\spring-cloud-config
+        git:
+          uri: https://github.com/yoon-youngjin/spring-cloud-config
+#          username:
+#          password:
