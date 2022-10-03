@@ -10,4 +10,5 @@
 4. [Section 3: E-commerce 애플리케이션](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-03.md)
 5. [Section 4: Users Microservice - 1](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-04.md)
 6. [Section 5: Catalogs and Orders Microservice](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-05.md)
+7. [Section 6: Users Microservice - 2](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-06.md)
 
