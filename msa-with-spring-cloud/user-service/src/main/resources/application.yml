@@ -6,6 +6,11 @@ spring:
     - classpath:/bootstrap.yml
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
   h2:
     console:
       enabled: true

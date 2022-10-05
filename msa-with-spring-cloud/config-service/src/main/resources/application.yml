@@ -4,14 +4,26 @@ server:
 spring:
   application:
     name: config-service
-  profiles:
-    active: native
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+#  profiles:
+#    active: native
   cloud:
     config:
       server:
-        native:
-          search-locations: file:///C:\Users\dudwl\WorkSpace\spring-cloud-config
         git:
           uri: https://github.com/yoon-youngjin/spring-cloud-config
+#        native:
+#          search-locations: file:///C:\Users\dudwl\WorkSpace\spring-cloud-config
+
 #          username:
 #          password:
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace, busrefresh
