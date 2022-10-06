@@ -3,6 +3,7 @@ spring:
     config:
       uri: http://127.0.0.1:8888
 #      name: config-server # config-server라는 애플리케이션 네임을 기입하면 application.yml을 가져온다는 것이다.
-      name: ecommerce # ecommerce.yml을 가져오는 것
-  profiles:
-    active: dev
+#      name: ecommerce # ecommerce.yml을 가져오는 것
+      name: user-service
+#  profiles:
+#    active: dev # ecommerce-dev.yml
