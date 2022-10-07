@@ -13,4 +13,5 @@
 7. [Section 6: Users Microservice - 2](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-06.md)
 8. [Section 7: Configuration Service](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-07.md)
 9. [Section 8: Spring Cloud Bus](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-08.md)
+10. [Section 9: 암호화 처리를 위한 Encyption과 Decryption](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-09.md)
 
