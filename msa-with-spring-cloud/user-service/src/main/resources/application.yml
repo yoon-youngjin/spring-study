@@ -36,7 +36,7 @@ greeting:
 
 logging:
   level:
-    dev.yoon.userservice: DEBUG
+    dev.yoon.userservice.client: DEBUG
 
 #token:
 #  expiration_time: 86400000 # 만료 기간 -> 하루
@@ -47,3 +47,4 @@ management:
     web:
       exposure:
         include: refresh, health, beans, busrefresh, info, metrics, prometheus
+
