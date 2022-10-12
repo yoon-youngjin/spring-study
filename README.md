@@ -38,7 +38,7 @@
 
 10. [**querydsl**](https://github.com/yoon-youngjin/SSS/tree/main/querydsl)
     - :white_check_mark: 실전! Querydsl
-    - :white_check_mark: 인프런 김영한 강사님의 "실전! Querydsl" Section 1 ~ Section 7 정리
+    - :white_check_mark: 인프런 김영한 강사님의 "실전! Querydsl" Section 1 ~ Section 7 정리 
 
 11. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
     - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
