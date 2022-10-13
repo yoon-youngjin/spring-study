@@ -2,6 +2,7 @@ package dev.yoon.orderservice.controller;
 
 import dev.yoon.orderservice.dto.OrderDto;
 import dev.yoon.orderservice.repository.OrderEntity;
+import dev.yoon.orderservice.messagequeue.KafkaProducer;
 import dev.yoon.orderservice.service.OrderService;
 import dev.yoon.orderservice.vo.RequestOrder;
 import dev.yoon.orderservice.vo.ResponseOrder;
@@ -25,6 +26,7 @@ public class OrderController {
 
     private final Environment env;
     private final OrderService orderService;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping("/health_check")
     public String status() {
@@ -44,6 +46,8 @@ public class OrderController {
         OrderDto createdOrder = orderService.createOrder(orderDto);
         ResponseOrder responseOrder = mapper.map(createdOrder, ResponseOrder.class);
 
+        /* Send an order to the Kafka */
+        kafkaProducer.send("example-order-topic", orderDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
