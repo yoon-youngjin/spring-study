@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "orders")
+@Table(name = "order")
 public class OrderEntity implements Serializable {
 
     @Id
