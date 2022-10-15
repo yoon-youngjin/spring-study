@@ -16,4 +16,5 @@
 10. [Section 9: 암호화 처리를 위한 Encyption과 Decryption](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-09.md)
 11. [Section 10: Microservice간 통신](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-10.md)
 12. [Section 11: 데이터 동기화를 위한 Apache Kafka 활용 - 1](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-11.md)
+13. [Section 12: 데이터 동기화를 위한 Apache Kafka 활용 - 2](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-12.md)
 
