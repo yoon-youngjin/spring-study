@@ -17,4 +17,5 @@
 11. [Section 10: Microservice간 통신](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-10.md)
 12. [Section 11: 데이터 동기화를 위한 Apache Kafka 활용 - 1](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-11.md)
 13. [Section 12: 데이터 동기화를 위한 Apache Kafka 활용 - 2](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-12.md)
+14. [Section 13: 장애 처리와 Microservice 분산 추적](https://github.com/yoon-youngjin/SSS/blob/main/msa-with-spring-cloud/docs/section-13.md)
 
