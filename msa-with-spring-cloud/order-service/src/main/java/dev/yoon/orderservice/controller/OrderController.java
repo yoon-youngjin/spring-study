@@ -41,6 +41,7 @@ public class OrderController {
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId,
                                                      @RequestBody RequestOrder orderDetails) {
+        log.info("Before add orders data");
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -61,11 +62,14 @@ public class OrderController {
 //        kafkaProducer.send("example-catalog-topic", orderDto); // order와 catalog를 연동하기 위한 kafka producer
 //        orderProducer.send("order", orderDto); // 사용자의 주문 정보를 kafka topic에 전달시키는 용도
 
+        log.info("After added orders data");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) throws Exception {
+        log.info("Before retrieve orders data");
+
         List<OrderEntity> orderList = orderService.getOrdersByUserId(userId);
 
         List<ResponseOrder> result = new ArrayList<>();
@@ -73,6 +77,15 @@ public class OrderController {
         orderList.forEach(v ->
                 result.add(mapper.map(v, ResponseOrder.class))
         );
+
+//        try {
+//            Thread.sleep(1000);
+//            throw new Exception("장애 발생");
+//        }catch (InterruptedException e) {
+//            log.warn(e.getMessage());
+//        }
+
+        log.info("After retrieved orders data");
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

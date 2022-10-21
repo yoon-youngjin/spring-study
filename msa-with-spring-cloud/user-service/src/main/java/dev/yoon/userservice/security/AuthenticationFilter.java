@@ -6,7 +6,6 @@ import dev.yoon.userservice.service.UserService;
 import dev.yoon.userservice.vo.RequestLogin;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +41,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                                 HttpServletResponse response) throws AuthenticationException {
 
         try {
+            System.out.println("attemptAuthentication()");
             RequestLogin creds = new ObjectMapper().readValue(request.getInputStream(), RequestLogin.class);
 
             return getAuthenticationManager().authenticate(

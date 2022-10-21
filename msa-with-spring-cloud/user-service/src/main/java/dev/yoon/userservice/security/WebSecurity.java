@@ -20,12 +20,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final Environment env; // 설정 정보의 JWT 정보를 가져오기 위한 빈
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
-    static final String IP = "127.0.0.1";
+    static final String IP = "172.30.1.29";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+        http.authorizeRequests().antMatchers("/users/", "/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
                 .hasIpAddress(IP)
                 .and()
@@ -35,6 +35,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
+        System.out.println("getAuthenticationFilter()");
 
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, env, authenticationManager());
         return authenticationFilter;
