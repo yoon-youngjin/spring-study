@@ -18,7 +18,6 @@ spring:
           uri: https://github.com/yoon-youngjin/spring-cloud-config
 #        native:
 #          search-locations: file:///C:\Users\dudwl\WorkSpace\spring-cloud-config
-
 #          username:
 #          password:
 

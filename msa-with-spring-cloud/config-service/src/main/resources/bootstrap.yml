@@ -1,6 +1,7 @@
 encrypt:
 #  key: asdfasdfsadfsdf
   key-store:
-    location: file:///C:\Users\dudwl\WorkSpace\SSS\msa-with-spring-cloud\keystore\apiEncryptionKey.jks
-    password: yoon1234
-    alias: apiEncryptionKey
+#    location: file:///C:\Users\dudwl\WorkSpace\SSS\msa-with-spring-cloud\keystore\apiEncryptionKey.jks
+    location: file:/apiEncryptionKey.jks
+    password: yoon12onKey34
+    alias: apiEncrypti
