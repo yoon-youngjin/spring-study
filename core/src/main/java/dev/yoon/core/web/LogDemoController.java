@@ -27,7 +27,7 @@ public class LogDemoController {
         myLogger.setRequestURL(requestURL);
 
         myLogger.log("controller test");
-        
+
         logDemoService.logic("testId");
 
         return "OK";
