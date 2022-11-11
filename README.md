@@ -40,10 +40,14 @@
     - :white_check_mark: 실전! Querydsl
     - :white_check_mark: 인프런 김영한 강사님의 "실전! Querydsl" Section 1 ~ Section 7 정리 
 
-11. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
+11. [**servlet**](https://github.com/yoon-youngjin/SSS/tree/main/servlet)
+    - :white_check_mark: 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술
+    - :white_check_mark: 인프런 김영한 강사님의 "프링 MVC 1편 - 백엔드 웹 개발 핵심 기술" Section 1 ~ Section 7 정리
+
+12. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
     - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
     - :white_check_mark: 인프런 김영한 강사님의 "스프링 DB 1편 - 데이터 접근 핵심 원리" Section 1 ~ Section 6 정리
 
-12. [**stock**](https://github.com/yoon-youngjin/SSS/tree/main/stock)
+13. [**stock**](https://github.com/yoon-youngjin/SSS/tree/main/stock)
     - :white_check_mark: 재고시스템으로 알아보는 동시성이슈 해결방법
     - :white_check_mark: 인프런 재고시스템으로 알아보는 동시성이슈 해결방법 (Synchronized, Mysql, Redis) 정리
