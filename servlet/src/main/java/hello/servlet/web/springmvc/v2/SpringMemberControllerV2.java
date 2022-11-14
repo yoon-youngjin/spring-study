@@ -37,7 +37,7 @@ public class SpringMemberControllerV2 {
     }
 
     @RequestMapping("")
-    public ModelAndView members() throws ServletException, IOException {
+    public ModelAndView members() {
 
         List<Member> members = memberRepository.findAll();
 
