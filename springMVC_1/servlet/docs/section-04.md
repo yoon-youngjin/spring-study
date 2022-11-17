@@ -537,7 +537,7 @@ public class MyView {
 
 **V4 구조**
 
-![image](https://user-images.githubusercontent.com/83503188/201472428-de4cea1f-03e8-48d4-974c-46c3485dfbf9.png)
+![image](https://user-images.githubusercontent.com/83503188/202464654-c3cf0160-d11d-4761-8fa7-a73823592659.png)
 
 - 기본적인 구조는 V3와 같다. 대신에 컨트롤러가 ModelView 를 반환하지 않고, ViewName 만 반환한다.
 
