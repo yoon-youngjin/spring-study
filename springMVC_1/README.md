@@ -4,9 +4,9 @@
 
 ## 목차
 
-1. [Section 1: 웹 애플리케이션 이해](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-01.md)
-2. [Section 2: 서블릿](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-02.md)
-3. [Section 3: 서블릿, JSP, MVC 패턴](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-03.md)
-4. [Section 4: MVC 프레임워크 만들기](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-04.md)
-5. [Section 5: 스프링 MVC - 구조 이해](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-05.md)
-6. [Section 6: 스프링 MVC - 기본 기능](https://github.com/yoon-youngjin/SSS/blob/main/servlet/docs/section-06.md)
+1. [Section 1: 웹 애플리케이션 이해](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-01.md)
+2. [Section 2: 서블릿](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-02.md)
+3. [Section 3: 서블릿, JSP, MVC 패턴](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-03.md)
+4. [Section 4: MVC 프레임워크 만들기](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-04.md)
+5. [Section 5: 스프링 MVC - 구조 이해](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-05.md)
+6. [Section 6: 스프링 MVC - 기본 기능](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-06.md)
