@@ -24,3 +24,7 @@
 ![image](https://user-images.githubusercontent.com/83503188/205283343-eb560ca2-e4a6-4ac3-941f-10ad1743596c.png)
 
 
+**서비스 제공 흐름**
+
+![image](https://user-images.githubusercontent.com/83503188/205446232-92d0156d-9acf-4400-820f-9c59e0dadafc.png)
+
