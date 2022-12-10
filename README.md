@@ -1,4 +1,4 @@
-## SSS(Self Spring Study)
+## Spring Study by myself
 
 1. [**ProjectLion_SpringBoot**](https://github.com/yoon-youngjin/SSS/tree/main/ProjectLion_SpringBoot)
     - :white_check_mark: project lion:The Origin: Java Spring Boot
