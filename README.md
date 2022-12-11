@@ -37,8 +37,8 @@
    - :white_check_mark: 인프런 김영한 강사님의 "모든 개발자를 위한 HTTP 웹 기본 지식" Section 1 ~ Section 8 정리
 
 10. [**msa-with-spring-cloud**](https://github.com/yoon-youngjin/SSS/tree/main/msa-with-spring-cloud)
-   - :white_check_mark: Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)
-   - :white_check_mark: 인프런 Dowon Lee 강사님의 "Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)" Section 0 ~ Section 17 정리
+    - :white_check_mark: Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)
+    - :white_check_mark: 인프런 Dowon Lee 강사님의 "Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)" Section 0 ~ Section 17 정리
 
 11. [**querydsl**](https://github.com/yoon-youngjin/SSS/tree/main/querydsl)
     - :white_check_mark: 실전! Querydsl
