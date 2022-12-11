@@ -772,7 +772,7 @@ public String addItemV2(@ModelAttribute("item") Item item, Model model) {
 
 **RedirectAttributes**
 
-RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리해준다.
+RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVariable , 쿼리 파라미터까지 처리해준다.
 - redirect:/basic/items/{itemId}
   - pathVariable 바인딩: `{itemId}`
   - 나머지는 쿼리 파라미터로 처리: `?status=true`
