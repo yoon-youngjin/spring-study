@@ -3,5 +3,5 @@
 
 ## 목차
 
-1. [Section 1: 인터넷 네트워크](https://github.com/yoon-youngjin/SSS/blob/main/http-sutdy/docs/section-01.md)
-2. [Section 2: URI와 웹 브라우저 요청 흐름](https://github.com/yoon-youngjin/SSS/blob/main/http-sutdy/docs/section-02.md)
+1. [Section 1: 인터넷 네트워크](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-sutdy/docs/section-01.md)
+2. [Section 2: URI와 웹 브라우저 요청 흐름](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-sutdy/docs/section-02.md)
