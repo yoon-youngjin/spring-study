@@ -17,6 +17,8 @@
 
 ## 스프링 MVC 2편
 
+![image](https://user-images.githubusercontent.com/83503188/209341804-f6dda44c-9f4f-4f92-b041-4f52e5609bf1.png)
+
 ### 목차
 
 1. [Section 1: 타임리프 - 기본 기능](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-01.md)
