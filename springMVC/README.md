@@ -1,6 +1,5 @@
-# 스프링 MVC - 백엔드 웹 개발 핵심 기술
 
-## 스프링 MVC 1편 
+## 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술
 
 ![image](https://user-images.githubusercontent.com/83503188/201291136-746194a6-0909-4899-bf25-6f6223d5173f.png)
 
@@ -13,6 +12,8 @@
 5. [Section 5: 스프링 MVC - 구조 이해](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-05.md)
 6. [Section 6: 스프링 MVC - 기본 기능](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-06.md)
 7. [Section 7: 스프링 MVC - 웹 페이지 만들기](https://github.com/yoon-youngjin/SSS/blob/main/springMVC_1/docs/section-07.md)
+
+--- 
 
 ## 스프링 MVC 2편
 
