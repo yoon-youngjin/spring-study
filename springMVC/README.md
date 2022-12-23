@@ -4,7 +4,6 @@
 ![image](https://user-images.githubusercontent.com/83503188/201291136-746194a6-0909-4899-bf25-6f6223d5173f.png)
 
 ### 목차
-https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC1/docs
 
 1. [Section 1: 웹 애플리케이션 이해](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC1/docs/section-01.md)
 2. [Section 2: 서블릿](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC1/docs/section-02.md)
@@ -19,5 +18,7 @@ https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/spri
 ## 스프링 MVC 2편
 
 ### 목차
+
+![image](https://user-images.githubusercontent.com/83503188/209341193-a7e4a34f-5e56-49c8-9db6-9f7f4e8a29a0.png)
 
 1. [Section 1: 타임리프 - 기본 기능](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-01.md)
