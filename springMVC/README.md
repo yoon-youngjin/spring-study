@@ -19,6 +19,4 @@
 
 ### 목차
 
-![image](https://user-images.githubusercontent.com/83503188/209341193-a7e4a34f-5e56-49c8-9db6-9f7f4e8a29a0.png)
-
 1. [Section 1: 타임리프 - 기본 기능](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-01.md)
