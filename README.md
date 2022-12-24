@@ -44,9 +44,10 @@
     - :white_check_mark: 실전! Querydsl
     - :white_check_mark: 인프런 김영한 강사님의 "실전! Querydsl" Section 1 ~ Section 7 정리 
 
-12. [**springMVC_1**](https://github.com/yoon-youngjin/SSS/tree/main/springMVC_1)
-    - :white_check_mark: 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술
-    - :white_check_mark: 인프런 김영한 강사님의 "프링 MVC 1편 - 백엔드 웹 개발 핵심 기술" Section 1 ~ Section 7 정리
+12. [**springMVC**](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC)
+    - :white_check_mark: 스프링 MVC 1, 2편 - 백엔드 웹 개발 핵심 기술
+    - :white_check_mark: 인프런 김영한 강사님의 "스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술" Section 1 ~ Section 7 정리
+    - :white_check_mark: 인프런 김영한 강사님의 "스프링 MVC 2편 - 백엔드 웹 개발 핵심 기술" Section 1 ~ Section 11 정리
 
 13. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
     - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
