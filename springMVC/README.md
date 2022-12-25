@@ -1,5 +1,5 @@
 
-## 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술
+## 스프링 MVC 1편
 
 ![image](https://user-images.githubusercontent.com/83503188/201291136-746194a6-0909-4899-bf25-6f6223d5173f.png)
 
