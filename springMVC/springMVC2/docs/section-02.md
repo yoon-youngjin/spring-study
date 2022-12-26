@@ -568,7 +568,8 @@ public Map<String, String> regions() {
 ![image](https://user-images.githubusercontent.com/83503188/209539933-a652a0df-0712-4d9f-998e-20baf72a13a6.png)
 
 ![image](https://user-images.githubusercontent.com/83503188/209540024-9b69b274-5412-4c08-8cfe-04dfbe3ece7d.png)
-- 라디오 버튼은 이미 선택이 되어 있다면, 수정시에도 항상 하나를 선택하도록 되어 있으므로 체크 박스와 달리 별도의 히든 필드를 사용할 필요가 없다.
+- 히든 필드가 필요한 이유는 기존에 선택되었던 값이 수정시에 변경 여부를 파악하기 위함인데,
+- 라디오 버튼은 이미 선택이 되어 있다면, 수정시에도 항상 하나를 선택하도록 되어 있으므로 체크 박스와 달리 별도의 히든 필드를 사용할 필요가 없다. -> 반드시 하나의 값이 넘어가기 때문 
 
 **item.html**
 
