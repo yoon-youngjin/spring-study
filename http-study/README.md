@@ -9,4 +9,5 @@
 4. [Section 4: HTTP 메서드](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-study/docs/section-04.md)
 5. [Section 5: HTTP 메서드 활용](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-study/docs/section-05.md)
 6. [Section 6: HTTP 상태 코드](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-study/docs/section-06.md)
+7. [Section 7: HTTP 헤더1 - 일반 헤더](https://github.com/yoon-youngjin/spring-study-by-myself/blob/main/http-study/docs/section-07.md)
 
