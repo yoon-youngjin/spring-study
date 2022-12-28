@@ -22,3 +22,5 @@
 ### 목차
 
 1. [Section 1: 타임리프 - 기본 기능](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-01.md)
+2. [Section 2: 타임리프 - 스프링 통합과 폼](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-02.md)
+3. [Section 3: 메시지, 국제화](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-03.md)
