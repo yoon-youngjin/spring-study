@@ -1034,6 +1034,16 @@ public class ItemServiceApplication implements WebMvcConfigurer {
 ```
 - webDataBinder 가 사용자의 요청마다 새로 생성되는데 Global 설정이 되어있으면 알아서 삽입
 - Global 설정이 없으면 해당 컨트롤러에 `@InitBinder` 가 존재하는 경우에만 삽입
+- 하지만 Global 설정할 일은 거의 없다. 
 
 기존 컨트롤러의 `@InitBinder` 를 제거해도 글로벌 설정으로 정상 동작하는 것을 확인할 수 있다.
+
+> 참고
+> 
+> 검증시 `@Validated` `@Valid` 둘다 사용가능하다.
+> 
+> `javax.validation.@Valid` 를 사용하려면 build.gradle 의존관계 추가가 필요하다.
+> `implementation 'org.springframework.boot:spring-boot-starter-validation'`
+> 
+> `@Validated` 는 스프링 전용 검증 애노테이션이고, `@Valid` 는 자바 표준 검증 애노테이션이다.
 
