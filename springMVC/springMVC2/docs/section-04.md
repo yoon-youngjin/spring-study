@@ -1006,8 +1006,7 @@ public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bind
         return "redirect:/validation/v2/items/{itemId}";
 }
 ```
-
-validator를 직접 호출하는 부분이 사라지고, 대신에 검증 대상 앞에 `@Validated` 가 붙었다.
+- validator 를 직접 호출하는 부분이 사라지고, 대신에 검증 대상 앞에 `@Validated` 가 붙었다.
 
 **동작 방식**
 
