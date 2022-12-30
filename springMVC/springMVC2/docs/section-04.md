@@ -1032,5 +1032,8 @@ public class ItemServiceApplication implements WebMvcConfigurer {
     }
 }
 ```
-- 기존 컨트롤러의 `@InitBinder` 를 제거해도 글로벌 설정으로 정상 동작하는 것을 확인할 수 있다.
+- webDataBinder 가 사용자의 요청마다 새로 생성되는데 Global 설정이 되어있으면 알아서 삽입
+- Global 설정이 없으면 해당 컨트롤러에 `@InitBinder` 가 존재하는 경우에만 삽입
+
+기존 컨트롤러의 `@InitBinder` 를 제거해도 글로벌 설정으로 정상 동작하는 것을 확인할 수 있다.
 
