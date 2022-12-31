@@ -602,6 +602,10 @@ POST http://localhost:8080/validation/api/items/add
 ![image](https://user-images.githubusercontent.com/83503188/210135779-5be3c465-cae7-401e-9138-5e272f181a6b.png)
 - `HttpMessageConverter`에서 요청 JSON을 `ItemSaveForm` 객체로 생성하는데 실패한다.
 - 이 경우는 `ItemSaveForm` 객체를 만들지 못하기 때문에 컨트롤러 자체가 호출되지 않고 그 전에 예외가 발생한다.
+- 따라서 `ItemSaveForm` 이 생성되지 않기 때문에 Validator 도 작동하지 않는다.
+
+`HttpMessageConverter` 는 `@RequestBody` 를 확인하고 Json을 파싱하여 ItemSaveForm을 만드는데, 그 과정에서 타입이 맞지 않기 때문에 객체 자체를 만들지 못한다.
+객체를 만들지 못하여 예외가 발생하기 때문에 컨트롤러 자체를 호출하지 않는다.
 
 **검증 오류 요청**
 
