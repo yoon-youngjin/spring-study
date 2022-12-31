@@ -24,3 +24,5 @@
 1. [Section 1: 타임리프 - 기본 기능](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-01.md)
 2. [Section 2: 타임리프 - 스프링 통합과 폼](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-02.md)
 3. [Section 3: 메시지, 국제화](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-03.md)
+4. [Section 4: 검증1 - Validation](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-04.md)
+5. [Section 5: 검증2 - Bean Validation](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-05.md)
