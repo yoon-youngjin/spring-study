@@ -250,3 +250,7 @@ public class LoginCheckFilter implements Filter {
         return "redirect:" + redirectURL;
     }
 ```
+
+**결과**
+
+![image](https://user-images.githubusercontent.com/83503188/210354453-1426518d-7589-4d2d-8b7d-aa8b33f412fd.png)
