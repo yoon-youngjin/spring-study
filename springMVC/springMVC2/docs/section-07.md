@@ -572,6 +572,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 }
 ```
 - `supportsParameter()` : `@Login` 애노테이션이 있으면서 `Member` 타입이면 해당 `ArgumentResolver`가 사용된다.
+  - 내부 캐싱 처리로 인해 해당 메서드는 최초 호출에만 실행된다. 따라서 두번째 호출부터는 바로 `resolveArgument()`가 호출된다.  
 - `resolveArgument()` : 컨트롤러 호출 직전에 호출 되어서 필요한 파라미터 정보를 생성해준다. 여기서는 세션에 있는 로그인 회원 정보인 `member` 객체를 찾아서 반환해준다. 이후 스프링MVC는 컨트롤러의 메서드를 호출하면서 여기에서 반환된 `member` 객체를 파라미터에 전달해준다.
 
 **WebMvcConfigurer에 설정 추가**

@@ -19,8 +19,8 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         log.info("supportParameter 실행");
 
-        boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class);
-        boolean hasMemberType = Member.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class); // 넘어온 파라미터에 @Login 존재?
+        boolean hasMemberType = Member.class.isAssignableFrom(parameter.getParameterType()); // parameter.getParameterType() == Member.class,
 
         return hasLoginAnnotation && hasMemberType;
     }
