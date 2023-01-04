@@ -26,3 +26,5 @@
 3. [Section 3: 메시지, 국제화](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-03.md)
 4. [Section 4: 검증1 - Validation](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-04.md)
 5. [Section 5: 검증2 - Bean Validation](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-05.md)
+5. [Section 6: 로그인 처리1 - 쿠키, 세션](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-06.md)
+5. [Section 7: 로그인 처리2 - 필터, 인터셉터](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-07.md)
