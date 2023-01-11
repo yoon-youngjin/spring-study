@@ -295,6 +295,8 @@ public class ConversionServiceTest {
 
 인터페이스 분리 원칙은 클라이언트가 자신이 이용하지 않는 메서드에 의존하지 않아야 한다.
 
+![image](https://user-images.githubusercontent.com/83503188/211772689-7d080ecd-33c5-4b6b-9310-eede4624b0a0.png)
+
 `DefaultConversionService` 는 다음 두 인터페이스를 구현했다.
 - `ConversionService` : 컨버터 사용에 초점
 - `ConverterRegistry` : 컨버터 등록에 초점
