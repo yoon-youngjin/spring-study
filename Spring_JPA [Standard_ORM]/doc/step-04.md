@@ -121,7 +121,7 @@ private RoleType roleType;
 - 직접 할당: @Id만 사용
 - 자동 생성: @Id, @GeneratedValue
   - @GeneratedValue(strategy = GenerationType.AUTO): DB방언에 맞춰서 자동 생성
-  - @GeneratedValue(strategy = GenerationType.IDEENTITY): 기본 키 생성을 데이터베이스에 위임 -> ex. MYSQL의 경우 AUTO_INCREMENT
+  - @GeneratedValue(strategy = GenerationType.IDEETITY): 기본 키 생성을 데이터베이스에 위임 -> ex. MYSQL의 경우 AUTO_INCREMENT
     - ID를 맵핑 하지 않고 persist하기 때문에 DB에 접근하는 시점이 되면 id값을 알 수 있다.
     - IDENTITY전략만 예외적으로 em.persist하는 시점에 insert 쿼리를 날린다.
     - 기본적으로 em.commit시점에 insert쿼리가 나감
