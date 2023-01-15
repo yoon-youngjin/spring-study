@@ -448,7 +448,7 @@ public class CatalogController {
 
 **라이브러리 추가**
 
--Spring Web
+- Spring Web
 - Devtools
 - Lombok
 - Jpa
