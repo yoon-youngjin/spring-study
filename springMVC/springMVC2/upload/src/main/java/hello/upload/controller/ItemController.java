@@ -70,7 +70,7 @@ public class ItemController {
         String storeFileName = item.getAttachFile().getStoreFileName();
         String uploadFileName = item.getAttachFile().getUploadFileName();
 
-        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
+        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName)); // 바이너리화
 
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
         String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
