@@ -429,7 +429,7 @@ public class ItemController {
 
         UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
 
-        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8); // 한글이 깨질 수 있기 때문에 인코딩
         String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
 
         return ResponseEntity.ok()
@@ -443,7 +443,7 @@ public class ItemController {
 - `@GetMapping("/items/{id}")` : 상품을 보여준다.
 - `@GetMapping("/images/{filename}")` : <img> 태그로 이미지를 조회할 때 사용한다. `UrlResource` 로 이미지 파일을 읽어서 `@ResponseBody` 로 이미지 바이너리를 반환한다. -> `file:`을 통해 내부 파일에 직접 접근
 - `@GetMapping("/attach/{itemId}")` : 파일을 다운로드 할 때 실행한다. 예제를 더 단순화 할 수 있지만, 파일 다운로드 시 권한 체크같은 복잡한 상황까지 가정한다 생각하고 이미지 id 를 요청하도록 했다. -> 이미지 Id를 통해 유저 권한 검증, ...
-파일 다운로드시에는 고객이 업로드한 파일 이름으로 다운로드 하는게 좋다. 이때는 `Content-Disposition` 해더에 `attachment; filename="업로드 파일명"` 값을 주면 된다.
+파일 다운로드시에는 고객이 업로드한 파일 이름으로 다운로드 하는게 좋다. 이때는 `Content-Disposition` 해더에 표준 규약(`attachment; filename="업로드 파일명"`) 값을 주면 된다. -> 
 
 보통 파일은 데이터베이스에 저장하는 것이 아닌 스토리지(AWS S3, ..)에 저장하고, 데이터베이스에는 파일이 저장된 경로 정도 저장한다. 
 경로도 보통 FullPath가 아닌 Path의 형식을 맞춰두고 형식 이후 상대적인 경로만 저장한다.
