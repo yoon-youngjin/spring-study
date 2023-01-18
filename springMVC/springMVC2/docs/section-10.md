@@ -650,6 +650,7 @@ public class FormatterController {
         return "formatter-form";
     }
 
+    // "10,000" -> Integer
     @PostMapping("/formatter/edit")
     public String formatterEdit(@ModelAttribute Form form) {
         return "formatter-view";
