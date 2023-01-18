@@ -341,7 +341,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 - 문제점
   - 세션과 쿠키는 모바일 애플리케이션에서 유효하게 사용할 수 없음
-  - 렌더딩된 HTML 페이지가 반한되지만, 모바일 애플리케이션에서는 JSON과 같은 포맷 필요
+  - 렌더링된 HTML 페이지가 반되지만, 모바일 애플리케이션에서는 JSON과 같은 포맷 필요
 
 ![image](https://user-images.githubusercontent.com/83503188/193417409-5a038251-538f-41df-8eff-d7e1364d9e2e.png)
 
