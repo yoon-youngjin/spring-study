@@ -30,3 +30,5 @@
 5. [Section 7: 로그인 처리2 - 필터, 인터셉터](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-07.md)
 5. [Section 8: 예외 처리와 오류 페이지](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-08.md)
 5. [Section 9: API 예외 처리](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-09.md)
+5. [Section 10: 스프링 타입 컨버터](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-10.md)
+5. [Section 11: 파일 업로드](https://github.com/yoon-youngjin/spring-study-by-myself/tree/main/springMVC/springMVC2/docs/section-11.md)
