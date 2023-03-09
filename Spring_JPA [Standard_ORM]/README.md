@@ -1,6 +1,9 @@
 # Spring_JPA [Standard_ORM]
 > 자바 ORM 표준 JPA 프로그래밍 - 기본편
 
+![image](https://user-images.githubusercontent.com/83503188/224039151-daf5f91e-b96e-446b-b77e-300080f14893.png)
+
+
 ## 목차
 
 1. [**JPA 소개**](https://github.com/yoon-youngjin/SSS/blob/main/Spring_JPA%20%5BStandard_ORM%5D/doc/step-01.md)
