@@ -391,7 +391,7 @@ public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resol
 3. DefaultHandlerExceptionResolver 우선 순위가 가장 낮다.
 
 **ExceptionHandlerExceptionResolver**
--` @ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다.
+- `@ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다.
 
 **ResponseStatusExceptionResolver**
 - HTTP 상태 코드를 지정해준다.

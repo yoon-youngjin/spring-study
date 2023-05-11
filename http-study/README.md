@@ -1,5 +1,7 @@
 # 모든 개발자를 위한 HTTP 웹 기본 지식
 
+![image](https://user-images.githubusercontent.com/83503188/224489826-17449750-56dd-4cf1-b1e2-a661943e2feb.png)
+
 
 ## 목차
 
