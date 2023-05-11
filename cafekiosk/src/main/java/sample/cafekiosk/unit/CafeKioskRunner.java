@@ -1,5 +1,6 @@
 package sample.cafekiosk.unit;
 
+import lombok.Data;
 import sample.cafekiosk.unit.beverages.Americano;
 import sample.cafekiosk.unit.beverages.Latte;
 import sample.cafekiosk.unit.order.Order;
