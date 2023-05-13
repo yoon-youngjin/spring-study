@@ -29,12 +29,11 @@ public class ProductResponse {
     public static ProductResponse of(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
-                .productNumber(product.getName())
+                .productNumber(product.getProductNumber())
                 .type(product.getType())
                 .sellingStatus(product.getSellingStatus())
                 .name(product.getName())
                 .price(product.getPrice())
                 .build();
-
     }
 }
