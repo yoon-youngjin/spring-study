@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
+import sample.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
+import sample.cafekiosk.spring.domain.order.Order;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
 import sample.cafekiosk.spring.domain.orderproduct.OrderProductRepository;
 import sample.cafekiosk.spring.domain.product.Product;
@@ -64,7 +66,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse response = orderService.createOrder(request, registeredDateTime);
+        OrderResponse response = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(response.getId()).isNotNull();
@@ -95,7 +97,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse response = orderService.createOrder(request, registeredDateTime);
+        OrderResponse response = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(response.getId()).isNotNull();
@@ -130,7 +132,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse response = orderService.createOrder(request, registeredDateTime);
+        OrderResponse response = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(response.getId()).isNotNull();
@@ -175,7 +177,7 @@ class OrderServiceTest {
                 .build();
 
         // when, then
-        assertThatThrownBy(() -> orderService.createOrder(request, registeredDateTime))
+        assertThatThrownBy(() -> orderService.createOrder(request.toServiceRequest(), registeredDateTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("재고가 부족한 상품이 있습니다.");
     }
