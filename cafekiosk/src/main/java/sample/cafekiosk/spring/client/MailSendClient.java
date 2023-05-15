@@ -10,4 +10,15 @@ public class MailSendClient { // 실제 메일 전송을 담당하는 서비스
         log.info("메일 전송");
         throw new IllegalArgumentException("메일 전송");
     }
+
+    public void a() {
+        log.info("a");
+    }
+    public void b() {
+        log.info("b");
+    }
+    public void c() {
+        log.info("c");
+    }
+
 }

@@ -3,14 +3,18 @@ package sample.cafekiosk.spring.api.service.order;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import sample.cafekiosk.spring.client.MailSendClient;
 import sample.cafekiosk.spring.domain.hisory.mail.MailSendHistory;
 import sample.cafekiosk.spring.domain.hisory.mail.MailSendHistoryRepository;
 import sample.cafekiosk.spring.domain.order.Order;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
 import sample.cafekiosk.spring.domain.order.OrderStatus;
+import sample.cafekiosk.spring.domain.orderproduct.OrderProductRepository;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductType;
@@ -20,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static sample.cafekiosk.spring.domain.product.ProductSellingStatus.SELLING;
 import static sample.cafekiosk.spring.domain.product.ProductType.HANDMADE;
 
@@ -34,13 +40,21 @@ class OrderStatisticServiceTest {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderProductRepository orderProductRepository;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private MailSendHistoryRepository mailSendHistoryRepository;
 
+    @MockBean
+    private MailSendClient mailSendClient;
+
+
     @AfterEach
     void tearDown() {
+        orderProductRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         mailSendHistoryRepository.deleteAllInBatch();
@@ -64,6 +78,10 @@ class OrderStatisticServiceTest {
         Order savedOrder2 = createPaymentCompletedOrder(now, products);
         Order savedOrder3 = createPaymentCompletedOrder(LocalDateTime.of(2023, 3, 5, 23, 59, 59), products);
         Order savedOrder4 = createPaymentCompletedOrder(LocalDateTime.of(2023, 3, 6, 0, 0, 0), products);
+
+        // stubbing
+        when(mailSendClient.sendEmail(any(String.class), any(String.class), any(String.class), any(String.class)))
+                .thenReturn(true);
 
         // when
         boolean result = orderStatisticService.sendOrderStatisticsMail(LocalDate.of(2023, 3, 5), "test@test.com");

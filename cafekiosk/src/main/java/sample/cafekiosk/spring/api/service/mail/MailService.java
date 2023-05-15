@@ -15,7 +15,7 @@ public class MailService { // 외부 메일 서비스를 이용하고 메일 히
 
     public boolean sendMail(String fromEmail, String toEmail, String subject, String content) {
         boolean result = mailSendClient.sendEmail(fromEmail, toEmail, subject, content);
-        if (!result) {
+        if (result) {
             mailSendHistoryRepository.save(MailSendHistory.builder()
                     .fromEmail(fromEmail)
                     .toEmail(toEmail)
@@ -23,8 +23,12 @@ public class MailService { // 외부 메일 서비스를 이용하고 메일 히
                     .content(content)
                     .build()
             );
-            return true;
         }
-        return false;
+
+        mailSendClient.a();
+        mailSendClient.b();
+        mailSendClient.c();
+
+        return result;
     }
 }
