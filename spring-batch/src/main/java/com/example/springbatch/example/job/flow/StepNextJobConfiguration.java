@@ -1,4 +1,4 @@
-package com.example.springbatch.job;
+package com.example.springbatch.example.job.flow;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
