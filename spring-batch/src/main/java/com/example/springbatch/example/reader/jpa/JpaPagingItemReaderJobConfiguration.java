@@ -48,7 +48,7 @@ public class JpaPagingItemReaderJobConfiguration {
                 .name("jpaPagingItemReader")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(chunkSize)
-                .queryString("SELECT p FROM Pay p WHERE amount >= 2000")
+                .queryString("SELECT p FROM Pay p WHERE amount >= 2000 ORDER BY id")
                 .build();
     }
 
