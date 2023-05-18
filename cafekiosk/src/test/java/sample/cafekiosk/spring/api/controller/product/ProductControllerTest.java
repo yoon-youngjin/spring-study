@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import sample.cafekiosk.spring.ControllerTestSupport;
 import sample.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
 import sample.cafekiosk.spring.api.service.product.ProductService;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
@@ -22,18 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(controllers = ProductController.class) // SpringBootTest는 Spring 전체를 띄우는 반면에 WebMvcTest는 Controller 테스트만 진행하도록 Controller 관련 빈들만 등록해주는 가벼운 어노테이션
-class ProductControllerTest {
+class ProductControllerTest extends ControllerTestSupport {
 
-    @Autowired
-    private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper; // JSON과 Object 간의 직렬화, 역직렬화를 도와주는 객체
-
-    @MockBean // 컨테이너에 mockito로 만든 mock 객체를 넣어줌
-    // ProductController를 테스트하기 위해서는 반드시 ProductService를 주입받아야 함
-    private ProductService productService;
 
     @Test
     @DisplayName("신규 상품을 등록한다.")
