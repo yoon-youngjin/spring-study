@@ -1,6 +1,9 @@
 spring:
   profiles:
     active: local
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 spring.batch.job.names: ${job.name:NONE}
 logging:

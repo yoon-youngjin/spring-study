@@ -20,9 +20,9 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class ProcessorConvertJobConfiguration {
+public class ProcessorNullJobConfiguration {
 
-    public static final String JOB_NAME = "processorConvertBatch";
+    public static final String JOB_NAME = "processorNullBatch";
     public static final String BEAN_PREFIX = JOB_NAME + "_";
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -44,22 +44,30 @@ public class ProcessorConvertJobConfiguration {
     @JobScope
     public Step step() {
         return stepBuilderFactory.get(BEAN_PREFIX + "step")
-                .<Teacher, String>chunk(chunkSize)
+                .<Teacher, Teacher>chunk(chunkSize)
                 .reader(reader())
                 .processor(processor())
                 .writer(items -> {
-                    for (String item : items) {
+                    for (Teacher item : items) {
                         log.info("Teacher Name = {}", item);
                     }
                 })
                 .build();
     }
 
-    private ItemProcessor<Teacher, String> processor() {
-        return Teacher::getName;
+    private ItemProcessor<Teacher, Teacher> processor() {
+        return teacher -> {
+
+            boolean isIgnoreTarget = teacher.getId() % 2 == 0L;
+            if (isIgnoreTarget) {
+                log.info(">>>>>>>>> Teacher name={}, isIgnoreTarget={}", teacher.getName(), isIgnoreTarget);
+                return null;
+            }
+            return teacher;
+        };
     }
 
-    @Bean
+    @Bean(BEAN_PREFIX + "reader")
     public JpaPagingItemReader<Teacher> reader() {
         return new JpaPagingItemReaderBuilder<Teacher>()
                 .name(BEAN_PREFIX + "reader")

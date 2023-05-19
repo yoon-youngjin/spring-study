@@ -1,5 +1,6 @@
 package com.example.springbatch.example.processor;
 
+import com.example.springbatch.entity.ClassInformation;
 import com.example.springbatch.entity.Teacher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,9 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class ProcessorConvertJobConfiguration {
+public class TransactionProcessorJobConfiguration {
 
-    public static final String JOB_NAME = "processorConvertBatch";
+    public static final String JOB_NAME = "transactionProcessorBatch";
     public static final String BEAN_PREFIX = JOB_NAME + "_";
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -44,22 +45,23 @@ public class ProcessorConvertJobConfiguration {
     @JobScope
     public Step step() {
         return stepBuilderFactory.get(BEAN_PREFIX + "step")
-                .<Teacher, String>chunk(chunkSize)
+                .<Teacher, ClassInformation>chunk(chunkSize)
                 .reader(reader())
                 .processor(processor())
                 .writer(items -> {
-                    for (String item : items) {
-                        log.info("Teacher Name = {}", item);
+                    log.info(">>>>>>>>>>> Item Write");
+                    for (ClassInformation item : items) {
+                        log.info("반 정보= {}", item);
                     }
                 })
                 .build();
     }
 
-    private ItemProcessor<Teacher, String> processor() {
-        return Teacher::getName;
+    private ItemProcessor<Teacher, ClassInformation> processor() {
+        return teacher -> new ClassInformation(teacher.getName(), teacher.getStudents().size());
     }
 
-    @Bean
+    @Bean(BEAN_PREFIX + "reader")
     public JpaPagingItemReader<Teacher> reader() {
         return new JpaPagingItemReaderBuilder<Teacher>()
                 .name(BEAN_PREFIX + "reader")
