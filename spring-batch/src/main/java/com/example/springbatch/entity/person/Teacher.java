@@ -1,4 +1,4 @@
-package com.example.springbatch.entity;
+package com.example.springbatch.entity.person;
 
 import lombok.*;
 

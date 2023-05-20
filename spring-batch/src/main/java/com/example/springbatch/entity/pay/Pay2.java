@@ -1,4 +1,4 @@
-package com.example.springbatch.entity;
+package com.example.springbatch.entity.pay;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Pay {
-
+public class Pay2 {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
     @Id
@@ -28,16 +27,22 @@ public class Pay {
     private String txName;
     private LocalDateTime txDateTime;
 
-    public Pay(Long id, Long amount, String txName, LocalDateTime txDateTime) {
-        this.id = id;
+    public Pay2(Long amount, String txName, String txDateTime) {
+        this.amount = amount;
+        this.txName = txName;
+        this.txDateTime = LocalDateTime.parse(txDateTime, FORMATTER);
+    }
+
+    public Pay2(Long amount, String txName, LocalDateTime txDateTime) {
         this.amount = amount;
         this.txName = txName;
         this.txDateTime = txDateTime;
     }
 
-    public Pay(Long amount, String txName, LocalDateTime txDateTime) {
+    public Pay2(Long id, Long amount, String txName, String txDateTime) {
+        this.id = id;
         this.amount = amount;
         this.txName = txName;
-        this.txDateTime = txDateTime;
+        this.txDateTime = LocalDateTime.parse(txDateTime, FORMATTER);
     }
 }

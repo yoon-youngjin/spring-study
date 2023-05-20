@@ -1,6 +1,6 @@
 package com.example.springbatch.example.writer;
 
-import com.example.springbatch.entity.Pay;
+import com.example.springbatch.entity.pay.Pay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

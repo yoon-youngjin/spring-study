@@ -1,6 +1,6 @@
 package com.example.springbatch.example.processor;
 
-import com.example.springbatch.entity.Teacher;
+import com.example.springbatch.entity.person.Teacher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
