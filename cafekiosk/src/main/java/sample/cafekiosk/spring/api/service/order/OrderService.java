@@ -68,7 +68,6 @@ public class OrderService {
             }
             stock.deductQuantity(quantity);
         }
-        HashMap<String, Integer> map = new HashMap<>();
     }
 
     private Map<String, Long> createCountingMapBy(List<String> stockProductNumbers) {
