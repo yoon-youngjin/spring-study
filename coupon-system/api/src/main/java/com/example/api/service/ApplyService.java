@@ -1,6 +1,7 @@
 package com.example.api.service;
 
 import com.example.api.domain.Coupon;
+import com.example.api.producer.CouponCreateProducer;
 import com.example.api.repository.CouponCountRepository;
 import com.example.api.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ public class ApplyService {
     private final CouponRepository couponRepository;
     private final CouponCountRepository couponCountRepository;
 
+    private final CouponCreateProducer couponCreateProducer;
+
     public void apply(Long userId) {
         Long count = couponCountRepository.increment();
 //        long count = couponRepository.count();
@@ -21,6 +24,7 @@ public class ApplyService {
             return;
         }
 
-        couponRepository.save(new Coupon(userId));
+//        couponRepository.save(new Coupon(userId));
+        couponCreateProducer.create(userId);
     }
 }

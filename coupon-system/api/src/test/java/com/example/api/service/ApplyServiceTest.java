@@ -1,8 +1,6 @@
 package com.example.api.service;
 
 import com.example.api.repository.CouponRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,6 +50,8 @@ class ApplyServiceTest {
         }
 
         latch.await();
+
+        Thread.sleep(10000);
         long count = couponRepository.count();
 
         // then
