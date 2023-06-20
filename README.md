@@ -36,11 +36,11 @@
    - :white_check_mark: 인프런 김영한 강사님의 "스프링 핵심 원리" Section 1 ~ Section 9 정리
 
 10. [**coupon-system**](https://github.com/yoon-youngjin/SSS/tree/main/coupon-system)
-   - :white_check_mark: 선착순 쿠폰 시스템 
+    - :white_check_mark: 선착순 쿠폰 시스템 
 
 11. [**http-study**](https://github.com/yoon-youngjin/SSS/tree/main/http-study)
-   - :white_check_mark: 모든 개발자를 위한 HTTP 웹 기본 지식
-   - :white_check_mark: 인프런 김영한 강사님의 "모든 개발자를 위한 HTTP 웹 기본 지식" Section 1 ~ Section 8 정리
+    - :white_check_mark: 모든 개발자를 위한 HTTP 웹 기본 지식
+    - :white_check_mark: 인프런 김영한 강사님의 "모든 개발자를 위한 HTTP 웹 기본 지식" Section 1 ~ Section 8 정리
 
 12. [**msa-with-spring-cloud**](https://github.com/yoon-youngjin/SSS/tree/main/msa-with-spring-cloud)
     - :white_check_mark: Spring Cloud로 개발하는 마이크로서비스 애플리케이션(MSA)
