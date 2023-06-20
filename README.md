@@ -34,6 +34,7 @@
 9. [**core**](https://github.com/yoon-youngjin/SSS/tree/main/core)
    - :white_check_mark: 스프링 핵심 원리
    - :white_check_mark: 인프런 김영한 강사님의 "스프링 핵심 원리" Section 1 ~ Section 9 정리
+
 10. [**coupon-system**](https://github.com/yoon-youngjin/SSS/tree/main/coupon-system)
    - :white_check_mark: 선착순 쿠폰 시스템 
 
