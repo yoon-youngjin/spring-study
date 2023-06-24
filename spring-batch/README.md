@@ -5,7 +5,7 @@
 1. [Section 0: Spring Batch 질문 리스트](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/00.%20Spring%20Batch%20%EC%A7%88%EB%AC%B8%20%EB%A6%AC%EC%8A%A4%ED%8A%B8.md)
 2. [Section 1: 배치_어플리케이션이란](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/01.%20%EB%B0%B0%EC%B9%98_%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EC%9D%B4%EB%9E%80.md)
 3. [Section 2: Batch Job 실행해보기](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/02.%20Batch%20Job%20%EC%8B%A4%ED%96%89%ED%95%B4%EB%B3%B4%EA%B8%B0.md)
-4. [Section 3: 메타테이블엿보기]([https://github.com/yoon-youngjin/spring-study/blob/main/coupon-system/docs/section-01.md](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/04.%20Spring%20Batch%20Job%20Flow.md))
+4. [Section 3: 메타테이블엿보기](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/03.%20%EB%A9%94%ED%83%80%ED%85%8C%EC%9D%B4%EB%B8%94%EC%97%BF%EB%B3%B4%EA%B8%B0.md)
 5. [Section 4: Spring Batch Job Flow](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/04.%20Spring%20Batch%20Job%20Flow.md)
 6. [Section 5: Spring Batch Scope & Job Parameter](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/05.%20Spring%20Batch%20Scope%20%26%20Job%20Parameter.md)
 7. [Section 6: Chunk 지향 처리](https://github.com/yoon-youngjin/spring-study/blob/main/spring-batch/docs/06.%20Chunk%20%EC%A7%80%ED%96%A5%20%EC%B2%98%EB%A6%AC.md)
