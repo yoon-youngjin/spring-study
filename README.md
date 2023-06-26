@@ -51,7 +51,8 @@
     - :white_check_mark: 인프런 김영한 강사님의 "실전! Querydsl" Section 1 ~ Section 7 정리 
 
 14. [**spring-batch**](https://github.com/yoon-youngjin/spring-study/tree/main/spring-batch)
-    - :white_check_mark: 스프링 배치 
+    - :white_check_mark: 스프링 배치
+    - :white_check_mark: jojoldu - Spring Batch 가이드
 
 15. [**springDB_1**](https://github.com/yoon-youngjin/SSS/tree/main/springDB_1)
     - :white_check_mark: 스프링 DB 1편 - 데이터 접근 핵심 원리
