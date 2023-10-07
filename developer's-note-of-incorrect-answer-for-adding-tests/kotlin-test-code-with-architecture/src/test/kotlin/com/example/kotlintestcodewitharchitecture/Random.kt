@@ -1,11 +1,14 @@
 package com.example.kotlintestcodewitharchitecture
 
-import com.example.kotlintestcodewitharchitecture.model.dto.PostCreateDto
-import com.example.kotlintestcodewitharchitecture.model.dto.PostUpdateDto
-import com.example.kotlintestcodewitharchitecture.model.dto.UserCreateDto
-import com.example.kotlintestcodewitharchitecture.model.dto.UserUpdateDto
-import com.example.kotlintestcodewitharchitecture.repository.PostEntity
-import com.example.kotlintestcodewitharchitecture.repository.UserEntity
+import com.example.kotlintestcodewitharchitecture.post.domain.Post
+import com.example.kotlintestcodewitharchitecture.post.domain.PostCreate
+import com.example.kotlintestcodewitharchitecture.post.domain.PostUpdate
+import com.example.kotlintestcodewitharchitecture.user.domain.UserCreate
+import com.example.kotlintestcodewitharchitecture.user.domain.UserUpdate
+import com.example.kotlintestcodewitharchitecture.post.infrastructure.PostEntity
+import com.example.kotlintestcodewitharchitecture.user.controller.request.UserUpdateRequest
+import com.example.kotlintestcodewitharchitecture.user.domain.User
+import com.example.kotlintestcodewitharchitecture.user.infrastructure.UserEntity
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.double
 import io.kotest.property.arbitrary.float
@@ -25,6 +28,24 @@ fun <T : Any> random(kClass: KClass<T>, seed: Int?): T {
     val randomSource = RandomSource(seed)
 
     return when (kClass) {
+        User::class -> User(
+            id = random(seed),
+            email = random(seed),
+            nickname = random(seed),
+            address = random(seed),
+            certificationCode = random(seed),
+            status = random(seed),
+            lastLoginAt = random(seed),
+        )
+
+        Post::class -> Post(
+            id = random(seed),
+            content = random(seed),
+            createdAt = random(seed),
+            modifiedAt = random(seed),
+            writer = random(seed),
+        )
+
         UserEntity::class -> UserEntity(
             email = random(seed),
             nickname = random(seed),
@@ -41,23 +62,28 @@ fun <T : Any> random(kClass: KClass<T>, seed: Int?): T {
             writer = random(seed)
         )
 
-        UserCreateDto::class -> UserCreateDto(
+        UserCreate::class -> UserCreate(
             email = random(seed),
             nickname = random(seed),
             address = random(seed),
         )
 
-        UserUpdateDto::class -> UserUpdateDto(
+        UserUpdate::class -> UserUpdate(
             nickname = random(seed),
             address = random(seed),
         )
 
-        PostCreateDto::class -> PostCreateDto(
+        UserUpdateRequest::class -> UserUpdateRequest(
+            nickname = random(seed),
+            address = random(seed),
+        )
+
+        PostCreate::class -> PostCreate(
             writerId = random(seed),
             content = random(seed),
         )
 
-        PostUpdateDto::class -> PostUpdateDto(
+        PostUpdate::class -> PostUpdate(
             content = random(seed),
         )
 
