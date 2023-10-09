@@ -21,10 +21,11 @@ class TestContext(
     companion object {
         private val typesByBasePackage: MutableMap<String, List<Class<out Any>>> = mutableMapOf()
 
-        private fun scanImplTypes(basePackage: String) =
-            typesByBasePackage.getOrPut(basePackage) {
+        private fun scanImplTypes(basePackage: String): List<Class<out Any>> {
+            return typesByBasePackage.getOrPut(basePackage) {
                 getAllClassesInPackage(basePackage).filter { it.constructors.isNotEmpty() }
             }
+        }
     }
 
     private fun getImplTypeOrNull(type: KClass<out Any>): KClass<out Any>? {
@@ -124,12 +125,10 @@ class TestContext(
         javaObjectType.isAssignableFrom(other::class.javaObjectType)
 
     private fun <T : Any> createFromClass(kClass: KClass<T>): T {
-        println(kClass)
         val constructor = getBestConstructor(kClass)
             ?: return dummy(kClass)
                 ?: throw ConstructorRequiredException("Constructor required: ${kClass.qualifiedName}")
 
-        println(constructor)
         val args = resolveDependency(constructor)
         constructor.isAccessible = true
         return constructor.callBy(args)
