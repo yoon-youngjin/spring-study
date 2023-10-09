@@ -6,6 +6,7 @@ import com.example.kotlintestcodewitharchitecture.mock.FakeUserRepository
 import com.example.kotlintestcodewitharchitecture.mock.StubClockHolder
 import com.example.kotlintestcodewitharchitecture.mock.StubUuidHolder
 import com.example.kotlintestcodewitharchitecture.post.controller.port.PostServiceImpl
+import com.example.kotlintestcodewitharchitecture.user.service.UserServiceImpl
 import kotlin.reflect.KClass
 
 class StandaloneTestContext(
