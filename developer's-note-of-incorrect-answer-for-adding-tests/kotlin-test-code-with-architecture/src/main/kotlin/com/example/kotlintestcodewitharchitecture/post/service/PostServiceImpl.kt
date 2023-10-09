@@ -11,28 +11,28 @@ import com.example.kotlintestcodewitharchitecture.user.service.port.UserReposito
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Service
-class PostServiceImpl(
-    private val postRepository: PostRepository,
-    private val userRepository: UserRepository,
-    private val clockHolder: ClockHolder,
-) : PostService {
-    override fun getPostById(id: Long): Post {
-        return postRepository.findByIdOrNull(id)
-            ?: throw ResourceNotFoundException("Posts", id)
-    }
-
-    @Transactional
-    override fun create(postCreate: PostCreate): Post {
-        val user = userRepository.getById(postCreate.writerId)
-        val savedPost = Post.from(user, postCreate, clockHolder)
-        return postRepository.save(savedPost)
-    }
-
-    @Transactional
-    override fun update(id: Long, postUpdate: PostUpdate): Post {
-        val post = getPostById(id)
-        val updatedPost = post.update(postUpdate, clockHolder)
-        return postRepository.save(updatedPost)
-    }
-}
+//@Service
+//class PostServiceImpl(
+//    private val postRepository: PostRepository,
+//    private val userRepository: UserRepository,
+//    private val clockHolder: ClockHolder,
+//) : PostService {
+//    override fun getPostById(id: Long): Post {
+//        return postRepository.findByIdOrNull(id)
+//            ?: throw ResourceNotFoundException("Posts", id)
+//    }
+//
+//    @Transactional
+//    override fun create(postCreate: PostCreate): Post {
+//        val user = userRepository.getById(postCreate.writerId)
+//        val savedPost = Post.from(user, postCreate, clockHolder)
+//        return postRepository.save(savedPost)
+//    }
+//
+//    @Transactional
+//    override fun update(id: Long, postUpdate: PostUpdate): Post {
+//        val post = getPostById(id)
+//        val updatedPost = post.update(postUpdate, clockHolder)
+//        return postRepository.save(updatedPost)
+//    }
+//}

@@ -52,7 +52,8 @@ class UserTest {
     fun `User는 로그인을 할 수 있고 로그인시 마지막 로그인 시간이 변경된다`() {
         // given
         val user = random<User>()
-        val clockHolder = StubClockHolder(Clock.systemUTC().millis())
+        val clockHolder = StubClockHolder()
+        clockHolder.setUp(Clock.systemUTC().millis())
 
         // when
         val result = user.login(clockHolder)

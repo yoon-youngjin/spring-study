@@ -1,13 +1,17 @@
 package com.example.kotlintestcodewitharchitecture.post.controller
 
 import com.example.kotlintestcodewitharchitecture.StandaloneTestContext
+import com.example.kotlintestcodewitharchitecture.common.service.port.ClockHolder
+import com.example.kotlintestcodewitharchitecture.mock.StubClockHolder
 import com.example.kotlintestcodewitharchitecture.post.domain.PostCreate
 import com.example.kotlintestcodewitharchitecture.random
 import com.example.kotlintestcodewitharchitecture.user.domain.User
 import com.example.kotlintestcodewitharchitecture.user.domain.UserStatus
+import com.example.kotlintestcodewitharchitecture.user.service.port.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import java.time.Clock
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
@@ -15,8 +19,9 @@ import org.springframework.http.HttpStatus
 class PostCreateControllerTest {
     private val standaloneTestContext = StandaloneTestContext()
 
-    private val userRepository = standaloneTestContext.userRepository
-    private val postCreateController = standaloneTestContext.postCreateController
+    private val clockHolder = standaloneTestContext.ref<ClockHolder>() as StubClockHolder
+    private val userRepository: UserRepository = standaloneTestContext.ref()
+    private val postCreateController: PostCreateController = standaloneTestContext.ref()
 
     @Test
     fun `사용자는 게시물을 작성할 수 있다`() {
@@ -29,6 +34,7 @@ class PostCreateControllerTest {
         val postCreate = random<PostCreate>().copy(
             writerId = savedUser.id
         )
+        clockHolder.setUp(Clock.systemUTC().millis())
 
         // when
         val result = postCreateController.create(postCreate)

@@ -3,15 +3,19 @@ package com.example.kotlintestcodewitharchitecture.user.controller
 import com.example.kotlintestcodewitharchitecture.StandaloneTestContext
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.CertificationCodeNotMatchedException
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.ResourceNotFoundException
+import com.example.kotlintestcodewitharchitecture.common.service.port.ClockHolder
+import com.example.kotlintestcodewitharchitecture.mock.StubClockHolder
 import com.example.kotlintestcodewitharchitecture.random
 import com.example.kotlintestcodewitharchitecture.user.controller.request.UserUpdateRequest
 import com.example.kotlintestcodewitharchitecture.user.domain.User
 import com.example.kotlintestcodewitharchitecture.user.domain.UserStatus
 import com.example.kotlintestcodewitharchitecture.user.domain.UserUpdate
+import com.example.kotlintestcodewitharchitecture.user.service.port.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import java.time.Clock
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
@@ -19,9 +23,9 @@ class MyInfoControllerTest {
 
     private val standaloneTestContext = StandaloneTestContext()
 
-    private val clockHolder = standaloneTestContext.clockHolder
-    private val userRepository = standaloneTestContext.userRepository
-    private val myInfoController = standaloneTestContext.myInfoController
+    private val clockHolder = standaloneTestContext.ref<ClockHolder>() as StubClockHolder
+    private val userRepository: UserRepository = standaloneTestContext.ref()
+    private val myInfoController: MyInfoController = standaloneTestContext.ref()
 
     @Test
     fun `사용자는 내 정보를 불러올 때 개인정보인 주소도 갖고 올 수 있다`() {
@@ -31,6 +35,7 @@ class MyInfoControllerTest {
                 status = UserStatus.ACTIVE
             )
         )
+        clockHolder.setUp(Clock.systemUTC().millis())
 
         // when
         val result = myInfoController.getMyInfo(savedUser.email)

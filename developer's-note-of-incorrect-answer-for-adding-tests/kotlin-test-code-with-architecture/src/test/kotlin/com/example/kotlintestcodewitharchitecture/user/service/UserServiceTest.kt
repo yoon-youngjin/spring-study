@@ -3,24 +3,30 @@ package com.example.kotlintestcodewitharchitecture.user.service
 import com.example.kotlintestcodewitharchitecture.StandaloneTestContext
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.CertificationCodeNotMatchedException
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.ResourceNotFoundException
+import com.example.kotlintestcodewitharchitecture.common.service.port.ClockHolder
+import com.example.kotlintestcodewitharchitecture.common.service.port.UuidHolder
+import com.example.kotlintestcodewitharchitecture.mock.StubClockHolder
 import com.example.kotlintestcodewitharchitecture.random
+import com.example.kotlintestcodewitharchitecture.user.controller.port.UserService
 import com.example.kotlintestcodewitharchitecture.user.domain.User
 import com.example.kotlintestcodewitharchitecture.user.domain.UserCreate
 import com.example.kotlintestcodewitharchitecture.user.domain.UserStatus
 import com.example.kotlintestcodewitharchitecture.user.domain.UserUpdate
+import com.example.kotlintestcodewitharchitecture.user.service.port.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import java.time.Clock
 import org.junit.jupiter.api.Test
 
-class UserServiceImplTest {
+class UserServiceTest {
     private val standaloneTestContext = StandaloneTestContext()
 
-    private val userService = standaloneTestContext.userService
-    private val userRepository = standaloneTestContext.userRepository
-    private val uuidHolder = standaloneTestContext.uuidHolder
-    private val clockHolder = standaloneTestContext.clockHolder
+    private val userService: UserService = standaloneTestContext.ref()
+    private val userRepository: UserRepository = standaloneTestContext.ref()
+    private val uuidHolder: UuidHolder = standaloneTestContext.ref()
+    private val clockHolder = standaloneTestContext.ref<ClockHolder>() as StubClockHolder
 
     @Test
     fun `getByEmail은 ACTIVE 상태인 유저를 찾아올 수 있다`() {
@@ -130,6 +136,7 @@ class UserServiceImplTest {
             status = UserStatus.ACTIVE
         )
         val savedUser = userRepository.save(user)
+        clockHolder.setUp(Clock.systemUTC().millis())
 
         // when
         userService.login(savedUser.id)

@@ -3,10 +3,12 @@ package com.example.kotlintestcodewitharchitecture.user.controller
 import com.example.kotlintestcodewitharchitecture.StandaloneTestContext
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.CertificationCodeNotMatchedException
 import com.example.kotlintestcodewitharchitecture.common.domain.exception.ResourceNotFoundException
+import com.example.kotlintestcodewitharchitecture.common.service.port.ClockHolder
 import com.example.kotlintestcodewitharchitecture.random
 import com.example.kotlintestcodewitharchitecture.user.domain.User
 import com.example.kotlintestcodewitharchitecture.user.domain.UserStatus
 import com.example.kotlintestcodewitharchitecture.user.domain.UserUpdate
+import com.example.kotlintestcodewitharchitecture.user.service.port.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
@@ -18,9 +20,8 @@ class UserControllerTest {
 
     private val standaloneTestContext = StandaloneTestContext()
 
-    private val clockHolder = standaloneTestContext.clockHolder
-    private val userRepository = standaloneTestContext.userRepository
-    private val userController = standaloneTestContext.userController
+    private val userRepository: UserRepository = standaloneTestContext.ref()
+    private val userController: UserController = standaloneTestContext.ref()
 
     @Test
     fun `특정 유저의 정보를 전달 받을 수 있다 - 개인정보는 소거되어야 한다`() {

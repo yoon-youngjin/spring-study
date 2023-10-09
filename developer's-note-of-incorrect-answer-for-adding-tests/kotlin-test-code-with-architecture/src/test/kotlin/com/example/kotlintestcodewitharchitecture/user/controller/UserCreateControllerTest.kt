@@ -4,6 +4,7 @@ import com.example.kotlintestcodewitharchitecture.StandaloneTestContext
 import com.example.kotlintestcodewitharchitecture.random
 import com.example.kotlintestcodewitharchitecture.user.domain.UserCreate
 import com.example.kotlintestcodewitharchitecture.user.domain.UserStatus
+import com.example.kotlintestcodewitharchitecture.user.service.port.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -14,8 +15,8 @@ class UserCreateControllerTest {
 
     private val standaloneTestContext = StandaloneTestContext()
 
-    private val userRepository = standaloneTestContext.userRepository
-    private val userCreateController = standaloneTestContext.userCreateController
+    private val userRepository: UserRepository = standaloneTestContext.ref()
+    private val userCreateController: UserCreateController = standaloneTestContext.ref()
 
     @Test
     fun `사용자는 회원가입을 할 수 있고 회원가입된 사용자는 PENDING 상태이다`() {
