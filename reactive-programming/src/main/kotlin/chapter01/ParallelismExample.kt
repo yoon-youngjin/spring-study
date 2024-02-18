@@ -1,4 +1,4 @@
-package ex1
+package chapter01
 
 class ParallelismExample
 
